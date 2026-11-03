@@ -82,6 +82,25 @@
   }
 
 
+  // Animate the single Off Script brand seal only when it becomes visible.
+  const brandSeal = document.querySelector(".about-brand-stamp");
+  if (brandSeal) {
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            brandSeal.classList.add("is-visible");
+            observer.disconnect();
+            break;
+          }
+        }
+      }, { threshold: 0.35 });
+      observer.observe(brandSeal);
+    } else {
+      brandSeal.classList.add("is-visible");
+    }
+  }
+
   // A small interactive pitch rehearsal. Sample copy, not event claims.
   const sampleLines = [
     "“I KNOW SOMEONE YOU SHOULD MEET.”",

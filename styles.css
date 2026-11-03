@@ -521,32 +521,95 @@ button:disabled{cursor:not-allowed}
 .site-footer a .ui-icon{margin-left:.3em}
 .dialog-footer a .ui-icon{margin-left:.35em}
 
-/* Official Off Script logo. Display the exact transparent PNG without pixel edits.
-   Crop its transparent edges visually to preserve useful size on small screens. */
-.brand,.footer-brand,.ticket-brand{
-  display:block;position:relative;overflow:hidden;flex:none;
+/* Off Script official mark: proportions match the art bounds of the transparent PNG.
+   Use the uploaded image unmodified. CSS trims only its transparent safety margin. */
+.brand,.footer-brand,.ticket-brand,.about-brand-stamp-logo{
+  position:relative;display:block;overflow:hidden;flex:none;
   min-width:0;letter-spacing:normal;line-height:normal;transform:none;
 }
-.brand img,.footer-brand img,.ticket-brand img{
+.brand img,.footer-brand img,.ticket-brand img,.about-brand-stamp-logo img{
   position:absolute;display:block;width:126.5%;height:auto;max-width:none;
   left:-13.95%;top:-25.7%;object-fit:contain;
 }
-.brand{width:78px;height:72px}
-.site-header{padding-top:.6rem;padding-bottom:.6rem}
-.footer-brand{width:100px;height:92px;text-decoration:none;border:0}
+/* Subtle, better-proportioned static logo uses. */
+.brand{width:62px;height:57px}
+.footer-brand{width:80px;height:73px;text-decoration:none;border:0}
 .site-footer .footer-brand{border:0}
-.ticket-brandline{display:inline-flex;align-items:center;gap:.5rem}
-.ticket-brand{width:59px;height:54px}
+.ticket-brandline{display:inline-flex;align-items:center;gap:.42rem}
+.ticket-brand{width:45px;height:41px}
 .ticket-brandline>b{display:inline-flex;align-items:center;margin:0 .1rem;color:var(--red)}
 .ticket-brandline>span:last-child{white-space:nowrap}
+.site-header{padding-top:.65rem;padding-bottom:.65rem}
+
+/* A single animated brand seal replaces the former decorative asterisk in
+   the About section. It doesn't occupy the hero CTA or cover any controls. */
+.about-brand-stamp{
+  position:absolute;top:-1.25rem;right:0;z-index:1;
+  width:124px;height:124px;transform:rotate(-9deg);
+  border:3px solid var(--ink);border-radius:48% 52% 50% 47%;
+  background:var(--yellow);box-shadow:6px 7px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  isolation:isolate;pointer-events:none;
+}
+.about-brand-stamp::after{
+  content:"";position:absolute;inset:7px;border:1.5px dashed var(--ink);
+  border-radius:50%;opacity:.48;pointer-events:none;
+}
+.about-brand-stamp-kicker{
+  font-size:.52rem;letter-spacing:.14em;font-weight:800;white-space:nowrap;
+  position:relative;z-index:1;margin-bottom:3px;
+}
+.about-brand-stamp-logo{position:relative;z-index:1;width:77px;height:70px}
+.about-brand-stamp-spark{
+  position:absolute;z-index:2;bottom:-12px;right:-12px;color:var(--red);
+  background:var(--paper);border:2px solid var(--ink);border-radius:50%;
+  width:36px;height:36px;display:grid;place-items:center;
+  box-shadow:2px 3px 0 var(--ink);
+}
+.about-brand-stamp-spark .ui-icon{width:20px;height:20px;stroke-width:2.8}
+
+/* Enter once when the seal scrolls into view; then a small periodic sway.
+   All other logo placements remain still. */
+@keyframes offscript-stamp-enter{
+  from{opacity:.4;transform:translateY(20px) scale(.82) rotate(-19deg)}
+  to{opacity:1;transform:translateY(0) scale(1) rotate(-9deg)}
+}
+@keyframes offscript-stamp-sway{
+  0%,66%,100%{transform:rotate(-9deg)}
+  72%{transform:rotate(-5deg)}
+  79%{transform:rotate(-12deg)}
+  87%{transform:rotate(-8deg)}
+}
+@media(prefers-reduced-motion:no-preference){
+  .about-brand-stamp.is-visible{
+    animation:offscript-stamp-enter .75s cubic-bezier(.2,.9,.2,1) both,
+      offscript-stamp-sway 6s ease-in-out 1s infinite;
+  }
+}
+@media(max-width:850px){
+  .about-brand-stamp{width:110px;height:110px;top:-.75rem;right:.25rem}
+  .about-brand-stamp-logo{width:70px;height:64px}
+  .about-brand-stamp-kicker{font-size:.48rem}
+}
 @media(max-width:620px){
-  .brand{width:62px;height:57px}
-  .site-header{padding-top:.55rem;padding-bottom:.55rem}
-  .footer-brand{width:86px;height:79px}
-  .ticket-brand{width:53px;height:49px}
-  .ticket-brandline{gap:.3rem}
+  .brand{width:52px;height:47px}
+  .footer-brand{width:69px;height:63px}
+  .ticket-brand{width:39px;height:36px}
+  .ticket-brandline{gap:.25rem}
+  .site-header{padding-top:.5rem;padding-bottom:.5rem}
+  .about-brand-stamp{
+    position:relative;top:auto;right:auto;margin:1rem .3rem 0 auto;
+    width:98px;height:98px;
+  }
+  .about-brand-stamp-logo{width:63px;height:57px}
+  .about-brand-stamp-kicker{font-size:.44rem}
+  .about-brand-stamp-spark{width:30px;height:30px;bottom:-8px;right:-8px}
+  .about-brand-stamp-spark .ui-icon{width:17px;height:17px}
 }
 @media(max-width:350px){
-  .brand{width:56px;height:52px}
+  .brand{width:48px;height:44px}
   .ticket-brandline>span:last-child{font-size:.68rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .about-brand-stamp{animation:none!important;transform:rotate(-9deg)}
 }
