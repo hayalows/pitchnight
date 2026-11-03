@@ -51,3 +51,7 @@ styles.css   Design system, layout, responsive styles and motion
 main.js      Countdown, programme and sharing interactions
 favicon.svg  Event favicon
 \`\`\`
+
+## Icons and illustration consistency
+
+The interface uses locally inlined **Lucide** vector icons for arrows, close controls, stars, and asterisk marks. Icon geometry is fixed across Windows, macOS, Android, and iOS. The original Pitch Night character illustration and marker strokes are retained as bespoke inline SVG artwork. No Icons8 Ouch assets have been embedded, so no paid illustration license or external image dependency is required. See `THIRD_PARTY_NOTICES.md` for attribution.

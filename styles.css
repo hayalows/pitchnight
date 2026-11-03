@@ -501,3 +501,22 @@ button:disabled{cursor:not-allowed}
  .v2-art-pitcher,.v2-art-mic,.v2-art-halo{animation:none}
  .v2-showcase:hover .v2-booth{transform:rotate(2deg)}
 }
+
+
+/* Locally hosted Lucide SVGs replace OS-rendered arrow and decorative glyphs. */
+.ui-symbols{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.ui-icon{display:inline-block;width:1em;height:1em;vertical-align:-.13em;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;flex:none;pointer-events:none;overflow:visible}
+.v2-status-dot{display:inline-block;width:.58em;height:.58em;background:var(--red);border-radius:50%;margin-left:.2em;vertical-align:middle}
+.v2-doodle-arrow .ui-icon{stroke-width:3.1}
+.v2-kicker-asterisk .ui-icon,.v2-btn-icon .ui-icon,.v2-sticker-bottom .ui-icon{stroke-width:2.7}
+.v2-topline-right .ui-icon,.v2-art-caption .ui-icon,.v2-bottomline .ui-icon{stroke-width:2.7}
+.v2-sticker-top .ui-icon{stroke-width:2.9}
+.v2-sticker-bottom span .ui-icon{width:1em;height:1em}
+.v2-booth-badge .v2-status-dot{font-size:1em}
+.marquee-track em .ui-icon{width:.85em;height:.85em}
+.red-cross .ui-icon,.last-star .ui-icon,.dialog-doodle .ui-icon{display:block;width:1em;height:1em;stroke-width:2.4}
+.dialog-close .ui-icon{width:1.3rem;height:1.3rem;vertical-align:middle;stroke-width:3}
+.faq-list summary span .ui-icon{display:block}
+.teaser-rows b .ui-icon{width:1.05em;height:1.05em;stroke-width:2.6}
+.site-footer a .ui-icon{margin-left:.3em}
+.dialog-footer a .ui-icon{margin-left:.35em}
