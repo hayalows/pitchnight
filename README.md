@@ -11,8 +11,8 @@ A playful, mobile-first event website for **Off Script's Pitch Night: Make Your 
 - **Registration:** https://hqr.la/68d7f6f7 — decoded from the original flyer QR code. Its destination has **not** been independently verified; check that it is the intended live registration and payment page before publishing.
 
 ## What's included in v1
-- Responsive hero that animates the red hand-drawn circle around YOUR.
-- A poster-style illustrated microphone and show card built with SVG/CSS.
+- Responsive flyer-led hero with animated red marker circle around YOUR and a prominent GHC 70 ticket action.
+- An original SVG cartoon pitch booth with two characters, playful stickers, and a three-line interactive pitch rehearsal.
 - A native accessible programme dialog (Escape to dismiss, focus restored).
 - Illustrative programme board. **Provisional only**: activity order and timing await organiser confirmation.
 - Host reveal placeholder; no invented host name, image, or biography.
