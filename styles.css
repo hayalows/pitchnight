@@ -748,9 +748,9 @@ button:disabled{cursor:not-allowed}
    Static content stays visible without JavaScript and for reduced-motion users. */
 @media(prefers-reduced-motion:no-preference){
   .scroll-lift{
-    opacity:0;
-    transform:translateY(16px);
-    transition:opacity .48s ease-out,transform .48s cubic-bezier(.2,.85,.2,1)
+    opacity:1;
+    transform:translateY(12px);
+    transition:transform .48s cubic-bezier(.2,.85,.2,1)
   }
   .scroll-lift.is-revealed{opacity:1;transform:none}
   .sticker.scroll-lift.is-revealed:nth-child(1){transform:rotate(-.6deg)}
