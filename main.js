@@ -81,6 +81,24 @@
     });
   }
 
+
+  // A small interactive pitch rehearsal. Sample copy, not event claims.
+  const sampleLines = [
+    "“I KNOW SOMEONE YOU SHOULD MEET.”",
+    "“HEAR ME OUT. THIS FRIEND IS A CATCH.”",
+    "“OKAY, SO HERE'S MY CASE…”"
+  ];
+  const sampleLine = document.getElementById("v2-speech-text");
+  const sampleCounter = document.getElementById("v2-quip-index");
+  const sampleButton = document.querySelector("[data-next-quip]");
+  let sampleIndex = 0;
+
+  sampleButton?.addEventListener("click", () => {
+    sampleIndex = (sampleIndex + 1) % sampleLines.length;
+    if (sampleLine) sampleLine.textContent = sampleLines[sampleIndex];
+    if (sampleCounter) sampleCounter.textContent = String(sampleIndex + 1).padStart(2, "0") + "/03";
+  });
+
   const shareButton = document.getElementById("share-button");
   const shareToast = document.getElementById("share-toast");
   let toastTimer = 0;
