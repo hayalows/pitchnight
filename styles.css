@@ -667,7 +667,7 @@ button:disabled{cursor:not-allowed}
      No independent flow row, so the About copy follows the heading directly. */
   .about-brand-stamp{
     position:absolute;top:-.45rem;right:0;bottom:auto;
-    width:clamp(80px,23vw,92px);height:clamp(80px,23vw,92px);
+    width:clamp(76px,21vw,88px);height:clamp(76px,21vw,88px);
     margin:0;transform:rotate(-9deg);box-shadow:4px 5px 0 var(--ink)
   }
   .about-brand-stamp-logo{width:57px;height:52px}
@@ -738,9 +738,13 @@ button:disabled{cursor:not-allowed}
 @media(max-width:365px){
   .v2-hero-note{right:0;width:93px;top:4.1rem;padding:.55rem .45rem}
   .v2-hero-note strong{font-size:1.25rem}
-  .about-brand-stamp{top:auto;bottom:-.35rem;right:0;width:72px;height:72px}
-  .about-brand-stamp-logo{width:45px;height:42px}
-  .about-brand-stamp-kicker{font-size:.34rem}
+  .about-heading-wrap{padding-bottom:3.8rem}
+  .about-grid{row-gap:.95rem}
+  .about-brand-stamp{top:auto;bottom:0;right:.4rem;width:59px;height:59px}
+  .about-brand-stamp-logo{width:38px;height:35px}
+  .about-brand-stamp-kicker{font-size:.32rem}
+  .about-brand-stamp-spark{width:22px;height:22px;right:-5px;bottom:-5px}
+  .about-brand-stamp-spark .ui-icon{width:13px;height:13px}
   .ticket-main{padding:1rem}
   .ticket-overline{font-size:.65rem}
 }
