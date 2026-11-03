@@ -154,6 +154,56 @@
   const registrationSubmitted = document.getElementById("registration-submitted");
   const registrationPay = document.getElementById("registration-pay");
   let registrationPreviousFocus = null;
+  const registrationFrame = document.querySelector("#registration-dialog .registration-form");
+  const registrationFormWrap = document.getElementById("registration-form-wrap");
+  const registrationLoading = document.getElementById("registration-loading");
+  const registrationLoadingCopy = document.getElementById("registration-loading-copy");
+  let formLoadStarted = false;
+  let formLoadFinished = false;
+  let formSlowNoticeTimer;
+
+  function isNarrowFormScreen() {
+    return window.matchMedia?.("(max-width: 355px)")?.matches === true;
+  }
+
+  function prepareRegistrationForm() {
+    // The native Google Form becomes awkward below 356px; keep its direct-link fallback.
+    if (!registrationFrame || formLoadStarted || isNarrowFormScreen()) {
+      if (isNarrowFormScreen()) registrationFormWrap?.setAttribute("aria-busy", "false");
+      return;
+    }
+    formLoadStarted = true;
+    registrationFrame.addEventListener("load", () => {
+      formLoadFinished = true;
+      window.clearTimeout(formSlowNoticeTimer);
+      if (registrationLoading) registrationLoading.hidden = true;
+      registrationFormWrap?.setAttribute("aria-busy", "false");
+    }, { once: true });
+    registrationFrame.src = registrationFrame.dataset.src;
+    // An iframe load event cannot verify that Google's inner form is usable.
+    formSlowNoticeTimer = window.setTimeout(() => {
+      if (!formLoadFinished && registrationLoadingCopy) {
+        registrationLoadingCopy.textContent = "Google is taking longer than usual. You can also open the form directly.";
+      }
+    }, 8000);
+  }
+
+  // Warm up the iframe AFTER the homepage has painted, and only if data saving is off.
+  // The form is then often ready before someone taps a ticket button.
+  function scheduleFormWarmup() {
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn?.saveData || /(^|slow-)2g/i.test(conn?.effectiveType || "") || isNarrowFormScreen()) return;
+    window.setTimeout(() => {
+      if (document.visibilityState === "hidden" || formLoadStarted) return;
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(prepareRegistrationForm, { timeout: 4500 });
+      } else {
+        prepareRegistrationForm();
+      }
+    }, 1400);
+  }
+  if (document.readyState === "complete") scheduleFormWarmup();
+  else window.addEventListener("load", scheduleFormWarmup, { once: true });
 
   function registrationLockScroll() {
     document.body.classList.toggle(
@@ -167,6 +217,7 @@
       ? document.querySelector(".nav-ticket")
       : (trigger || document.activeElement);
     if (programmeDialog?.open) programmeDialog.close();
+    prepareRegistrationForm();
     if (!registrationDialog.open) registrationDialog.showModal();
     registrationLockScroll();
     registrationCloser?.focus();
@@ -175,12 +226,17 @@
   function closeRegistration() {
     if (registrationDialog?.open) registrationDialog.close();
   }
-  registrationOpeners.forEach((link) => link.addEventListener("click", (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    if (!registrationDialog || typeof registrationDialog.showModal !== "function") return;
-    event.preventDefault();
-    openRegistration(link);
-  }));
+  registrationOpeners.forEach((link) => {
+    link.addEventListener("pointerenter", prepareRegistrationForm, { passive: true });
+    link.addEventListener("focus", prepareRegistrationForm, { passive: true });
+    link.addEventListener("pointerdown", prepareRegistrationForm, { passive: true });
+    link.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (!registrationDialog || typeof registrationDialog.showModal !== "function") return;
+      event.preventDefault();
+      openRegistration(link);
+    });
+  });
   registrationCloser?.addEventListener("click", closeRegistration);
   registrationDialog?.addEventListener("close", () => {
     registrationLockScroll();

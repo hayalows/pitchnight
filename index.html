@@ -12,6 +12,10 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Resolve the Google Forms connection early, without downloading the full form on the critical path. -->
+  <link rel="preconnect" href="https://docs.google.com" />
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="//docs.google.com" />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="main.js" defer></script>
@@ -392,15 +396,28 @@
           <span><strong>PAY GH₵70</strong><small>Secure checkout</small></span>
         </div>
       </div>
-      <div class="registration-form-wrap">
+      <div class="registration-form-wrap" id="registration-form-wrap" aria-busy="true">
         <p class="registration-form-hint"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-down"></use></svg> SCROLL INSIDE THE FORM TO COMPLETE AND SUBMIT IT</p>
-        <iframe
-          class="registration-form"
-          title="Official Off Script Pitch Night registration form. Scroll inside to complete and submit."
-          src="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform?embedded=true"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
+        <div class="registration-form-stage">
+          <div class="registration-loading" id="registration-loading" role="status" aria-live="polite">
+            <div class="registration-loading-icon" aria-hidden="true">
+              <svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg>
+            </div>
+            <strong>GETTING YOUR FORM READY.</strong>
+            <p id="registration-loading-copy">Connecting to Google Forms…</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
+              OPEN THE FORM DIRECTLY
+              <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
+            </a>
+          </div>
+          <iframe
+            class="registration-form"
+            title="Official Off Script Pitch Night registration form. Scroll inside to complete and submit."
+            data-src="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform?embedded=true"
+            loading="eager"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
         <div class="registration-narrow-fallback">
           <span class="registration-narrow-symbol" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
           <h3>THE FORM NEEDS A LITTLE MORE ROOM.</h3>

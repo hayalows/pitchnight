@@ -991,3 +991,49 @@ button:disabled{cursor:not-allowed}
 @media(max-width:355px){
  .registration-narrow-detail{display:block;padding-top:.85rem;border-top:2px solid var(--ink);font-size:.73rem;font-weight:800;letter-spacing:.04em}
 }
+
+
+/* Google Forms warm-up: lightweight branded waiting view while the iframe loads. */
+.registration-form-stage{
+  min-height:0;min-width:0;position:relative;overflow:hidden;
+  background:#eeeef9;
+}
+.registration-form-stage .registration-form{
+  height:100%;width:100%;border:0;
+}
+.registration-loading{
+  position:absolute;inset:0;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:clamp(1.2rem,4vw,2.5rem);
+  text-align:center;background:var(--paper);color:var(--ink);
+  gap:.8rem;
+}
+.registration-loading-icon{
+  display:grid;place-items:center;
+  width:62px;height:62px;border-radius:50%;
+  border:3px solid var(--ink);background:var(--yellow);
+  box-shadow:5px 5px 0 var(--ink);
+}
+.registration-loading-icon .ui-icon{font-size:2.1rem;stroke-width:2.7;color:var(--red)}
+.registration-loading strong{
+  font-family:var(--display);
+  font-size:clamp(1.6rem,3.8vw,2.4rem);
+  line-height:1.1;letter-spacing:.02em;font-weight:400;
+}
+.registration-loading p{font-size:.9rem;line-height:1.45;margin:0;max-width:340px}
+.registration-loading a{
+  display:inline-flex;align-items:center;gap:.65rem;
+  border-bottom:2px solid var(--ink);padding:.45rem .1rem;
+  font-size:.72rem;font-weight:800;text-decoration:none;
+}
+.registration-loading a:hover{color:var(--blue);border-color:var(--blue)}
+@media (max-width:355px){
+  .registration-form-stage{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .registration-loading-icon .ui-icon{animation:registration-icon-turn 3s ease-in-out infinite}
+}
+@keyframes registration-icon-turn{
+  0%,100%{transform:rotate(-12deg)}
+  50%{transform:rotate(28deg)}
+}
