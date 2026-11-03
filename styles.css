@@ -408,7 +408,7 @@ button:disabled{cursor:not-allowed}
 .v2-speech-text{margin:.6rem 0 .7rem;font-family:var(--display);font-size:clamp(1.3rem,2vw,1.95rem);line-height:1.13;letter-spacing:.01em;min-height:2.25em}
 .v2-quip-button{border:0;border-bottom:2px solid currentColor;background:transparent;padding:0 0 .2rem;display:inline-flex;gap:1rem;justify-content:space-between;font-size:.68rem;font-weight:800;letter-spacing:.05em}
 .v2-quip-button:hover{color:var(--blue)}
-.v2-sticker{position:absolute;z-index:4;font-family:var(--display);font-weight:400;line-height:1.08;letter-spacing:.015em}
+.v2-sticker{position:absolute;z-index:4;pointer-events:none;font-family:var(--display);font-weight:400;line-height:1.08;letter-spacing:.015em}
 .v2-sticker-top{right:-2%;top:0;background:var(--mint);border:2px solid var(--ink);padding:.55rem .8rem;transform:rotate(10deg);font-size:clamp(1rem,1.35vw,1.45rem);box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;gap:.7rem}
 .v2-sticker-top b{font-family:var(--body);font-size:2.5rem;line-height:.6;color:var(--red)}
 .v2-sticker-bottom{left:-2%;bottom:-.5rem;background:var(--red);color:#fff;padding:.8rem 1rem;transform:rotate(-9deg);font-size:clamp(1.15rem,1.55vw,1.8rem);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
@@ -481,7 +481,7 @@ button:disabled{cursor:not-allowed}
  .v2-speech-text{font-size:clamp(1.2rem,5.7vw,1.7rem)}
  .v2-sticker-top{right:-1%;font-size:.94rem;padding:.4rem .55rem}
  .v2-sticker-top b{font-size:1.65rem}
- .v2-sticker-bottom{left:-2%;font-size:1.03rem}
+ .v2-sticker-bottom{left:-2%;top:43%;bottom:auto;font-size:1.03rem}
  .v2-info-ribbon{grid-template-columns:1fr 1fr}
  .v2-info-cell{min-height:65px;gap:.45rem;flex-direction:column;align-items:flex-start;justify-content:center;padding:.7rem .6rem}
  .v2-info-cell strong{font-size:.76rem}
