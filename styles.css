@@ -597,8 +597,9 @@ button:disabled{cursor:not-allowed}
   .ticket-brand{width:39px;height:36px}
   .ticket-brandline{gap:.25rem}
   .site-header{padding-top:.5rem;padding-bottom:.5rem}
+  .about-grid{row-gap:1.65rem}
   .about-brand-stamp{
-    position:relative;top:auto;right:auto;margin:1rem .3rem 0 auto;
+    position:relative;top:auto;right:auto;margin:.8rem 1.25rem 0 auto;
     width:98px;height:98px;
   }
   .about-brand-stamp-logo{width:63px;height:57px}
