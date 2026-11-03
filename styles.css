@@ -913,3 +913,72 @@ button:disabled{cursor:not-allowed}
   .registration-pay{flex:1}
 }
 @media(prefers-reduced-motion:reduce){.registration-dialog[open]{animation:none}}
+
+
+/* Ticket desk v1.2: clear step guidance, mobile-safe form embed and payment caution.
+   The Google Form remains cross-origin and must be submitted in its own frame. */
+.registration-form-wrap{
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+}
+.registration-form-hint{
+  display:flex;align-items:center;gap:.5rem;
+  margin:0;padding:.5rem 1rem;
+  border-bottom:1px solid #cbc8d3;
+  background:var(--paper);
+  color:var(--ink);font-size:.66rem;font-weight:800;letter-spacing:.025em;
+}
+.registration-form-hint .ui-icon{color:var(--blue);width:1.1rem;height:1.1rem;stroke-width:3}
+.registration-form{min-height:0;min-width:0}
+.registration-narrow-fallback{display:none}
+.registration-step--complete .registration-step-num{background:var(--mint);color:var(--ink)}
+.registration-step--current .registration-step-num{background:var(--ink);color:var(--paper)}
+.registration-pay{min-width:0}
+.registration-confirm{min-height:32px;padding:.2rem 0}
+.registration-amount-warning{
+  margin:0;padding:.55rem .7rem;background:var(--mint);
+  border-left:4px solid var(--blue);font-size:.72rem;line-height:1.35;
+  color:var(--ink);
+}
+.registration-amount-warning strong{font-weight:800}
+.registration-footnote{color:#3f3f3f}
+@media(max-width:620px){
+  .registration-form-hint{font-size:.6rem;padding:.45rem .8rem;letter-spacing:0}
+  .registration-actions{gap:.5rem}
+  .registration-confirm{font-size:.77rem}
+  .registration-action-row{flex-wrap:wrap;align-items:stretch;gap:.45rem}
+  .registration-pay{
+    min-height:48px;flex:1 1 215px;font-size:.72rem;
+    line-height:1.1;white-space:normal;
+  }
+  .registration-open-form{min-height:42px;flex:0 1 auto;justify-content:center;font-size:.62rem}
+  .registration-footnote{font-size:.62rem;line-height:1.3}
+  .registration-amount-warning{font-size:.68rem;padding:.48rem .65rem}
+}
+@media(max-width:355px){
+  /* The Google Form itself has a minimum width that produces an inner horizontal
+     scrollbar on smaller devices. Don't shrink Google's text to fit: open directly. */
+  .registration-form{display:none}
+  .registration-form-hint{display:none}
+  .registration-narrow-fallback{
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+    gap:1rem;min-height:0;padding:clamp(1rem,5vw,1.6rem);
+    background:var(--paper);
+  }
+  .registration-narrow-symbol{width:45px;height:45px;display:grid;place-items:center;background:var(--mint);border:2px solid var(--ink)}
+  .registration-narrow-symbol .ui-icon{width:24px;height:24px;color:var(--blue)}
+  .registration-narrow-fallback h3{font-family:var(--display);font-size:clamp(2rem,9vw,3rem);line-height:1.06;letter-spacing:0;margin:0}
+  .registration-narrow-fallback p{font-size:.94rem;line-height:1.5;margin:0}
+  .registration-narrow-fallback a{
+    display:inline-flex;align-items:center;justify-content:space-between;gap:.7rem;
+    background:var(--yellow);color:var(--ink);padding:.8rem 1rem;
+    border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+    font-size:.76rem;font-weight:800;text-decoration:none;min-height:48px;
+  }
+  .registration-open-form{display:none}
+  .registration-action-row{display:block}
+  .registration-pay{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .registration-steps,.registration-amount-warning{transition:none}
+}

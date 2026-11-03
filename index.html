@@ -381,31 +381,37 @@
           <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg>
         </button>
       </div>
-      <div class="registration-steps" id="registration-summary">
-        <div class="registration-step registration-step--current">
+      <div class="registration-steps" id="registration-summary" aria-label="Two steps: submit your form, then pay GHS 70">
+        <div class="registration-step registration-step--current" id="registration-step-one">
           <span class="registration-step-num">01</span>
-          <span><strong>YOUR DETAILS</strong><small>Complete and submit the form</small></span>
+          <span><strong>YOUR DETAILS</strong><small>Complete the form</small></span>
         </div>
         <span class="registration-step-arrow" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
-        <div class="registration-step">
+        <div class="registration-step" id="registration-step-two">
           <span class="registration-step-num">02</span>
-          <span><strong>PAY GH₵70</strong><small>Continue to secure checkout</small></span>
+          <span><strong>PAY GH₵70</strong><small>Secure checkout</small></span>
         </div>
       </div>
       <div class="registration-form-wrap">
+        <p class="registration-form-hint"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-down"></use></svg> SCROLL INSIDE THE FORM TO COMPLETE AND SUBMIT IT</p>
         <iframe
           class="registration-form"
-          title="Official Off Script Pitch Night registration form"
+          title="Official Off Script Pitch Night registration form. Scroll inside to complete and submit."
           src="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform?embedded=true"
           loading="lazy"
           referrerpolicy="strict-origin-when-cross-origin"
-          allow="clipboard-write"
         ></iframe>
+        <div class="registration-narrow-fallback">
+          <span class="registration-narrow-symbol" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
+          <h3>THE FORM NEEDS A LITTLE MORE ROOM.</h3>
+          <p>Open the official registration form, submit your details, then return here to pay.</p>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">OPEN THE FORM <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+        </div>
       </div>
       <div class="registration-actions">
         <label class="registration-confirm">
           <input type="checkbox" id="registration-submitted" />
-          <span>I have pressed <strong>Submit</strong> on the form above.</span>
+          <span>I've submitted my details in the form.</span>
         </label>
         <div class="registration-action-row">
           <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/vt_glrjuabf" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
@@ -417,7 +423,10 @@
             <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
           </a>
         </div>
-        <p class="registration-footnote">Paystack opens separately. Confirm the amount is <strong>GHS 70</strong> before paying. This page cannot verify your submission or payment.</p>
+        <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>
+          <strong>CHECK THE AMOUNT:</strong> Paystack may start at GH₵1. Change it to <strong>GH₵70</strong> before you pay.
+        </p>
+        <p class="registration-footnote">Payment opens securely in Paystack. Keep your receipt. This site cannot confirm submission or payment.</p>
       </div>
     </div>
   </dialog>

@@ -189,12 +189,25 @@
   registrationDialog?.addEventListener("click", (event) => {
     if (event.target === registrationDialog) closeRegistration();
   });
-  registrationSubmitted?.addEventListener("change", () => {
-    if (!registrationPay) return;
-    const ready = registrationSubmitted.checked;
-    registrationPay.setAttribute("aria-disabled", String(!ready));
-    registrationPay.tabIndex = ready ? 0 : -1;
-  });
+  const registrationAmountWarning = document.getElementById("registration-amount-warning");
+  const registrationStepOne = document.getElementById("registration-step-one");
+  const registrationStepTwo = document.getElementById("registration-step-two");
+
+  function syncRegistrationSteps() {
+    const submittedByVisitor = Boolean(registrationSubmitted?.checked);
+    if (registrationPay) {
+      registrationPay.setAttribute("aria-disabled", String(!submittedByVisitor));
+      registrationPay.tabIndex = submittedByVisitor ? 0 : -1;
+    }
+    if (registrationAmountWarning) registrationAmountWarning.hidden = !submittedByVisitor;
+    registrationStepOne?.classList.toggle("registration-step--complete", submittedByVisitor);
+    registrationStepOne?.classList.toggle("registration-step--current", !submittedByVisitor);
+    registrationStepTwo?.classList.toggle("registration-step--current", submittedByVisitor);
+    // A checked box means only that the visitor says they submitted the form.
+    // Neither Google Forms nor Paystack provides verified status to this site.
+  }
+  registrationSubmitted?.addEventListener("change", syncRegistrationSteps);
+  syncRegistrationSteps();
   registrationPay?.addEventListener("click", (event) => {
     if (!registrationSubmitted?.checked) event.preventDefault();
     // This native Paystack link does not imply a verified payment.
