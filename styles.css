@@ -614,3 +614,149 @@ button:disabled{cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){
   .about-brand-stamp{animation:none!important;transform:rotate(-9deg)}
 }
+
+
+/* Mobile craft pass 2026-11: shorter reading distances, coherent poster rhythms.
+   Desktop keeps the established composition. */
+.v2-hero-note{display:none}
+.text-action,.v2-quip-button{min-height:42px;align-items:center}
+@media (max-width:620px){
+  /* Hero: fill the intentional headline margin with one lightweight editorial note. */
+  .v2-message{position:relative}
+  .v2-hero-note{
+    display:flex;position:absolute;right:.15rem;top:4rem;
+    z-index:2;width:clamp(98px,28vw,118px);
+    flex-direction:column;gap:.25rem;
+    padding:.65rem .6rem .55rem;
+    background:var(--mint);color:var(--ink);border:2px solid var(--ink);
+    box-shadow:4px 5px 0 var(--ink);transform:rotate(8deg);
+    pointer-events:none;
+  }
+  .v2-hero-note::before{
+    content:"";position:absolute;bottom:-13px;left:15px;
+    width:12px;height:12px;background:var(--mint);
+    border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    transform:skewY(-20deg) rotate(-24deg);
+  }
+  .v2-hero-note-kicker{font-size:.47rem;font-weight:800;letter-spacing:.08em;white-space:nowrap}
+  .v2-hero-note strong{
+    font-family:var(--display);font-weight:400;letter-spacing:.01em;
+    font-size:clamp(1.28rem,5.7vw,1.75rem);line-height:1.04;
+  }
+  .v2-hero-note-closer{font-size:.46rem;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:.2rem}
+  .v2-hero-note-closer svg{font-size:1rem;color:var(--red);stroke-width:3}
+  .v2-spark{display:none}
+  .v2-layout{padding:1.3rem 0 1.8rem;gap:1.7rem}
+  .v2-heading-row{font-size:clamp(5rem,23vw,7.8rem)}
+  .v2-question-row{margin-top:1.15rem}
+  .v2-actions{gap:.65rem;margin-top:1.35rem}
+  .v2-showcase{padding:12px 9px 15px;max-width:375px}
+  .v2-art{height:clamp(248px,72vw,310px)}
+  .v2-speech-panel{min-height:130px;padding:.95rem 1.05rem}
+  .v2-speech-text{min-height:2em;margin:.55rem 0 .4rem}
+  .v2-info-cell{min-height:58px}
+  .v2-bottomline{padding:.9rem 0}
+
+  /* Consistent mobile page rhythm; reduce unnecessary dead space. */
+  .section-pad{padding-top:clamp(3rem,10vw,3.65rem);padding-bottom:clamp(3rem,10vw,3.65rem)}
+  .section-topline{margin-bottom:1.6rem;padding-bottom:.85rem}
+  .section-heading{line-height:.99}
+  .about-grid{row-gap:1.25rem}
+  .about-heading-wrap{min-height:0}
+  /* Overlay the logo in the free area alongside the first heading line.
+     No independent flow row, so the About copy follows the heading directly. */
+  .about-brand-stamp{
+    position:absolute;top:-.45rem;right:0;bottom:auto;
+    width:clamp(80px,23vw,92px);height:clamp(80px,23vw,92px);
+    margin:0;transform:rotate(-9deg);box-shadow:4px 5px 0 var(--ink)
+  }
+  .about-brand-stamp-logo{width:57px;height:52px}
+  .about-brand-stamp-kicker{font-size:.4rem}
+  .about-brand-stamp-spark{width:27px;height:27px;bottom:-7px;right:-6px}
+  .about-brand-stamp-spark .ui-icon{width:15px;height:15px}
+  .about-copy .large-copy{font-size:clamp(1.5rem,6.3vw,1.75rem);margin-bottom:.7rem}
+  .about-copy p,.lineup-lead>p:not(.section-label),.host-copy>p:not(.section-label){
+    font-size:clamp(1rem,4.2vw,1.11rem);line-height:1.58;
+  }
+  .about-copy>p:not(.large-copy){margin:.75rem 0}
+  .about-copy .text-action{margin-top:.65rem}
+
+  /* Reinterpret large stacked poster cards as compact numbered strips. */
+  .sticker-row{margin-top:2rem;gap:.9rem}
+  .sticker{
+    min-height:0;display:grid;grid-template-columns:2.65rem minmax(0,1fr);
+    grid-template-rows:auto auto;align-items:center;
+    column-gap:.95rem;row-gap:0;
+    padding:1rem 1.1rem;box-shadow:4px 4px 0 var(--ink)
+  }
+  .sticker-symbol{
+    grid-column:1;grid-row:1 / 3;display:grid;place-items:center;
+    width:2.45rem;height:2.45rem;padding:0;margin:0;align-self:center
+  }
+  .sticker b{
+    grid-column:2;grid-row:1;margin:0;
+    font-size:clamp(1.85rem,7.8vw,2.35rem);line-height:1.03
+  }
+  .sticker small{grid-column:2;grid-row:2;font-size:.82rem;line-height:1.3;margin-top:.2rem}
+  .sticker:nth-child(1){transform:rotate(-.6deg)}
+  .sticker:nth-child(2){transform:rotate(.6deg)}
+  .sticker:nth-child(3){transform:rotate(-.6deg)}
+
+  /* Keep event programme and host illustration expressive without long empty runs. */
+  .lineup-grid{gap:2.2rem}
+  .section-label{margin-bottom:.75rem}
+  .lineup-lead .button{margin-top:.7rem}
+  .programme-teaser{
+    padding:1.25rem;gap:.75rem;transform:rotate(1.1deg);
+    box-shadow:8px 9px 0 var(--ink)
+  }
+  .teaser-big{font-size:clamp(3.15rem,11.8vw,5.5rem)}
+  .teaser-rows{margin-top:.45rem}
+  .teaser-rows span{padding:.82rem .2rem}
+  .host-grid{gap:1.7rem}
+  .host-visual{width:min(88%,315px);justify-self:center;box-shadow:7px 7px 0 var(--ink)}
+  .host-copy .reveal-badge{margin-top:.8rem}
+
+  /* Ticket: preserve the hierarchy while showing more of it per scroll. */
+  .ticket-header{margin-bottom:2rem}
+  .ticket-main{padding:1.15rem}
+  .ticket-title{font-size:clamp(5.1rem,19.5vw,7.8rem);margin:.85rem 0 1.15rem}
+  .ticket-info{margin-top:1.5rem;padding-top:1.2rem}
+  .ticket-stub{padding:1.5rem}
+  .ticket-price{font-size:clamp(6rem,26vw,7.1rem)}
+  .countdown-block{margin:.9rem 0 1.2rem}
+  .ticket-actions{padding-top:1.4rem;gap:.7rem}
+
+  .faq-grid{gap:1.65rem}
+  .faq-list summary{padding:1.05rem .1rem;min-height:50px}
+  .last-call{padding:3.2rem 1.25rem}
+  .last-call p{margin:.75rem 0}
+  .last-call h2{margin-bottom:1.7rem}
+  .site-footer{padding-block:1.55rem;row-gap:1rem}
+}
+/* At extra-small widths, place the seal beside the shorter final headline line. */
+@media(max-width:365px){
+  .v2-hero-note{right:0;width:93px;top:4.1rem;padding:.55rem .45rem}
+  .v2-hero-note strong{font-size:1.25rem}
+  .about-brand-stamp{top:auto;bottom:-.35rem;right:0;width:72px;height:72px}
+  .about-brand-stamp-logo{width:45px;height:42px}
+  .about-brand-stamp-kicker{font-size:.34rem}
+  .ticket-main{padding:1rem}
+  .ticket-overline{font-size:.65rem}
+}
+/* One-time, gentle entrance movement makes section changes feel connected.
+   Static content stays visible without JavaScript and for reduced-motion users. */
+@media(prefers-reduced-motion:no-preference){
+  .scroll-lift{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .48s ease-out,transform .48s cubic-bezier(.2,.85,.2,1)
+  }
+  .scroll-lift.is-revealed{opacity:1;transform:none}
+  .sticker.scroll-lift.is-revealed:nth-child(1){transform:rotate(-.6deg)}
+  .sticker.scroll-lift.is-revealed:nth-child(2){transform:rotate(.6deg)}
+  .sticker.scroll-lift.is-revealed:nth-child(3){transform:rotate(-.6deg)}
+  @media (max-width:620px){
+    .programme-teaser.scroll-lift.is-revealed{transform:rotate(1.1deg)}
+  }
+}

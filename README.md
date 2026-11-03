@@ -63,3 +63,7 @@ The website's header, footer, and ticket panel display the official transparent 
 ## Logo refinement and motion
 
 The official Off Script logo is proportionally cropped from the original transparent image. Header, footer, and ticket variants use reduced sizes. One animated yellow brand seal appears in the About section, replacing an existing decorative asterisk, with a one-time entrance and subtle periodic sway. Motion respects `prefers-reduced-motion`, and the logo is static if JavaScript is unavailable.
+
+## Mobile composition pass (November 2026)
+
+The phone layout places a mint comic-note in the empty space beside the hero title. The animated Off Script stamp sits inside the About heading's unused area rather than creating an additional content row. Mobile section padding follows a consistent rhythm, the three Pitch/Fun/Games cards are shorter numbered strips, and the host/programme/ticket areas have tighter proportional spacing. Section entrances use one-time IntersectionObserver reveals only when motion preferences allow; the site remains fully visible when JavaScript is off. Registration, programme modal, share actions, and the existing event information are unchanged.

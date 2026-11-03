@@ -101,6 +101,30 @@
     }
   }
 
+  // Gentle one-time section reveals. Visible by default if JS or IO is unavailable.
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    const entranceTargets = document.querySelectorAll(
+      "#about .section-heading, #about .about-copy, #about .sticker, " +
+      "#lineup .section-heading, #lineup .programme-teaser, " +
+      "#host .host-visual, #host .host-copy, " +
+      "#details .ticket-shell, #faq .faq-list"
+    );
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-revealed");
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.06, rootMargin: "0px 0px -4% 0px" });
+    entranceTargets.forEach((node) => {
+      // Never conceal content that is already in the first viewport.
+      if (node.getBoundingClientRect().top < window.innerHeight * 0.94) return;
+      node.classList.add("scroll-lift");
+      revealObserver.observe(node);
+    });
+  }
+
   // A small interactive pitch rehearsal. Sample copy, not event claims.
   const sampleLines = [
     "“I KNOW SOMEONE YOU SHOULD MEET.”",
