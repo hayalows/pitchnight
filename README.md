@@ -67,3 +67,9 @@ The official Off Script logo is proportionally cropped from the original transpa
 ## Mobile composition pass (November 2026)
 
 The phone layout places a mint comic-note in the empty space beside the hero title. The animated Off Script stamp sits inside the About heading's unused area rather than creating an additional content row. Mobile section padding follows a consistent rhythm, the three Pitch/Fun/Games cards are shorter numbered strips, and the host/programme/ticket areas have tighter proportional spacing. Section entrances use one-time IntersectionObserver reveals only when motion preferences allow; the site remains fully visible when JavaScript is off. Registration, programme modal, share actions, and the existing event information are unchanged.
+
+## Embedded registration ticket desk
+
+The existing QR short link resolves to the official Google Form at `https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform`. The website's five ticket CTAs now open a native accessible registration dialog containing Google's supported iframe embed (the original QR link remains the no-JavaScript fallback). Visitors fill and submit the form, acknowledge completion themselves, and then follow the separately verified Paystack checkout link `https://paystack.shop/pay/vt_glrjuabf`. Their confirmation checkbox **is not server verification**. The site neither reads form answers nor handles card or mobile-money details. A direct Google Form fallback is always available, and `/?register=1` opens the dialog directly for sharing.
+
+**Operational caution:** The Paystack page currently contains an editable amount field and may show GHS 1 by default. The website warns users to set GHS 70. The organiser should configure a fixed-price checkout before broad promotion and reconcile Google Form submissions with confirmed Paystack transactions. No submission/payment confirmation is claimed in this version.

@@ -66,7 +66,7 @@
       <a href="#lineup">THE PROGRAMME</a>
       <a href="#details">DETAILS</a>
     </nav>
-    <a class="nav-ticket" href="https://hqr.la/68d7f6f7" target="_blank" rel="noopener noreferrer" aria-label="Register for Pitch Night, external site">
+    <a class="nav-ticket" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer" aria-label="Open Pitch Night registration ticket desk">
       GET A TICKET <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
     </a>
   </header>
@@ -111,7 +111,7 @@
           </div>
 
           <div class="v2-actions">
-            <a class="v2-ticket-button" href="https://hqr.la/68d7f6f7" target="_blank" rel="noopener noreferrer">
+            <a class="v2-ticket-button" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">
               <span class="v2-btn-icon" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></span>
               <span>GRAB YOUR TICKET <small>GHC 70 • REGISTER ONLINE</small></span>
               <span class="v2-btn-arrow" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
@@ -308,8 +308,8 @@
             </div>
             <p id="countdown-ended" hidden>The date has arrived. See you there!</p>
           </div>
-          <a class="button button-red ticket-cta" href="https://hqr.la/68d7f6f7" target="_blank" rel="noopener noreferrer">REGISTER NOW <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
-          <p class="registration-note">Opens the registration link printed on the event flyer.</p>
+          <a class="button button-red ticket-cta" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">REGISTER NOW <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
+          <p class="registration-note">Register on this site using the original Off Script form.</p>
         </div>
       </div>
       <div class="ticket-actions">
@@ -351,7 +351,7 @@
       <span class="last-star" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></span>
       <p>THE MIC IS WAITING.</p>
       <h2>MAKE YOUR<br/>CASE<span>.</span></h2>
-      <a class="button button-cream" href="https://hqr.la/68d7f6f7" target="_blank" rel="noopener noreferrer">I'M COMING <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
+      <a class="button button-cream" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">I'M COMING <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
     </section>
   </main>
 
@@ -363,6 +363,64 @@
     <a href="#top">BACK TO TOP <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up"></use></svg></a>
     <span>FRI 13 NOV 2026 • 6:30 PM GMT</span>
   </footer>
+
+
+  <!-- Registration uses the existing Google Form and Paystack checkout.
+       We never claim submission/payment success because their state is cross-origin. -->
+  <dialog class="registration-dialog" id="registration-dialog" aria-labelledby="registration-title" aria-describedby="registration-summary">
+    <div class="registration-desk">
+      <div class="registration-heading">
+        <div class="registration-heading-left">
+          <span class="registration-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" decoding="async" /></span>
+          <div class="registration-title-group">
+            <span class="registration-eyebrow">OFF SCRIPT <span aria-hidden="true">/</span> PITCH NIGHT</span>
+            <h2 id="registration-title">YOUR <span>SEAT.</span></h2>
+          </div>
+        </div>
+        <button type="button" class="registration-close" data-close-registration aria-label="Close registration">
+          <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg>
+        </button>
+      </div>
+      <div class="registration-steps" id="registration-summary">
+        <div class="registration-step registration-step--current">
+          <span class="registration-step-num">01</span>
+          <span><strong>YOUR DETAILS</strong><small>Complete and submit the form</small></span>
+        </div>
+        <span class="registration-step-arrow" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
+        <div class="registration-step">
+          <span class="registration-step-num">02</span>
+          <span><strong>PAY GH₵70</strong><small>Continue to secure checkout</small></span>
+        </div>
+      </div>
+      <div class="registration-form-wrap">
+        <iframe
+          class="registration-form"
+          title="Official Off Script Pitch Night registration form"
+          src="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform?embedded=true"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="clipboard-write"
+        ></iframe>
+      </div>
+      <div class="registration-actions">
+        <label class="registration-confirm">
+          <input type="checkbox" id="registration-submitted" />
+          <span>I have pressed <strong>Submit</strong> on the form above.</span>
+        </label>
+        <div class="registration-action-row">
+          <button class="registration-pay" type="button" id="registration-pay" disabled>
+            CONTINUE TO PAY GH₵70
+            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
+          </button>
+          <a class="registration-open-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
+            OPEN FORM DIRECTLY
+            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
+          </a>
+        </div>
+        <p class="registration-footnote">Paystack opens separately. Confirm the amount is <strong>GHS 70</strong> before paying. This page cannot verify your submission or payment.</p>
+      </div>
+    </div>
+  </dialog>
 
   <dialog id="programme-dialog" class="programme-dialog" aria-labelledby="dialog-heading">
     <div class="dialog-sheet">
@@ -379,7 +437,7 @@
         <li><span class="dialog-index">04</span><span><strong>THE ROOM REACTS</strong><small>Expect questions, laughs, and a few surprises.</small></span><span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></li>
         <li><span class="dialog-index">05</span><span><strong>THE HANGOUT</strong><small>Keep the conversations going.</small></span><span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></li>
       </ol>
-      <div class="dialog-footer"><span>FRI 13 NOV • 6:30 PM • ENTRY GHC70</span><a href="https://hqr.la/68d7f6f7" target="_blank" rel="noopener noreferrer">GET YOUR TICKET <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a></div>
+      <div class="dialog-footer"><span>FRI 13 NOV • 6:30 PM • ENTRY GHC70</span><a href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">GET YOUR TICKET <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a></div>
     </div>
   </dialog>
   <div class="toast" id="share-toast" role="status" aria-live="polite"></div>

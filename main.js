@@ -142,6 +142,65 @@
     if (sampleCounter) sampleCounter.textContent = String(sampleIndex + 1).padStart(2, "0") + "/03";
   });
 
+
+  // Registration ticket desk: same-page Google Forms embed with explicit
+  // second-stage Paystack handoff. No attempt is made to inspect the contents
+  // of the cross-origin form or to infer payment success.
+  const registrationDialog = document.getElementById("registration-dialog");
+  const registrationOpeners = document.querySelectorAll("[data-registration-trigger]");
+  const registrationCloser = document.querySelector("[data-close-registration]");
+  const registrationSubmitted = document.getElementById("registration-submitted");
+  const registrationPay = document.getElementById("registration-pay");
+  let registrationPreviousFocus = null;
+  const paystackURL = "https://paystack.shop/pay/vt_glrjuabf";
+
+  function registrationLockScroll() {
+    document.body.classList.toggle(
+      "dialog-is-open",
+      Boolean(registrationDialog?.open || programmeDialog?.open)
+    );
+  }
+  function openRegistration(trigger) {
+    if (!registrationDialog || typeof registrationDialog.showModal !== "function") return false;
+    registrationPreviousFocus = trigger || document.activeElement;
+    if (programmeDialog?.open) programmeDialog.close();
+    if (!registrationDialog.open) registrationDialog.showModal();
+    registrationLockScroll();
+    registrationCloser?.focus();
+    return true;
+  }
+  function closeRegistration() {
+    if (registrationDialog?.open) registrationDialog.close();
+  }
+  registrationOpeners.forEach((link) => link.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (!registrationDialog || typeof registrationDialog.showModal !== "function") return;
+    event.preventDefault();
+    openRegistration(link);
+  }));
+  registrationCloser?.addEventListener("click", closeRegistration);
+  registrationDialog?.addEventListener("close", () => {
+    registrationLockScroll();
+    registrationPreviousFocus?.focus?.();
+  });
+  registrationDialog?.addEventListener("click", (event) => {
+    if (event.target === registrationDialog) closeRegistration();
+  });
+  registrationSubmitted?.addEventListener("change", () => {
+    if (registrationPay) registrationPay.disabled = !registrationSubmitted.checked;
+  });
+  registrationPay?.addEventListener("click", () => {
+    if (!registrationSubmitted?.checked) return;
+    // Opens only from a direct user interaction. This is not a payment confirmation.
+    const checkout = window.open(paystackURL, "_blank", "noopener,noreferrer");
+    if (!checkout) window.location.href = paystackURL;
+  });
+
+  // A shareable same-site URL can open the ticket desk without a new route.
+  if (new URLSearchParams(window.location.search).get("register") === "1") {
+    openRegistration(document.querySelector(".nav-ticket"));
+  }
+
   const shareButton = document.getElementById("share-button");
   const shareToast = document.getElementById("share-toast");
   let toastTimer = 0;
