@@ -30,6 +30,8 @@
   }
 
   function restoreFocus() {
+    // The ticket desk may already be opening after the programme closes.
+    if (registrationDialog?.open) return;
     document.body.classList.remove("dialog-is-open");
     if (previousFocus && typeof previousFocus.focus === "function") {
       previousFocus.focus();
@@ -152,7 +154,6 @@
   const registrationSubmitted = document.getElementById("registration-submitted");
   const registrationPay = document.getElementById("registration-pay");
   let registrationPreviousFocus = null;
-  const paystackURL = "https://paystack.shop/pay/vt_glrjuabf";
 
   function registrationLockScroll() {
     document.body.classList.toggle(
@@ -162,7 +163,9 @@
   }
   function openRegistration(trigger) {
     if (!registrationDialog || typeof registrationDialog.showModal !== "function") return false;
-    registrationPreviousFocus = trigger || document.activeElement;
+    registrationPreviousFocus = trigger?.closest?.("#programme-dialog")
+      ? document.querySelector(".nav-ticket")
+      : (trigger || document.activeElement);
     if (programmeDialog?.open) programmeDialog.close();
     if (!registrationDialog.open) registrationDialog.showModal();
     registrationLockScroll();
@@ -187,13 +190,14 @@
     if (event.target === registrationDialog) closeRegistration();
   });
   registrationSubmitted?.addEventListener("change", () => {
-    if (registrationPay) registrationPay.disabled = !registrationSubmitted.checked;
+    if (!registrationPay) return;
+    const ready = registrationSubmitted.checked;
+    registrationPay.setAttribute("aria-disabled", String(!ready));
+    registrationPay.tabIndex = ready ? 0 : -1;
   });
-  registrationPay?.addEventListener("click", () => {
-    if (!registrationSubmitted?.checked) return;
-    // Opens only from a direct user interaction. This is not a payment confirmation.
-    const checkout = window.open(paystackURL, "_blank", "noopener,noreferrer");
-    if (!checkout) window.location.href = paystackURL;
+  registrationPay?.addEventListener("click", (event) => {
+    if (!registrationSubmitted?.checked) event.preventDefault();
+    // This native Paystack link does not imply a verified payment.
   });
 
   // A shareable same-site URL can open the ticket desk without a new route.

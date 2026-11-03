@@ -852,15 +852,16 @@ button:disabled{cursor:not-allowed}
   accent-color:var(--blue);cursor:pointer;
 }
 .registration-action-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.registration-pay{
+ .registration-pay{
+  text-decoration:none;cursor:pointer;
   display:inline-flex;align-items:center;justify-content:space-between;
   gap:1.2rem;padding:.78rem 1rem;min-height:46px;
   background:var(--blue);color:#fff;border:2px solid var(--ink);
   font-size:.78rem;font-weight:800;letter-spacing:.02em;
   box-shadow:3px 3px 0 var(--ink);
 }
-.registration-pay:disabled{background:#c7c5bb;color:#4f4f4c;box-shadow:none;border-color:#78766e;cursor:not-allowed}
-.registration-pay:not(:disabled):hover{background:var(--ink)}
+.registration-pay[aria-disabled="true"]{background:#c7c5bb;color:#4f4f4c;box-shadow:none;border-color:#78766e;cursor:not-allowed}
+.registration-pay[aria-disabled="false"]:hover{background:var(--ink)}
 .registration-open-form{
   font-size:.71rem;font-weight:800;letter-spacing:.02em;text-decoration:none;
   border-bottom:2px solid var(--ink);padding:.4rem 0;
