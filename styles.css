@@ -520,3 +520,33 @@ button:disabled{cursor:not-allowed}
 .teaser-rows b .ui-icon{width:1.05em;height:1.05em;stroke-width:2.6}
 .site-footer a .ui-icon{margin-left:.3em}
 .dialog-footer a .ui-icon{margin-left:.35em}
+
+/* Official Off Script logo. Display the exact transparent PNG without pixel edits.
+   Crop its transparent edges visually to preserve useful size on small screens. */
+.brand,.footer-brand,.ticket-brand{
+  display:block;position:relative;overflow:hidden;flex:none;
+  min-width:0;letter-spacing:normal;line-height:normal;transform:none;
+}
+.brand img,.footer-brand img,.ticket-brand img{
+  position:absolute;display:block;width:126.5%;height:auto;max-width:none;
+  left:-13.95%;top:-25.7%;object-fit:contain;
+}
+.brand{width:78px;height:72px}
+.site-header{padding-top:.6rem;padding-bottom:.6rem}
+.footer-brand{width:100px;height:92px;text-decoration:none;border:0}
+.site-footer .footer-brand{border:0}
+.ticket-brandline{display:inline-flex;align-items:center;gap:.5rem}
+.ticket-brand{width:59px;height:54px}
+.ticket-brandline>b{display:inline-flex;align-items:center;margin:0 .1rem;color:var(--red)}
+.ticket-brandline>span:last-child{white-space:nowrap}
+@media(max-width:620px){
+  .brand{width:62px;height:57px}
+  .site-header{padding-top:.55rem;padding-bottom:.55rem}
+  .footer-brand{width:86px;height:79px}
+  .ticket-brand{width:53px;height:49px}
+  .ticket-brandline{gap:.3rem}
+}
+@media(max-width:350px){
+  .brand{width:56px;height:52px}
+  .ticket-brandline>span:last-child{font-size:.68rem}
+}

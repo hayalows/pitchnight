@@ -55,3 +55,7 @@ favicon.svg  Event favicon
 ## Icons and illustration consistency
 
 The interface uses locally inlined **Lucide** vector icons for arrows, close controls, stars, and asterisk marks. Icon geometry is fixed across Windows, macOS, Android, and iOS. The original Pitch Night character illustration and marker strokes are retained as bespoke inline SVG artwork. No Icons8 Ouch assets have been embedded, so no paid illustration license or external image dependency is required. See `THIRD_PARTY_NOTICES.md` for attribution.
+
+## Official Off Script identity
+
+The website's header, footer, and ticket panel display the official transparent logo at `assets/offscript-logo.png`. It is the exact Git blob from the uploaded PNG with no pixel edits. CSS visually crops the transparent padding. The original uploaded file remains in the repository.
