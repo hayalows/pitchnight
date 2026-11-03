@@ -18,6 +18,7 @@
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:6rem}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.dialog-is-open{overflow:hidden}
 a{color:inherit}
 button,a{-webkit-tap-highlight-color:transparent}
 button{font:inherit;cursor:pointer}
@@ -62,7 +63,7 @@ button:disabled{cursor:not-allowed}
 .title-period{color:var(--red)}
 .hero-bottom{margin:1.5rem 0 2rem;display:flex;justify-content:space-between;align-items:end;gap:1.3rem}
 .hero-copy{min-width:0}
-.hero-question{font-size:clamp(1.2rem,2.45vw,2.4rem);line-height:1.22;letter-spacing:-.035em;max-width:540px;margin:0 0:1.1rem}
+.hero-question{font-size:clamp(1.2rem,2.45vw,2.4rem);line-height:1.22;letter-spacing:-.035em;max-width:540px;margin:0 0 1.1rem}
 .hero-question strong{font-weight:800}
 .tags{display:flex;flex-wrap:wrap;align-items:stretch;width:max-content;max-width:100%;border:var(--line)}
 .tag{border-right:var(--line);font-size:clamp(.77rem,1.5vw,1.3rem);letter-spacing:.02em;font-weight:800;padding:.4rem .55rem;white-space:nowrap;display:flex;align-items:center;gap:.25rem}
