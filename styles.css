@@ -404,7 +404,7 @@ button:disabled{cursor:not-allowed}
 .v2-art-caption span{color:var(--red)}
 .v2-speech-panel{background:var(--paper);padding:1.25rem 1.45rem 1.4rem;min-height:155px}
 .v2-quote-label{display:flex;justify-content:space-between;gap:1rem;font-size:.61rem;letter-spacing:.09em;font-weight:800}
-.v2-quote-label span{color:var(--red)}
+.v2-quote-label span{color:var(--ink)}
 .v2-speech-text{margin:.6rem 0 .7rem;font-family:var(--display);font-size:clamp(1.3rem,2vw,1.95rem);line-height:1.13;letter-spacing:.01em;min-height:2.25em}
 .v2-quip-button{border:0;border-bottom:2px solid currentColor;background:transparent;padding:0 0 .2rem;display:inline-flex;gap:1rem;justify-content:space-between;font-size:.68rem;font-weight:800;letter-spacing:.05em}
 .v2-quip-button:hover{color:var(--blue)}
@@ -423,6 +423,7 @@ button:disabled{cursor:not-allowed}
 .v2-info-yellow{background:var(--yellow)}
 .v2-info-mint{background:var(--mint)}
 .v2-info-blue{background:#3062ed;color:#fff}
+.v2-info-blue .v2-info-label{opacity:1}
 .v2-info-cream{background:var(--paper)}
 .v2-bottomline{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.2rem 0;font-size:.67rem;font-weight:800;letter-spacing:.07em}
 .v2-bottomline span span{color:var(--red);font-size:1rem;margin-left:.4rem}
