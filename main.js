@@ -381,6 +381,9 @@
   const passShare = document.getElementById("pass-share");
   const passFeedback = document.getElementById("pass-feedback");
   const passCtx = passCanvas?.getContext("2d");
+  const passLogo = new Image();
+  passLogo.addEventListener("load", () => queuePassDraw());
+  passLogo.src = "assets/offscript-logo.png";
   let passPreviousFocus = null;
   let passDrawFrame = 0;
 
@@ -420,15 +423,24 @@
     ctx.fillStyle = cream; ctx.fillRect(36, 36, 996, 1268);
     ctx.lineWidth = 8; ctx.strokeStyle = ink; ctx.strokeRect(36, 36, 996, 1268);
 
-    ctx.save();
-    ctx.translate(106, 103);
-    ctx.rotate(-.07);
-    ctx.fillStyle = ink;
-    ctx.font = '900 62px ' + body;
-    ctx.fillText("off!", 0, 0);
-    ctx.font = '44px Georgia, serif';
-    ctx.fillText("Script", 3, 44);
-    ctx.restore();
+    if (passLogo.complete && passLogo.naturalWidth > 0) {
+      // Crop using the same positioning as the real logo in the site header.
+      const sx = Math.round(passLogo.naturalWidth * .1103);
+      const sy = Math.round(passLogo.naturalHeight * .2032);
+      const sw = Math.round(passLogo.naturalWidth * .7905);
+      const sh = Math.round(passLogo.naturalHeight * .7905);
+      ctx.drawImage(passLogo, sx, sy, sw, sh, 79, 61, 166, 141);
+    } else {
+      ctx.save();
+      ctx.translate(106, 103);
+      ctx.rotate(-.07);
+      ctx.fillStyle = ink;
+      ctx.font = '900 62px ' + body;
+      ctx.fillText("off!", 0, 0);
+      ctx.font = '44px Georgia, serif';
+      ctx.fillText("Script", 3, 44);
+      ctx.restore();
+    }
 
     ctx.fillStyle = ink;
     ctx.font = '800 22px ' + body;
