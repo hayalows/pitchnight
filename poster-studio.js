@@ -64,8 +64,7 @@
   function title() {
     officialLogo();
     drawText("PITCH NIGHT",330,127,'800 79px '+body,color.ink);
-    drawText("MAKE YOUR CASE",333,174,'800 24px '+body,color.blue);
-    rule(331,202,996,202,color.ink,4);
+    rule(331,176,996,176,color.ink,4);
 
     const words="MAKE YOUR";
     let size=170;
