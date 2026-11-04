@@ -79,7 +79,7 @@
     <section class="hero hero--v2" id="top" aria-labelledby="hero-title">
       <div class="v2-topline">
         <span class="v2-topline-left"><span class="v2-live-dot" aria-hidden="true"></span> FRI, 13 NOV 2026 <span class="v2-topline-sep">/</span> 6:30 PM</span>
-        <span class="v2-topline-right">EDITION 001 <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></span></span>
+        <span class="v2-topline-right hero-countdown" id="hero-countdown" role="timer" aria-live="off" aria-label="Countdown to Pitch Night"><span class="hero-countdown-label">SHOWTIME IN</span><span class="hero-countdown-value"><strong id="hero-days">--</strong><small>D</small></span><span class="hero-countdown-value"><strong id="hero-hours">--</strong><small>H</small></span><span class="hero-countdown-value"><strong id="hero-mins">--</strong><small>M</small></span></span>
       </div>
 
       <div class="v2-layout">
@@ -217,11 +217,11 @@
       <div class="about-grid">
         <div class="about-heading-wrap">
           <h2 class="section-heading" id="about-heading">YOUR FRIEND.<br/><span>YOUR PITCH.</span><br/>THEIR CALL.</h2>
-          <div class="about-brand-stamp" aria-hidden="true">
+          <button class="about-brand-stamp" type="button" aria-label="Spin the Off Script stamp" title="Give the stamp a spin">
             <span class="about-brand-stamp-kicker">PRESENTED BY</span>
             <span class="about-brand-stamp-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" /></span>
-            <span class="about-brand-stamp-spark"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
-          </div>
+            <span class="about-brand-stamp-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
+          </button>
         </div>
         <div class="about-copy">
           <p class="large-copy">You know that friend you'd recommend to anyone?</p>
@@ -231,9 +231,9 @@
         </div>
       </div>
       <div class="sticker-row" aria-label="Three things to expect">
-        <div class="sticker sticker-yellow"><span class="sticker-symbol">01</span><b>THE PITCHES</b><small>Make your case.</small></div>
-        <div class="sticker sticker-mint"><span class="sticker-symbol">02</span><b>THE FUN</b><small>Don't take it too seriously.</small></div>
-        <div class="sticker sticker-blue"><span class="sticker-symbol">03</span><b>THE GAMES</b><small>Get involved.</small></div>
+        <button type="button" class="sticker sticker-yellow" data-open-program aria-label="See the pitches on the programme"><span class="sticker-symbol">01</span><b>THE PITCHES</b><small>Make your case.</small></button>
+        <button type="button" class="sticker sticker-mint" data-open-program aria-label="See the fun activities on the programme"><span class="sticker-symbol">02</span><b>THE FUN</b><small>Don't take it too seriously.</small></button>
+        <button type="button" class="sticker sticker-blue" data-open-program aria-label="See the games on the programme"><span class="sticker-symbol">03</span><b>THE GAMES</b><small>Get involved.</small></button>
       </div>
     </section>
 
@@ -351,11 +351,23 @@
       </div>
     </section>
 
-    <section class="last-call" aria-label="Final registration invitation">
-      <span class="last-star" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></span>
-      <p>THE MIC IS WAITING.</p>
-      <h2>MAKE YOUR<br/>CASE<span>.</span></h2>
-      <a class="button button-cream" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">I'M COMING <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
+    <section class="last-call" aria-labelledby="last-call-title">
+      <div class="last-call-copy">
+        <p><span class="last-call-dot" aria-hidden="true"></span> THE MIC IS WAITING.</p>
+        <h2 id="last-call-title">MAKE YOUR<br/>CASE<span>.</span></h2>
+      </div>
+      <div class="last-call-action">
+        <div class="last-call-mic" aria-hidden="true">
+          <svg viewBox="0 0 150 136" focusable="false" role="presentation">
+            <g class="last-call-rays" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="4"><path d="M31 23 18 10M75 15V4M118 23l13-13M135 68h12M15 68H3"/></g>
+            <rect x="55" y="27" width="40" height="63" rx="20" fill="#ffd93d" stroke="#171717" stroke-width="5"/>
+            <path d="M65 42h20M65 55h20M65 68h20" stroke="#171717" opacity=".45" stroke-width="3"/>
+            <path d="M43 65a32 32 0 0 0 64 0M75 98v23M51 122h48" fill="none" stroke="#faf4e7" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+          <span class="last-call-live">ON AIR <i aria-hidden="true"></i></span>
+        </div>
+        <a class="button button-cream" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">I'M COMING <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
+      </div>
     </section>
   </main>
 
@@ -377,7 +389,6 @@
         <div class="registration-heading-left">
           <span class="registration-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" decoding="async" /></span>
           <div class="registration-title-group">
-            <span class="registration-eyebrow">OFF SCRIPT <span aria-hidden="true">/</span> PITCH NIGHT</span>
             <h2 id="registration-title">YOUR <span>SEAT.</span></h2>
           </div>
         </div>
@@ -432,7 +443,7 @@
           <span>I've submitted my details in the form.</span>
         </label>
         <div class="registration-action-row">
-          <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/vt_glrjuabf" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
+          <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/pitchnight" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
             CONTINUE TO PAY GH₵70
             <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
           </a>
@@ -442,9 +453,9 @@
           </a>
         </div>
         <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>
-          <strong>CHECK THE AMOUNT:</strong> Paystack may start at GH₵1. Change it to <strong>GH₵70</strong> before you pay.
+          <strong>CHECK BEFORE PAYING:</strong> The official Paystack page displays <strong>GH₵70</strong>. Confirm the amount and details there.
         </p>
-        <p class="registration-footnote">Payment opens securely in Paystack. Keep your receipt. This site cannot confirm submission or payment.</p>
+        <p class="registration-footnote">Checkout is handled by Hayalows Ventures through Paystack. Keep your receipt. This site cannot confirm payment.</p>
       </div>
     </div>
   </dialog>
@@ -468,5 +479,9 @@
     </div>
   </dialog>
   <div class="toast" id="share-toast" role="status" aria-live="polite"></div>
+
+  <div class="pitch-cursor" id="pitch-cursor" aria-hidden="true">
+    <svg viewBox="0 0 32 32" focusable="false"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3.5 3.5"/><rect x="13" y="10" width="6" height="10" rx="3" fill="currentColor"/><path d="M11 16a5 5 0 0 0 10 0m-5 5v4m-4 0h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+  </div>
 </body>
 </html>

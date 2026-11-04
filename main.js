@@ -51,6 +51,10 @@
   const dayEl = document.getElementById("days");
   const hourEl = document.getElementById("hours");
   const minEl = document.getElementById("mins");
+  const heroDayEl = document.getElementById("hero-days");
+  const heroHourEl = document.getElementById("hero-hours");
+  const heroMinEl = document.getElementById("hero-mins");
+  const heroTimerEl = document.getElementById("hero-countdown");
   const countdownEl = document.querySelector(".countdown");
   const endedEl = document.getElementById("countdown-ended");
 
@@ -59,6 +63,10 @@
     if (remaining <= 0) {
       if (countdownEl) countdownEl.hidden = true;
       if (endedEl) endedEl.hidden = false;
+      if (heroTimerEl) {
+        heroTimerEl.textContent = "THE NIGHT IS HERE";
+        heroTimerEl.setAttribute("aria-label", "The Pitch Night event date has arrived");
+      }
       return false;
     }
     const day = Math.floor(remaining / 86400000);
@@ -70,6 +78,10 @@
     if (dayEl) dayEl.textContent = String(day).padStart(2, "0");
     if (hourEl) hourEl.textContent = String(hours).padStart(2, "0");
     if (minEl) minEl.textContent = String(minutes).padStart(2, "0");
+    if (heroDayEl) heroDayEl.textContent = String(day).padStart(2, "0");
+    if (heroHourEl) heroHourEl.textContent = String(hours).padStart(2, "0");
+    if (heroMinEl) heroMinEl.textContent = String(minutes).padStart(2, "0");
+    if (heroTimerEl) heroTimerEl.setAttribute("aria-label", day + " days, " + hours + " hours and " + minutes + " minutes until Pitch Night");
     if (countdownEl) countdownEl.setAttribute("aria-label", day + " days, " + hours + " hours and " + minutes + " minutes until Pitch Night");
     return true;
   }
@@ -103,6 +115,44 @@
     }
   }
 
+  if (brandSeal) {
+    brandSeal.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const rect = brandSeal.getBoundingClientRect();
+      const ratio = (event.clientX - rect.left) / rect.width;
+      brandSeal.style.setProperty("--seal-lean", ((ratio - .5) * 18).toFixed(2) + "deg");
+    });
+    brandSeal.addEventListener("pointerleave", () => brandSeal.style.removeProperty("--seal-lean"));
+    brandSeal.addEventListener("click", () => {
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+      brandSeal.classList.remove("is-popping");
+      void brandSeal.offsetWidth;
+      brandSeal.classList.add("is-popping");
+    });
+    brandSeal.addEventListener("animationend", (event) => {
+      if (event.animationName === "offscript-pop") brandSeal.classList.remove("is-popping");
+    });
+  }
+
+  const interactiveStickers = document.querySelectorAll(".sticker[data-open-program]");
+  if (window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches) {
+    interactiveStickers.forEach((card) => {
+      card.addEventListener("pointermove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - .5;
+        const y = (event.clientY - rect.top) / rect.height - .5;
+        card.style.setProperty("--card-x", (x * 8).toFixed(1) + "px");
+        card.style.setProperty("--card-y", (y * 5 - 7).toFixed(1) + "px");
+        card.style.setProperty("--card-r", (x * 3).toFixed(2) + "deg");
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.removeProperty("--card-x");
+        card.style.removeProperty("--card-y");
+        card.style.removeProperty("--card-r");
+      });
+    });
+  }
+
   // Gentle one-time section reveals. Visible by default if JS or IO is unavailable.
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   if (!reduceMotion && "IntersectionObserver" in window) {
@@ -110,7 +160,7 @@
       "#about .section-heading, #about .about-copy, #about .sticker, " +
       "#lineup .section-heading, #lineup .programme-teaser, " +
       "#host .host-visual, #host .host-copy, " +
-      "#details .ticket-shell, #faq .faq-list"
+      "#details .ticket-shell, #faq .faq-list, .last-call-copy, .last-call-action"
     );
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -317,4 +367,36 @@
     link.click();
     link.remove();
   });
+  // Lightweight cursor accent: native pointer remains visible. Never track
+  // on touch, over forms, in dialogs, or for people requesting reduced motion.
+  const cursor = document.getElementById("pitch-cursor");
+  const cursorMedia = window.matchMedia?.("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+  if (cursor && cursorMedia?.matches) {
+    let pendingFrame = 0;
+    let latestX = 0;
+    let latestY = 0;
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (target?.closest("dialog, input, textarea, select, [contenteditable]")) {
+        cursor.classList.remove("is-visible");
+        return;
+      }
+      latestX = event.clientX;
+      latestY = event.clientY;
+      cursor.classList.add("is-visible");
+      cursor.classList.toggle("is-over-action", Boolean(target?.closest("a, button, summary")));
+      if (!pendingFrame) pendingFrame = requestAnimationFrame(() => {
+        cursor.style.setProperty("--cursor-x", latestX + "px");
+        cursor.style.setProperty("--cursor-y", latestY + "px");
+        pendingFrame = 0;
+      });
+    }, { passive: true });
+    document.addEventListener("pointerleave", () => cursor.classList.remove("is-visible"));
+    window.addEventListener("blur", () => cursor.classList.remove("is-visible"));
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cursor.classList.remove("is-visible");
+    });
+  }
+
 })();
