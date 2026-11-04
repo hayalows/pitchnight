@@ -242,7 +242,7 @@
       }
       groups = [words.slice(0, split).join(" "), words.slice(split).join(" ")];
     }
-    let size = groups.length === 1 ? 131 : 99;
+    let size = groups.length === 1 ? 131 : 78;
     // For very long names, shrink just the name rather than overflowing the card.
     for (; size >= 43; size -= 2) {
       ctx.font = size + 'px '+DISPLAY;
@@ -255,8 +255,8 @@
       ctx.fillText(groups[0], -8, 72, 775);
     } else {
       ctx.font = size+'px '+DISPLAY;
-      ctx.fillText(groups[0], -8, 7, 775);
-      ctx.fillText(groups[1], -8, 104, 775);
+      ctx.fillText(groups[0], -8, 27, 775);
+      ctx.fillText(groups[1], -8, 115, 775);
     }
     ctx.textAlign = "left";
   }
