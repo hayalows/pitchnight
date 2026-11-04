@@ -1770,3 +1770,6 @@ button:disabled{cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){
   .pass-dialog[open]{animation:none}
 }
+
+/* Accessibility: keep the bright red sticker but use dark, legible lettering. */
+.v2-sticker-bottom{color:var(--ink)}
