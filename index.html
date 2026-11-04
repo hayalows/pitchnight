@@ -19,6 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="main.js" defer></script>
+  <script src="poster-studio.js" defer></script>
   <title>Pitch Night | Make Your Case</title>
 </head>
 <body>
@@ -324,13 +325,13 @@
         <span>VENUE WILL BE COMMUNICATED AFTER REGISTRATION.</span>
       </div>
       <div class="pass-promo">
-        <div class="pass-promo-stamp" aria-hidden="true"><span>OFF</span><span>SCRIPT</span><i>✳</i></div>
+        <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i>✳</i></div>
         <div class="pass-promo-copy">
-          <span class="pass-promo-kicker">A LITTLE SOMETHING TO SHARE</span>
-          <h3>PUT YOUR NAME<br/><em>ON THE NIGHT.</em></h3>
-          <p>Made your plans? Create a personalised Pitch Night poster to save or send to a friend.</p>
+          <span class="pass-promo-kicker">MAKE IT PERSONAL</span>
+          <h3>GIVE YOUR FRIEND<br/><em>THE SPOTLIGHT.</em></h3>
+          <p>Add the name of the friend you're pitching. Share their poster on WhatsApp or Instagram.</p>
         </div>
-        <button type="button" class="pass-promo-button" data-open-pass>MAKE MY POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
+        <button type="button" class="pass-promo-button" data-open-pass>MAKE A FRIEND POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
       </div>
     </section>
 
@@ -400,26 +401,26 @@
   <dialog class="pass-dialog" id="pass-dialog" aria-labelledby="pass-dialog-title">
     <div class="pass-maker">
       <header class="pass-maker-header">
-        <span>OFF SCRIPT <span aria-hidden="true">/</span> POSTER STUDIO</span>
+        <span>OFF SCRIPT <span aria-hidden="true">/</span> FRIEND POSTER STUDIO</span>
         <button type="button" class="pass-close" data-close-pass aria-label="Close poster maker"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg></button>
       </header>
       <div class="pass-maker-grid">
         <div class="pass-maker-fields">
-          <span class="pass-step">01 / MAKE IT YOURS</span>
-          <h2 id="pass-dialog-title">YOUR NAME.<br/><span>YOUR NIGHT.</span></h2>
-          <p>Make a little poster for November 13. Add your name, then save it or share it.</p>
-          <label class="pass-name-label" for="pass-name">WHAT'S YOUR NAME?</label>
-          <input id="pass-name" type="text" maxlength="40" autocomplete="name" placeholder="e.g. Ama Mensah" aria-describedby="pass-privacy" />
+          <span class="pass-step">01 / NAME YOUR PICK</span>
+          <h2 id="pass-dialog-title">PUT YOUR FRIEND<br/><span>ON THE POSTER.</span></h2>
+          <p>Whose case are you making? Add your friend's name to create their personalised Pitch Night poster.</p>
+          <label class="pass-name-label" for="pass-name">FRIEND'S NAME</label>
+          <input id="pass-name" type="text" maxlength="42" autocomplete="off" placeholder="e.g. Ama Mensah" aria-describedby="pass-privacy" />
           <div class="pass-maker-cta">
-            <button id="pass-download" class="pass-download" type="button">SAVE MY POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-download"></use></svg></button>
-            <button id="pass-share" class="pass-share" type="button" hidden>SHARE POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
+            <button id="pass-download" class="pass-download" type="button" disabled>DOWNLOAD PNG <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-download"></use></svg></button>
+            <button id="pass-share" class="pass-share" type="button" hidden disabled>SHARE IMAGE <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
           </div>
-          <p class="pass-private-note" id="pass-privacy">Created on your device. This artwork is not a ticket or proof of payment.</p>
+          <p class="pass-private-note" id="pass-privacy">Your friend's name stays on this device. This share poster isn't an entry ticket or payment confirmation.</p>
           <p class="pass-feedback" id="pass-feedback" role="status" aria-live="polite"></p>
         </div>
         <div class="pass-maker-preview">
-          <div class="pass-preview-head"><span>02 / YOUR PREVIEW</span><span>1080 × 1350 PNG</span></div>
-          <canvas id="pass-canvas" width="1080" height="1350" role="img" aria-label="Preview of your personalised Pitch Night poster"></canvas>
+          <div class="pass-preview-head"><span>02 / LIVE PREVIEW</span><span>1080 × 1350 PNG</span></div>
+          <canvas id="pass-canvas" width="1080" height="1350" role="img" aria-label="Preview of your personalised Pitch Night friend poster"></canvas>
         </div>
       </div>
     </div>

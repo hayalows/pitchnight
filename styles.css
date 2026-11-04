@@ -1773,3 +1773,56 @@ button:disabled{cursor:not-allowed}
 
 /* Accessibility: keep the bright red sticker but use dark, legible lettering. */
 .v2-sticker-bottom{color:var(--ink)}
+
+
+
+/* Poster Studio v2: official brand mark, friend-first copy, clearer editing
+   and a faithful canvas recreation of the selected lanyard/microphone card. */
+.pass-promo-stamp{background:var(--yellow);overflow:visible}
+.pass-promo-stamp img{
+  width:100%;height:100%;object-fit:contain;display:block;padding:.3rem;
+}
+.pass-promo-copy h3{line-height:1.1;max-width:580px}
+.pass-promo-copy p{max-width:500px}
+.pass-maker-fields{padding:clamp(1.1rem,2.1vw,2.2rem)}
+.pass-maker-fields h2{
+  font-size:clamp(2.65rem,4.1vw,4.2rem);
+  line-height:1.08;
+  letter-spacing:-.005em;
+  margin:.75rem 0 .8rem;
+}
+.pass-maker-fields>p:not(.pass-private-note,.pass-feedback){
+  max-width:390px;
+  font-size:.95rem;
+  line-height:1.5;
+  margin-bottom:1.35rem;
+}
+.pass-maker-preview{
+  background:#112b91;
+  background-image:radial-gradient(circle at 17% 10%,rgba(255,255,255,.12),transparent 46%);
+  padding:1rem;
+}
+.pass-preview-head{font-size:.72rem;letter-spacing:.07em}
+.pass-maker-preview canvas{
+  width:min(100%,396px);
+  box-shadow:8px 9px 0 #0d1747;
+}
+.pass-name-label{font-size:.79rem}
+.pass-name-label + input{font-size:1.05rem;min-height:55px}
+.pass-private-note{font-size:.78rem;line-height:1.55}
+.pass-download:focus-visible,.pass-share:focus-visible,.pass-promo-button:focus-visible{
+  outline:3px solid var(--blue);outline-offset:5px;
+}
+@media(max-width:680px){
+  .pass-maker-fields{padding:1.1rem}
+  .pass-maker-fields h2{font-size:clamp(2.5rem,10vw,3.8rem)}
+  .pass-maker-fields>p:not(.pass-private-note,.pass-feedback){font-size:.95rem;margin-bottom:1rem}
+  .pass-maker-cta{gap:.55rem}
+  .pass-maker-preview{padding:1.05rem .9rem 2.2rem}
+  .pass-maker-preview canvas{width:min(100%,365px)}
+}
+@media(max-width:360px){
+  .pass-maker-header>span{font-size:.63rem;letter-spacing:.05em}
+  .pass-maker-fields h2{font-size:2.45rem}
+  .pass-maker-preview{padding-inline:.65rem}
+}
