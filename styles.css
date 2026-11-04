@@ -1153,3 +1153,7 @@ button:disabled{cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){
   .v2-title-your .v2-marker path{animation:none;stroke-dashoffset:0}
 }
+
+.ticket-title .ticket-title-first,
+.ticket-title .ticket-title-first > span{color:var(--blue)}
+.ticket-title .ticket-title-last{color:var(--ink)}
