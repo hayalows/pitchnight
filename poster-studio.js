@@ -256,7 +256,7 @@
     } else {
       ctx.font = size+'px '+DISPLAY;
       ctx.fillText(groups[0], -8, 27, 775);
-      ctx.fillText(groups[1], -8, 115, 775);
+      ctx.fillText(groups[1], -8, 99, 775);
     }
     ctx.textAlign = "left";
   }
