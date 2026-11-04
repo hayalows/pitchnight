@@ -57,6 +57,9 @@
 <path d="M5 12h14" />
   <path d="M12 5v14" />
 </symbol>
+<symbol id="ui-download" viewBox="0 0 24 24">
+<path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3" />
+</symbol>
   </svg>
 
 
@@ -320,6 +323,15 @@
         <button type="button" class="text-action" id="share-button">SHARE WITH A FRIEND <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
         <span>VENUE WILL BE COMMUNICATED AFTER REGISTRATION.</span>
       </div>
+      <div class="pass-promo">
+        <div class="pass-promo-stamp" aria-hidden="true"><span>OFF</span><span>SCRIPT</span><i>✳</i></div>
+        <div class="pass-promo-copy">
+          <span class="pass-promo-kicker">A LITTLE SOMETHING TO SHARE</span>
+          <h3>PUT YOUR NAME<br/><em>ON THE NIGHT.</em></h3>
+          <p>Made your plans? Create a personalised Pitch Night poster to save or send to a friend.</p>
+        </div>
+        <button type="button" class="pass-promo-button" data-open-pass>MAKE MY POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
+      </div>
     </section>
 
     <section class="faq-section section-pad" id="faq" aria-labelledby="faq-heading">
@@ -375,11 +387,43 @@
     <a class="footer-brand" href="#top" aria-label="Off Script, back to top">
       <img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" />
     </a>
-    <p>PRESENTS PITCH NIGHT: MAKE YOUR CASE</p>
-    <a href="#top">BACK TO TOP <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up"></use></svg></a>
-    <span>FRI 13 NOV 2026 • 6:30 PM GMT</span>
+    <div class="footer-event-meta">
+      <strong>FRIDAY 13 NOVEMBER 2026</strong>
+      <span>6:30 PM GMT <span aria-hidden="true">·</span> VENUE SHARED AFTER REGISTRATION</span>
+    </div>
+    <a class="footer-up" href="#top">BACK TO TOP <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up"></use></svg></a>
   </footer>
 
+
+
+  <!-- Downloadable local-only artwork. This is not a booking or payment confirmation. -->
+  <dialog class="pass-dialog" id="pass-dialog" aria-labelledby="pass-dialog-title">
+    <div class="pass-maker">
+      <header class="pass-maker-header">
+        <span>OFF SCRIPT <span aria-hidden="true">/</span> POSTER STUDIO</span>
+        <button type="button" class="pass-close" data-close-pass aria-label="Close poster maker"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg></button>
+      </header>
+      <div class="pass-maker-grid">
+        <div class="pass-maker-fields">
+          <span class="pass-step">01 / MAKE IT YOURS</span>
+          <h2 id="pass-dialog-title">YOUR NAME.<br/><span>YOUR NIGHT.</span></h2>
+          <p>Make a little poster for November 13. Add your name, then save it or share it.</p>
+          <label class="pass-name-label" for="pass-name">WHAT'S YOUR NAME?</label>
+          <input id="pass-name" type="text" maxlength="40" autocomplete="name" placeholder="e.g. Ama Mensah" aria-describedby="pass-privacy" />
+          <div class="pass-maker-cta">
+            <button id="pass-download" class="pass-download" type="button">SAVE MY POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-download"></use></svg></button>
+            <button id="pass-share" class="pass-share" type="button" hidden>SHARE POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
+          </div>
+          <p class="pass-private-note" id="pass-privacy">Created on your device. This artwork is not a ticket or proof of payment.</p>
+          <p class="pass-feedback" id="pass-feedback" role="status" aria-live="polite"></p>
+        </div>
+        <div class="pass-maker-preview">
+          <div class="pass-preview-head"><span>02 / YOUR PREVIEW</span><span>1080 × 1350 PNG</span></div>
+          <canvas id="pass-canvas" width="1080" height="1350" role="img" aria-label="Preview of your personalised Pitch Night poster"></canvas>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Registration uses the existing Google Form and Paystack checkout.
        We never claim submission/payment success because their state is cross-origin. -->
@@ -444,7 +488,7 @@
         </label>
         <div class="registration-action-row">
           <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/pitchnight" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
-            CONTINUE TO PAY GH₵70
+            PAY GH₵70 IF NEEDED
             <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
           </a>
           <a class="registration-open-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
@@ -452,10 +496,7 @@
             <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
           </a>
         </div>
-        <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>
-          <strong>CHECK BEFORE PAYING:</strong> The official Paystack page displays <strong>GH₵70</strong>. Confirm the amount and details there.
-        </p>
-        <p class="registration-footnote"><strong>Already paid through the form?</strong> Don't pay again. Keep your receipt; this site can't verify it.</p>
+        <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>Confirm GH₵70 before you pay.</p>
       </div>
     </div>
   </dialog>

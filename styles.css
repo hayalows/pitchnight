@@ -1551,3 +1551,222 @@ button:disabled{cursor:not-allowed}
  .registration-footnote{font-size:.73rem;line-height:1.4}
  .registration-open-form{font-size:.7rem}
 }
+
+
+/* 2026-11-04: make room for the actual Google Form. Two compact actions and
+   only a short, state-dependent amount check remain below it. */
+.registration-actions{
+  padding:.48rem .82rem .54rem;
+  gap:.38rem;
+}
+.registration-confirm{font-size:.78rem;min-height:27px;gap:.55rem}
+.registration-confirm input{width:18px;height:18px;min-width:18px}
+.registration-action-row{gap:.7rem}
+.registration-pay{min-height:44px;padding:.65rem .8rem;box-shadow:2px 3px 0 var(--ink)}
+.registration-open-form{font-size:.67rem;padding:.25rem 0;min-height:34px}
+.registration-amount-warning{
+  padding:.36rem .62rem;margin:0;
+  font-size:.72rem;line-height:1.25;
+  background:var(--mint);color:var(--ink);border-left:3px solid var(--blue);
+}
+@media(max-width:620px){
+  .registration-actions{padding:.45rem .72rem max(.5rem, env(safe-area-inset-bottom));gap:.34rem}
+  .registration-confirm{font-size:.76rem;min-height:24px}
+  .registration-pay{min-height:43px;font-size:.72rem;flex:1 1 160px;padding:.55rem .62rem}
+  .registration-open-form{font-size:.65rem;min-height:36px}
+  .registration-amount-warning{font-size:.7rem}
+}
+@media(max-width:355px){
+  .registration-actions{padding:.46rem .6rem}
+  .registration-pay{width:100%}
+}
+
+/* Footer: event details instead of repeated slogan; roomy stage heading. */
+@media(min-width:851px){
+  .last-call h2{line-height:1.045;letter-spacing:-.012em}
+}
+@media(max-width:850px){
+  .last-call h2{line-height:1.015}
+}
+.site-footer{gap:clamp(1rem,3vw,3rem);align-items:center}
+.footer-event-meta{display:flex;flex-direction:column;gap:.35rem;min-width:0;margin-right:auto}
+.footer-event-meta strong{
+  font-size:.82rem;font-weight:800;letter-spacing:.045em;
+}
+.footer-event-meta span{
+  font-size:.73rem;font-weight:600;letter-spacing:.015em;line-height:1.35;
+}
+.site-footer .footer-up{font-size:.72rem;font-weight:800;white-space:nowrap}
+@media(max-width:620px){
+  .site-footer{
+    grid-template-columns:58px minmax(0,1fr);
+    align-items:center;gap:.75rem;
+  }
+  .footer-brand{width:58px;height:54px}
+  .footer-event-meta{margin:0}
+  .footer-event-meta strong{font-size:.69rem}
+  .footer-event-meta span{font-size:.65rem}
+  .site-footer .footer-up{
+    grid-column:1 / -1;justify-self:end;
+    padding-top:.65rem;font-size:.65rem;
+  }
+}
+
+/* A personalised social poster, deliberately NOT an entry pass or receipt. */
+.pass-promo{
+  display:grid;grid-template-columns:100px minmax(0,1fr) auto;
+  align-items:center;gap:clamp(1.2rem,2.5vw,2.5rem);
+  padding:clamp(1.2rem,2.3vw,2.2rem);
+  margin-top:clamp(2rem,4vw,3rem);
+  background:var(--paper);
+  border:3px solid var(--ink);
+  box-shadow:8px 9px 0 var(--ink);
+}
+.pass-promo-stamp{
+  position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  width:95px;height:112px;
+  background:var(--blue);color:#fff;
+  border:3px solid var(--ink);transform:rotate(-6deg);
+  box-shadow:4px 5px 0 var(--ink);
+  font-family:var(--display);font-size:1.8rem;line-height:1.04;letter-spacing:.03em;
+}
+.pass-promo-stamp i{
+  position:absolute;right:-14px;bottom:-18px;color:var(--red);font-size:2.2rem;
+  font-family:var(--body);font-style:normal;text-shadow:2px 2px var(--ink);
+}
+.pass-promo-copy{min-width:0}
+.pass-promo-kicker{font-size:.69rem;font-weight:800;letter-spacing:.1em}
+.pass-promo-copy h3{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(1.9rem,3vw,3.2rem);
+  line-height:1.07;margin:.42rem 0 .55rem;
+}
+.pass-promo-copy h3 em{color:var(--blue);font-style:normal}
+.pass-promo-copy p{max-width:470px;font-size:.91rem;line-height:1.5;margin:0}
+.pass-promo-button{
+  display:inline-flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.9rem 1rem;min-height:54px;white-space:nowrap;
+  background:var(--blue);color:#fff;
+  border:2px solid var(--ink);
+  box-shadow:4px 5px 0 var(--ink);
+  font-weight:800;font-size:.74rem;letter-spacing:.035em;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.pass-promo-button:hover{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
+.pass-promo-button .ui-icon{font-size:1.15rem}
+@media(max-width:1000px){
+  .pass-promo{grid-template-columns:76px minmax(0,1fr);gap:1.2rem}
+  .pass-promo-stamp{width:73px;height:88px;font-size:1.4rem}
+  .pass-promo-button{grid-column:2;justify-self:start}
+}
+@media(max-width:620px){
+  .pass-promo{grid-template-columns:58px minmax(0,1fr);padding:1rem;gap:.85rem;margin-top:1.7rem}
+  .pass-promo-stamp{width:57px;height:76px;font-size:1.1rem}
+  .pass-promo-stamp i{font-size:1.5rem;right:-9px;bottom:-13px}
+  .pass-promo-kicker{font-size:.6rem}
+  .pass-promo-copy h3{font-size:clamp(1.65rem,7vw,2.4rem);line-height:1.05;margin:.3rem 0}
+  .pass-promo-copy p{font-size:.78rem;line-height:1.45}
+  .pass-promo-button{grid-column:1 / -1;width:100%;justify-content:space-between;min-height:48px;font-size:.72rem;padding:.7rem .85rem}
+}
+
+/* Maker dialog: fields and live 4:5 preview side by side on desktop, full-height
+   scrollable studio on small phones. Its controls never sit above the form UI. */
+.pass-dialog{
+  width:min(960px,calc(100vw - 32px));
+  height:min(790px,calc(100dvh - 32px));
+  max-width:none;max-height:none;padding:0;margin:auto;
+  border:3px solid var(--ink);border-radius:0;
+  background:var(--paper);color:var(--ink);
+  box-shadow:12px 14px 0 var(--ink);
+  overflow:hidden;
+}
+.pass-dialog::backdrop{background:rgba(10,20,39,.86);backdrop-filter:blur(4px)}
+.pass-dialog[open]{animation:registration-enter .22s var(--ease)}
+.pass-maker{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr)}
+.pass-maker-header{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.65rem 1rem;border-bottom:2px solid var(--ink);
+}
+.pass-maker-header>span{font-size:.73rem;font-weight:800;letter-spacing:.1em}
+.pass-maker-header>span span{color:var(--red)}
+.pass-close{
+  display:grid;place-items:center;width:42px;height:42px;
+  border:2px solid var(--ink);background:var(--yellow);color:var(--ink)
+}
+.pass-maker-grid{
+  display:grid;grid-template-columns:minmax(0,.93fr) minmax(0,1.07fr);
+  min-height:0;overflow:hidden;
+}
+.pass-maker-fields{
+  display:flex;flex-direction:column;align-items:stretch;
+  padding:clamp(1.2rem,2.6vw,2.7rem);min-height:0;overflow:auto;
+}
+.pass-step,.pass-preview-head{font-size:.69rem;font-weight:800;letter-spacing:.1em}
+.pass-maker-fields h2{
+  font-family:var(--display);font-size:clamp(3rem,5vw,5.4rem);
+  font-weight:400;line-height:1.04;letter-spacing:-.01em;margin:1rem 0 .9rem;
+}
+.pass-maker-fields h2 span{color:var(--blue)}
+.pass-maker-fields>p:not(.pass-private-note,.pass-feedback){
+  font-size:1rem;line-height:1.55;margin:0 0 2rem;max-width:340px;
+}
+.pass-name-label{font-weight:800;font-size:.74rem;letter-spacing:.08em;margin-bottom:.5rem}
+.pass-name-label + input{
+  width:100%;min-height:53px;
+  border:2px solid var(--ink);border-radius:0;
+  background:#fff;color:var(--ink);
+  font:700 1rem var(--body);
+  padding:.7rem .9rem;outline-offset:4px;
+}
+.pass-name-label + input:focus-visible{outline:3px solid var(--blue)}
+.pass-maker-cta{display:grid;gap:.7rem;margin-top:1.25rem}
+.pass-download,.pass-share{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;
+  width:100%;min-height:50px;padding:.8rem 1rem;
+  border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  font-size:.78rem;font-weight:800;letter-spacing:.025em;
+  background:var(--yellow);color:var(--ink);
+}
+.pass-share{background:var(--mint)}
+.pass-download:not(:disabled):hover,.pass-share:not(:disabled):hover{
+  transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);
+}
+.pass-download:disabled,.pass-share:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.pass-private-note{font-size:.74rem;line-height:1.5;margin:1.25rem 0 0;color:#424242}
+.pass-feedback{font-size:.76rem;color:var(--blue);font-weight:700;line-height:1.4;margin:.6rem 0 0;min-height:1.2em}
+.pass-maker-preview{
+  background:var(--blue);padding:1.15rem;
+  min-height:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-start;gap:.7rem;overflow:hidden;
+}
+.pass-preview-head{
+  display:flex;justify-content:space-between;align-self:stretch;gap:1rem;
+  color:#fff;font-size:.65rem;
+}
+.pass-maker-preview canvas{
+  display:block;
+  width:min(100%,380px);height:auto;
+  max-height:calc(100% - 38px);
+  object-fit:contain;aspect-ratio:4/5;
+  background:var(--paper);
+  box-shadow:6px 7px 0 var(--ink);
+}
+@media(max-width:680px){
+  .pass-dialog{
+    width:100vw;height:100dvh;max-width:none;max-height:none;
+    border:0;box-shadow:none;margin:0;
+  }
+  .pass-maker-grid{display:block;overflow:auto;overscroll-behavior:contain}
+  .pass-maker-fields{padding:1.2rem;overflow:visible}
+  .pass-maker-fields h2{font-size:clamp(2.7rem,10vw,4.5rem);margin:.6rem 0}
+  .pass-maker-fields>p:not(.pass-private-note,.pass-feedback){font-size:.92rem;margin-bottom:1.1rem}
+  .pass-maker-cta{margin-top:.9rem}
+  .pass-private-note{font-size:.73rem;margin-top:.9rem}
+  .pass-feedback{min-height:0}
+  .pass-maker-preview{padding:1.2rem 1rem 2.5rem;overflow:visible}
+  .pass-maker-preview canvas{width:min(100%,355px);max-height:none;height:auto}
+  .pass-maker-header{padding:.6rem .9rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .pass-dialog[open]{animation:none}
+}

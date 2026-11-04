@@ -369,6 +369,251 @@
     link.click();
     link.remove();
   });
+
+  // Personal poster maker: local canvas only. It is intentionally not wired to
+  // the registration form, so it cannot impersonate a confirmed paid ticket.
+  const passDialog = document.getElementById("pass-dialog");
+  const passOpeners = document.querySelectorAll("[data-open-pass]");
+  const passClose = document.querySelector("[data-close-pass]");
+  const passName = document.getElementById("pass-name");
+  const passCanvas = document.getElementById("pass-canvas");
+  const passDownload = document.getElementById("pass-download");
+  const passShare = document.getElementById("pass-share");
+  const passFeedback = document.getElementById("pass-feedback");
+  const passCtx = passCanvas?.getContext("2d");
+  let passPreviousFocus = null;
+  let passDrawFrame = 0;
+
+  function passNameText() {
+    return (passName?.value || "").trim().replace(/\s+/g, " ").slice(0, 40);
+  }
+
+  function showPassFeedback(message) {
+    if (passFeedback) passFeedback.textContent = message;
+  }
+
+  function drawPassPoster() {
+    if (!passCtx || !passCanvas) return;
+    const ctx = passCtx;
+    const name = passNameText().toLocaleUpperCase() || "YOUR NAME";
+    const nameEntered = Boolean(passNameText());
+    const W = 1080, H = 1350;
+    const ink = "#171717", blue = "#1036af", red = "#f03d2f";
+    const cream = "#faf4e7", yellow = "#ffd63b", mint = "#aeef9d";
+    const display = '"Anton", Impact, "Arial Narrow", sans-serif';
+    const body = '"Space Grotesk", Arial, sans-serif';
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = cream;
+    ctx.fillRect(0, 0, W, H);
+
+    // Printed paper, border, and tiny registration marks.
+    ctx.strokeStyle = "rgba(16,54,175,.07)";
+    ctx.lineWidth = 1;
+    for (let x = 60; x < W; x += 34) {
+      ctx.beginPath(); ctx.moveTo(x, 50); ctx.lineTo(x, H - 50); ctx.stroke();
+    }
+    for (let y = 50; y < H; y += 34) {
+      ctx.beginPath(); ctx.moveTo(50, y); ctx.lineTo(W - 50, y); ctx.stroke();
+    }
+    ctx.fillStyle = ink; ctx.fillRect(49, 50, 996, 1268);
+    ctx.fillStyle = cream; ctx.fillRect(36, 36, 996, 1268);
+    ctx.lineWidth = 8; ctx.strokeStyle = ink; ctx.strokeRect(36, 36, 996, 1268);
+
+    ctx.save();
+    ctx.translate(106, 103);
+    ctx.rotate(-.07);
+    ctx.fillStyle = ink;
+    ctx.font = '900 62px ' + body;
+    ctx.fillText("off!", 0, 0);
+    ctx.font = '44px Georgia, serif';
+    ctx.fillText("Script", 3, 44);
+    ctx.restore();
+
+    ctx.fillStyle = ink;
+    ctx.font = '800 22px ' + body;
+    ctx.fillText("PRESENTS", 327, 128);
+    ctx.fillText("PITCH NIGHT", 327, 164);
+    ctx.fillStyle = yellow;
+    ctx.fillRect(776, 78, 213, 106);
+    ctx.lineWidth = 5; ctx.strokeStyle = ink; ctx.strokeRect(776, 78, 213, 106);
+    ctx.fillStyle = ink;
+    ctx.font = '800 25px ' + body;
+    ctx.fillText("EDITION 001", 793, 121);
+    ctx.fillText("13 NOV 2026", 793, 158);
+    ctx.lineWidth = 5; ctx.strokeStyle = ink;
+    ctx.beginPath(); ctx.moveTo(86, 216); ctx.lineTo(984, 216); ctx.stroke();
+
+    ctx.fillStyle = blue;
+    ctx.font = '218px ' + display;
+    ctx.fillText("MAKE", 82, 436);
+    ctx.fillStyle = ink;
+    ctx.fillText("YOUR", 82, 648);
+
+    // Hand-drawn red circle, intentionally imperfect.
+    ctx.save();
+    ctx.translate(388, 565);
+    ctx.rotate(-.11);
+    ctx.strokeStyle = red; ctx.lineWidth = 16; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.ellipse(0, 0, 331, 95, 0, .08, Math.PI * 2.02); ctx.stroke();
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.ellipse(-4, 4, 339, 98, -.03, 2.5, 5.2); ctx.stroke();
+    ctx.restore();
+
+    ctx.fillStyle = blue; ctx.font = '244px ' + display;
+    ctx.fillText("CASE", 82, 869);
+    ctx.fillStyle = red; ctx.fillRect(845, 824, 45, 45);
+
+    // Small mint speech sticker to keep the flyer personality.
+    ctx.save();
+    ctx.translate(753, 355); ctx.rotate(.09);
+    ctx.fillStyle = ink; ctx.fillRect(9, 10, 240, 132);
+    ctx.fillStyle = mint; ctx.fillRect(0, 0, 240, 132);
+    ctx.lineWidth = 5; ctx.strokeStyle = ink; ctx.strokeRect(0, 0, 240, 132);
+    ctx.fillStyle = ink; ctx.font = '800 20px ' + body;
+    ctx.fillText("GOT A FRIEND?", 17, 45);
+    ctx.font = '38px ' + display;
+    ctx.fillText("TELL THE", 17, 88);
+    ctx.fillText("ROOM!", 17, 123);
+    ctx.restore();
+
+    // Name plate with adjustable type and a two-line fallback.
+    const boxX = 84, boxY = 913, boxWidth = 912, boxHeight = 246;
+    ctx.fillStyle = ink; ctx.fillRect(boxX + 11, boxY + 11, boxWidth, boxHeight);
+    ctx.fillStyle = yellow; ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+    ctx.lineWidth = 6; ctx.strokeStyle = ink;
+    ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+    ctx.fillStyle = ink; ctx.font = '800 26px ' + body;
+    ctx.fillText("THIS NIGHT HAS A NAME", boxX + 35, boxY + 49);
+    const words = name.split(" ");
+    let lines = [name];
+    if (words.length > 1) {
+      // Choose the most balanced two-line split if one line would get too small.
+      ctx.font = '93px ' + display;
+      if (ctx.measureText(name).width > boxWidth - 70) {
+        let best = null;
+        for (let i = 1; i < words.length; i++) {
+          const a = words.slice(0, i).join(" "), b = words.slice(i).join(" ");
+          const score = Math.max(ctx.measureText(a).width, ctx.measureText(b).width);
+          if (!best || score < best.score) best = {lines:[a,b],score};
+        }
+        if (best) lines = best.lines;
+      }
+    }
+    const maxWidth = boxWidth - 75;
+    let fontSize = lines.length === 1 ? 118 : 88;
+    while (fontSize > 44) {
+      ctx.font = fontSize + 'px ' + display;
+      if (lines.every(line => ctx.measureText(line).width <= maxWidth)) break;
+      fontSize -= 2;
+    }
+    ctx.fillStyle = nameEntered ? blue : "rgba(16,54,175,.43)";
+    ctx.font = fontSize + 'px ' + display;
+    if (lines.length === 1) {
+      ctx.fillText(lines[0], boxX + 36, boxY + 177, maxWidth);
+    } else {
+      ctx.fillText(lines[0], boxX + 36, boxY + 133, maxWidth);
+      ctx.fillText(lines[1], boxX + 36, boxY + 221, maxWidth);
+    }
+
+    ctx.fillStyle = ink;
+    ctx.font = '800 27px ' + body;
+    ctx.fillText("FRI 13 NOV 2026", 85, 1225);
+    ctx.fillText("6:30 PM GMT", 84, 1265);
+    ctx.fillStyle = blue;
+    ctx.fillRect(640, 1190, 350, 95);
+    ctx.fillStyle = "#fff";
+    ctx.font = '800 22px ' + body;
+    ctx.fillText("PITCH  •  FUN  •  GAMES", 664, 1228);
+    ctx.font = '800 17px ' + body;
+    ctx.fillText("SHARE CARD · NOT VALID FOR ENTRY", 652, 1261);
+
+    if (passDownload) passDownload.disabled = !nameEntered;
+    if (passShare) passShare.disabled = !nameEntered;
+  }
+
+  function queuePassDraw() {
+    if (passDrawFrame) window.cancelAnimationFrame(passDrawFrame);
+    passDrawFrame = window.requestAnimationFrame(() => {
+      passDrawFrame = 0;
+      drawPassPoster();
+    });
+  }
+
+  function openPassMaker(trigger) {
+    if (!passDialog || typeof passDialog.showModal !== "function") return;
+    passPreviousFocus = trigger || document.activeElement;
+    document.getElementById("pitch-cursor")?.classList.remove("is-visible");
+    if (programmeDialog?.open) programmeDialog.close();
+    if (registrationDialog?.open) registrationDialog.close();
+    passDialog.showModal();
+    document.body.classList.add("dialog-is-open");
+    drawPassPoster();
+    passName?.focus();
+    if (document.fonts?.load) {
+      Promise.all([document.fonts.load('218px Anton'), document.fonts.load('26px "Space Grotesk"')])
+        .then(queuePassDraw).catch(() => {});
+    }
+  }
+
+  passOpeners.forEach(button => button.addEventListener("click", () => openPassMaker(button)));
+  passClose?.addEventListener("click", () => passDialog?.close());
+  passDialog?.addEventListener("click", (event) => {
+    if (event.target === passDialog) passDialog.close();
+  });
+  passDialog?.addEventListener("close", () => {
+    document.body.classList.toggle("dialog-is-open", Boolean(registrationDialog?.open || programmeDialog?.open));
+    passPreviousFocus?.focus?.();
+    showPassFeedback("");
+  });
+  passName?.addEventListener("input", () => {
+    showPassFeedback("");
+    queuePassDraw();
+  });
+
+  function posterBlob() {
+    return new Promise(resolve => {
+      if (!passCanvas?.toBlob) { resolve(null); return; }
+      passCanvas.toBlob(resolve, "image/png");
+    });
+  }
+
+  passDownload?.addEventListener("click", async () => {
+    if (!passNameText() || !passCanvas) return;
+    drawPassPoster();
+    const blob = await posterBlob();
+    if (!blob) {
+      showPassFeedback("Could not create the image. Try another browser.");
+      return;
+    }
+    const filename = "pitch-night-" + passNameText().toLowerCase()
+      .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) + ".png";
+    const objectURL = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = objectURL; link.download = filename;
+    document.body.appendChild(link); link.click(); link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(objectURL), 30000);
+    showPassFeedback("PNG prepared. Check Downloads or your browser's save menu.");
+  });
+  if (passShare && typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+    passShare.hidden = false;
+    passShare.addEventListener("click", async () => {
+      if (!passNameText()) return;
+      const blob = await posterBlob();
+      if (!blob) return;
+      const file = new File([blob], "pitch-night-poster.png", {type:"image/png"});
+      if (!navigator.canShare({files:[file]})) {
+        showPassFeedback("Use Save My Poster to download the image.");
+        return;
+      }
+      try { await navigator.share({files:[file],title:"Pitch Night: My Poster"}); }
+      catch (error) {
+        if (error?.name !== "AbortError") showPassFeedback("Sharing was unavailable. Try saving the poster instead.");
+      }
+    });
+  }
+
   // Lightweight cursor accent: native pointer remains visible. Never track
   // on touch, over forms, in dialogs, or for people requesting reduced motion.
   const cursor = document.getElementById("pitch-cursor");
