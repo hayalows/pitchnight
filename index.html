@@ -327,9 +327,9 @@
       <div class="pass-promo">
         <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i>✳</i></div>
         <div class="pass-promo-copy">
-          <span class="pass-promo-kicker">MAKE IT PERSONAL</span>
-          <h3>GIVE YOUR FRIEND<br/><em>THE SPOTLIGHT.</em></h3>
-          <p>Add the name of the friend you're pitching. Share their poster on WhatsApp or Instagram.</p>
+          <span class="pass-promo-kicker">YOUR FRIEND. THE SPOTLIGHT.</span>
+          <h3>MAKE A CASE.<br/><em>MAKE IT PERSONAL.</em></h3>
+          <p>Create a collectible Pitch Night share card with your friend's name. Pick an Instagram post or story format.</p>
         </div>
         <button type="button" class="pass-promo-button" data-open-pass>MAKE A FRIEND POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
       </div>
@@ -408,9 +408,16 @@
         <div class="pass-maker-fields">
           <span class="pass-step">01 / NAME YOUR PICK</span>
           <h2 id="pass-dialog-title">PUT YOUR FRIEND<br/><span>ON THE POSTER.</span></h2>
-          <p>Whose case are you making? Add your friend's name to create their personalised Pitch Night poster.</p>
+          <p>Give the friend you're pitching their own event-pass poster. Add a name and choose where you'd like to share it.</p>
           <label class="pass-name-label" for="pass-name">FRIEND'S NAME</label>
           <input id="pass-name" type="text" maxlength="42" autocomplete="off" placeholder="e.g. Ama Mensah" aria-describedby="pass-privacy" />
+          <div class="pass-format-group" role="group" aria-label="Poster format">
+            <span class="pass-format-label">POSTER FORMAT</span>
+            <div class="pass-format-options">
+              <button type="button" class="pass-format-option" data-poster-format="post" aria-pressed="true">FEED <small>4:5</small></button>
+              <button type="button" class="pass-format-option" data-poster-format="story" aria-pressed="false">STORY <small>9:16</small></button>
+            </div>
+          </div>
           <div class="pass-maker-cta">
             <button id="pass-download" class="pass-download" type="button" disabled>DOWNLOAD PNG <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-download"></use></svg></button>
             <button id="pass-share" class="pass-share" type="button" hidden disabled>SHARE IMAGE <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
@@ -419,7 +426,7 @@
           <p class="pass-feedback" id="pass-feedback" role="status" aria-live="polite"></p>
         </div>
         <div class="pass-maker-preview">
-          <div class="pass-preview-head"><span>02 / LIVE PREVIEW</span><span>1080 × 1350 PNG</span></div>
+          <div class="pass-preview-head"><span>02 / LIVE PREVIEW</span><span id="pass-preview-size">1080 × 1350 PNG</span></div>
           <canvas id="pass-canvas" width="1080" height="1350" role="img" aria-label="Preview of your personalised Pitch Night friend poster"></canvas>
         </div>
       </div>

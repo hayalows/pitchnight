@@ -1826,3 +1826,39 @@ button:disabled{cursor:not-allowed}
   .pass-maker-fields h2{font-size:2.45rem}
   .pass-maker-preview{padding-inline:.65rem}
 }
+
+
+/* Collectible pass studio: size selection is compact, keyboard accessible and
+   does not hide the preview below the form. */
+.pass-format-group{
+  display:grid;gap:.45rem;margin-top:1rem;
+}
+.pass-format-label{font-size:.73rem;font-weight:800;letter-spacing:.065em}
+.pass-format-options{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:2px solid var(--ink);background:var(--paper);
+}
+.pass-format-option{
+  appearance:none;display:flex;gap:.7rem;align-items:center;justify-content:center;
+  border:0;background:transparent;color:var(--ink);min-height:45px;
+  font-weight:800;font-size:.76rem;cursor:pointer;
+}
+.pass-format-option+ .pass-format-option{border-left:2px solid var(--ink)}
+.pass-format-option small{font-size:.67rem;font-weight:700}
+.pass-format-option[aria-pressed="true"]{background:var(--blue);color:#fff}
+.pass-format-option:focus-visible{outline:3px solid var(--red);outline-offset:3px;z-index:1}
+.pass-maker-fields h2{line-height:1.09}
+.pass-maker-preview canvas[data-format="post"]{aspect-ratio:4/5}
+.pass-maker-preview canvas[data-format="story"]{aspect-ratio:9/16}
+.pass-maker-preview canvas{
+  width:auto;max-width:100%;max-height:calc(100% - 40px);
+  object-fit:contain;
+}
+@media(max-width:680px){
+  .pass-maker-preview canvas{height:auto;max-height:none;width:min(100%,355px)}
+  .pass-maker-preview canvas[data-format="story"]{width:min(100%,310px)}
+  .pass-format-group{margin-top:.75rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .pass-format-option{transition:none}
+}
