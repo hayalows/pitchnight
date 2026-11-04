@@ -7,7 +7,7 @@ A playful, mobile-first event website for **Off Script's Pitch Night: Make Your 
 - **Time:** 6:30 PM (GMT, Ghana time)
 - **Entry:** GHC 70
 - **Venue:** Communicated after registration
-- **Flyer question:** "Why should another YSA consider dating your friend?"
+- **Website question:** "Why should another young single adult consider dating your friend?" (spelled out for readability)
 - **Registration:** https://hqr.la/68d7f6f7 — decoded from the original flyer QR code. Its destination has **not** been independently verified; check that it is the intended live registration and payment page before publishing.
 
 ## What's included in v1
