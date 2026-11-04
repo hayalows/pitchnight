@@ -1,8 +1,8 @@
-/* Off Script Pitch Night: personalised friend poster, drawn locally at 1080 × 1350.
-   A shareable graphic, never a registration or payment confirmation. */
+/* Off Script Pitch Night — minimalist personalised friend card.
+   Uses the original logo and works entirely in the visitor's browser.
+   This image is a share card, never a payment or admission credential. */
 (() => {
   "use strict";
-
   const dialog = document.getElementById("pass-dialog");
   const canvas = document.getElementById("pass-canvas");
   const input = document.getElementById("pass-name");
@@ -15,402 +15,226 @@
   if (!dialog || !ctx || !input) return;
 
   const W = 1080, H = 1350;
-  const C = {
-    paper: "#faf4e7",
-    ink: "#191919",
-    cobalt: "#1036b4",
-    red: "#ef392f",
-    yellow: "#ffd93d",
-    mint: "#b4f2a0",
-    white: "#fffdfa",
-    grey: "#787c82"
+  const color = {
+    cream:"#faf4e7", blue:"#1036b4", ink:"#171717", white:"#fffefa",
+    red:"#e83e34", muted:"#777571", silver:"#c9ccd0", yellow:"#ffda3f"
   };
-  const DISPLAY = '"Anton", Impact, "Arial Narrow", sans-serif';
-  const SANS = '"DM Sans", "Arial", sans-serif';
+  const display = '"Anton", Impact, "Arial Narrow", sans-serif';
+  const body = '"DM Sans", Arial, sans-serif';
   const logo = new Image();
   let logoReady = false;
   let logoFailed = false;
   let fontsReady = false;
-  let pendingFrame = 0;
+  let scheduled = 0;
   let previousFocus = null;
-  const newName = () => input.value.trim().replace(/\s+/g, " ").slice(0, 42);
+  const friendName = () => input.value.trim().replace(/\s+/g," ").slice(0,42);
 
-  function message(text) {
-    if (feedback) feedback.textContent = text;
+  function notify(message) {
+    if (feedback) feedback.textContent = message;
   }
-  function rounded(x, y, w, h, r) {
-    const rad = Math.min(r, w / 2, h / 2);
+  function rectangle(x,y,w,h,fill) {
+    ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);
+  }
+  function rounded(x,y,w,h,r) {
     ctx.beginPath();
-    ctx.moveTo(x + rad, y);
-    ctx.arcTo(x + w, y, x + w, y + h, rad);
-    ctx.arcTo(x + w, y + h, x, y + h, rad);
-    ctx.arcTo(x, y + h, x, y, rad);
-    ctx.arcTo(x, y, x + w, y, rad);
-    ctx.closePath();
+    ctx.roundRect(x,y,w,h,r);
   }
-  function filled(x, y, w, h, r, fill, stroke, weight = 0) {
-    rounded(x, y, w, h, r);
-    ctx.fillStyle = fill;
-    ctx.fill();
-    if (stroke && weight) {
-      ctx.lineWidth = weight;
-      ctx.strokeStyle = stroke;
-      ctx.stroke();
-    }
+  function box(x,y,w,h,r,fill,stroke=null,width=0) {
+    rounded(x,y,w,h,r);
+    ctx.fillStyle=fill;ctx.fill();
+    if(stroke&&width){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke();}
   }
-  function text(string, x, y, font, color, align = "left", maxWidth) {
-    ctx.fillStyle = color;
-    ctx.font = font;
-    ctx.textAlign = align;
-    ctx.textBaseline = "alphabetic";
-    if (maxWidth) ctx.fillText(string, x, y, maxWidth);
-    else ctx.fillText(string, x, y);
-    ctx.textAlign = "left";
+  function drawText(str,x,y,font,fill,align="left",maxWidth) {
+    ctx.fillStyle=fill;ctx.font=font;ctx.textBaseline="alphabetic";ctx.textAlign=align;
+    if(maxWidth)ctx.fillText(str,x,y,maxWidth);else ctx.fillText(str,x,y);
+    ctx.textAlign="left";
   }
-  function line(points, color = C.ink, weight = 5) {
-    ctx.beginPath();
-    ctx.moveTo(points[0][0], points[0][1]);
-    for (const [x, y] of points.slice(1)) ctx.lineTo(x, y);
-    ctx.lineWidth = weight;
-    ctx.strokeStyle = color;
-    ctx.lineCap = "round";
-    ctx.stroke();
+  function rule(x1,y1,x2,y2,fill,width=4) {
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+    ctx.strokeStyle=fill;ctx.lineWidth=width;ctx.lineCap="round";ctx.stroke();
   }
-  function burst(cx, cy, inner, outer, points, angle, color) {
-    ctx.beginPath();
-    for (let i = 0; i < points * 2; i++) {
-      const r = i % 2 === 0 ? outer : inner;
-      const a = angle + i * Math.PI / points;
-      const x = cx + Math.cos(a) * r;
-      const y = cy + Math.sin(a) * r;
-      if (!i) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
-  }
-  function heart(x, y, size, angle) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.scale(size, size);
-    ctx.beginPath();
-    ctx.moveTo(0, 19);
-    ctx.bezierCurveTo(-37, -13, -24, -35, 0, -11);
-    ctx.bezierCurveTo(22, -35, 38, -12, 0, 19);
-    ctx.strokeStyle = C.red;
-    ctx.lineWidth = 5;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.stroke();
-    ctx.restore();
-  }
-  function rays(x, y) {
-    line([[x-19,y-15],[x-42,y-34]], C.red, 8);
-    line([[x+4,y-17],[x+8,y-47]], C.red, 8);
-    line([[x+22,y-1],[x+52,y-7]], C.red, 8);
-  }
-  function originalLogo() {
+  function officialLogo() {
     if (!logoReady) return;
-    // Use the original transparent PNG, cropping only its transparent edges.
-    const sx = logo.naturalWidth * .1103;
-    const sy = logo.naturalHeight * .2032;
-    const sw = logo.naturalWidth * .7905;
-    const sh = logo.naturalHeight * .7905;
-    ctx.drawImage(logo, sx, sy, sw, sh, 73, 58, 173, 161);
+    // Original Off Script PNG, cropped only to its transparent content.
+    ctx.drawImage(logo,
+      logo.naturalWidth*.1103,logo.naturalHeight*.2032,
+      logo.naturalWidth*.7905,logo.naturalHeight*.7905,
+      83,60,174,161);
   }
+  function title() {
+    officialLogo();
+    drawText("PITCH NIGHT",330,127,'800 79px '+body,color.ink);
+    drawText("MAKE YOUR CASE",333,174,'800 24px '+body,color.blue);
+    rule(331,202,996,202,color.ink,4);
 
-  function microphone() {
-    burst(195, 420, 99, 173, 11, -.22, C.yellow);
-    ctx.save();
-    ctx.translate(214, 426);
-    ctx.rotate(-.28);
-    // A little printed white die-cut outline behind the retro microphone.
-    filled(-46, 35, 92, 191, 28, C.white, C.white, 14);
-    filled(-25, 103, 50, 120, 13, C.ink, C.white, 8);
-    filled(-19, 112, 38, 88, 7, C.grey, C.ink, 6);
-    filled(-27, 132, 54, 33, 9, C.ink);
-    filled(-74, -116, 148, 198, 65, C.white, C.white, 21);
-    filled(-68, -108, 136, 189, 62, C.ink);
-    filled(-57, -96, 114, 165, 50, "#e8e7df", C.ink, 5);
-    ctx.save();
-    rounded(-50, -89, 100, 150, 42);
-    ctx.clip();
-    for (let y = -82; y < 56; y += 20) {
-      ctx.beginPath();
-      ctx.moveTo(-65, y);
-      ctx.bezierCurveTo(-23, y + 20, 25, y + 17, 65, y);
-      ctx.strokeStyle = C.ink; ctx.lineWidth = 13; ctx.stroke();
+    const words="MAKE YOUR";
+    let size=170;
+    while(size>115) {
+      ctx.font=size+"px "+display;
+      if(ctx.measureText(words).width<=900)break;
+      size-=2;
     }
-    for (let x = -47; x <= 47; x += 12) {
-      for (let y = -82; y < 60; y += 12) {
-        if ((x + y) % 24 === 0) {
-          ctx.beginPath(); ctx.arc(x, y, 1.5, 0, 2 * Math.PI); ctx.fillStyle = C.ink; ctx.fill();
-        }
+    ctx.font=size+"px "+display;
+    const left=86, baseline=404;
+    const makeWidth=ctx.measureText("MAKE").width;
+    drawText("MAKE",left,baseline,size+"px "+display,color.blue);
+    drawText("YOUR",left+makeWidth+25,baseline,size+"px "+display,color.ink);
+    drawText("CASE",84,595,"210px "+display,color.blue);
+    // One red punctuation mark echoes the original flyer without a busy collage.
+    rectangle(575,544,40,40,color.red);
+  }
+  function lanyard() {
+    // A real-looking lanyard, but restrained so the ID tag stays the focus.
+    const straps=[
+      [[474,626],[495,673],[541,738]],
+      [[635,626],[615,676],[563,738]]
+    ];
+    for(const [[x1,y1],[cx,cy],[x2,y2]] of straps) {
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(cx,cy,x2,y2);
+      ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=color.ink;
+      ctx.lineWidth=42;ctx.stroke();ctx.strokeStyle=color.blue;ctx.lineWidth=31;ctx.stroke();
+    }
+  }
+  function fitName(str) {
+    const words=str.toLocaleUpperCase().split(/\s+/).filter(Boolean);
+    if(!words.length)return {lines:["YOUR FRIEND'S NAME"],size:103};
+    const full=words.join(" ");
+    ctx.font="142px "+display;
+    let lines=[full];
+    if(words.length>1&&ctx.measureText(full).width>780) {
+      let best=null;
+      for(let split=1;split<words.length;split++) {
+        const one=words.slice(0,split).join(" "), two=words.slice(split).join(" ");
+        const width=Math.max(ctx.measureText(one).width,ctx.measureText(two).width);
+        if(!best||width<best.width)best={lines:[one,two],width};
       }
+      if(best)lines=best.lines;
     }
-    ctx.restore();
-    ctx.restore();
-    rays(116, 236);
-  }
-
-  function headline() {
-    text("OFF SCRIPT PRESENTS", 334, 91, '800 23px ' + SANS, C.ink);
-    text("PITCH NIGHT", 329, 154, '800 64px ' + SANS, C.ink);
-    line([[331,170],[987,170]], C.ink, 4);
-    microphone();
-    text("MAKE", 339, 312, '154px ' + DISPLAY, C.cobalt);
-    text("YOUR", 342, 457, '163px ' + DISPLAY, C.ink);
-    ctx.save();
-    ctx.translate(579, 408);
-    ctx.rotate(-.095);
-    ctx.beginPath();
-    ctx.ellipse(0, 0, 250, 69, 0, .05, Math.PI * 2.04);
-    ctx.strokeStyle = C.red; ctx.lineWidth = 14; ctx.lineCap = "round"; ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(7, -2, 259, 72, 0, 2.9, 5.55);
-    ctx.lineWidth = 5; ctx.stroke();
-    ctx.restore();
-    rays(899, 357);
-    text("CASE", 338, 590, '167px ' + DISPLAY, C.cobalt);
-    // One small star instead of a cloud of unrelated stickers.
-    burst(949, 540, 20, 55, 5, -.4, C.yellow);
-    burst(949, 540, 10, 38, 5, -.4, C.paper);
-  }
-
-  function lanyardAndBadge() {
-    // Blue woven lanyard curving into the central ID badge.
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(-48, 846);
-    ctx.bezierCurveTo(120, 759, 279, 585, 447, 644);
-    ctx.strokeStyle = C.white; ctx.lineWidth = 87; ctx.lineCap = "round"; ctx.stroke();
-    ctx.strokeStyle = C.ink; ctx.lineWidth = 78; ctx.stroke();
-    ctx.strokeStyle = C.cobalt; ctx.lineWidth = 65; ctx.stroke();
-    ctx.strokeStyle = "rgba(255,255,255,.3)";
-    ctx.lineWidth = 2; ctx.setLineDash([7, 12]); ctx.stroke(); ctx.setLineDash([]);
-    ctx.restore();
-
-    // Badge is rotated as one object so the name moves with the artwork.
-    ctx.save();
-    ctx.translate(540, 808);
-    ctx.rotate(-.039);
-    filled(-440+13, -165+14, 880, 322, 51, C.ink);
-    filled(-448, -173, 880, 322, 50, C.white, C.ink, 8);
-    filled(-426, -152, 836, 280, 36, C.paper, C.cobalt, 15);
-    // Top cobalt band is deliberately solid, not too textured to read.
-    ctx.save();
-    rounded(-419, -145, 824, 80, 24);
-    ctx.clip();
-    ctx.fillStyle = C.cobalt;
-    ctx.fillRect(-420, -145, 826, 85);
-    ctx.restore();
-    text("THE FRIEND I'M PITCHING", -396, -93, '800 34px '+SANS, C.white);
-    line([[348,-106],[386,-106]], C.white, 4);
-    nameOnBadge(newName() || "FRIEND'S NAME");
-    // Underscore always stays beneath the last name line.
-    ctx.beginPath();
-    ctx.moveTo(-356, 117);
-    ctx.bezierCurveTo(-100, 97, 191, 115, 356, 108);
-    ctx.lineWidth = 9; ctx.strokeStyle = C.red; ctx.lineCap = "round"; ctx.stroke();
-    ctx.restore();
-
-    // Metallic lanyard clip, with narrow readable silhouette.
-    ctx.save();
-    ctx.translate(523, 627);
-    ctx.rotate(-.09);
-    filled(-44, 5, 91, 56, 12, C.ink);
-    filled(-43, -4, 86, 56, 12, "#b4b5b9", C.ink, 7);
-    filled(-30, 9, 61, 26, 8, "#f2f1ed", C.grey, 4);
-    ctx.restore();
-    rays(952, 678);
-    heart(120, 949, .9, -.1);
-    heart(176, 975, .55, -.1);
-  }
-
-  function nameOnBadge(value) {
-    const words = value.toLocaleUpperCase().split(/\s+/).filter(Boolean);
-    const full = words.join(" ");
-    let groups = [full];
-    ctx.font = '130px '+DISPLAY;
-    if (words.length > 1 && ctx.measureText(full).width > 770) {
-      let split = 1, smallest = Infinity;
-      for (let i = 1; i < words.length; i++) {
-        const left = words.slice(0, i).join(" ");
-        const right = words.slice(i).join(" ");
-        const width = Math.max(ctx.measureText(left).width, ctx.measureText(right).width);
-        if (width < smallest) { smallest = width; split = i; }
-      }
-      groups = [words.slice(0, split).join(" "), words.slice(split).join(" ")];
+    let size=lines.length===1?145:109;
+    while(size>42) {
+      ctx.font=size+"px "+display;
+      if(lines.every(line=>ctx.measureText(line).width<=780))break;
+      size-=2;
     }
-    let size = groups.length === 1 ? 131 : 78;
-    // For very long names, shrink just the name rather than overflowing the card.
-    for (; size >= 43; size -= 2) {
-      ctx.font = size + 'px '+DISPLAY;
-      if (groups.every(str => ctx.measureText(str).width <= 766)) break;
-    }
-    ctx.fillStyle = newName() ? C.ink : "#51515a";
-    ctx.textAlign = "center";
-    if (groups.length === 1) {
-      ctx.font = size+'px '+DISPLAY;
-      ctx.fillText(groups[0], -8, 72, 775);
+    return {lines,size};
+  }
+  function nameTag() {
+    // The clipped, very slightly angled badge is the single illustration.
+    ctx.save();
+    ctx.translate(540,904);
+    ctx.rotate(-.022);
+
+    box(-442+15,-194+16,884,392,29,color.ink);
+    box(-442,-194,884,392,29,color.white,color.ink,8);
+    box(-421,-173,842,348,20,color.white,color.blue,7);
+    ctx.save();
+    rounded(-419,-171,838,91,17);ctx.clip();
+    rectangle(-419,-171,838,101,color.blue);
+    ctx.restore();
+    drawText("THE FRIEND I'M PITCHING",-385,-111,"800 35px "+body,color.white);
+
+    const name=fitName(friendName());
+    const ink=friendName()?color.ink:"#777571";
+    if(name.lines.length===1) {
+      drawText(name.lines[0],0,76,name.size+"px "+display,ink,"center",780);
     } else {
-      ctx.font = size+'px '+DISPLAY;
-      ctx.fillText(groups[0], -8, 27, 775);
-      ctx.fillText(groups[1], -8, 99, 775);
+      drawText(name.lines[0],0,5,name.size+"px "+display,ink,"center",780);
+      drawText(name.lines[1],0,122,name.size+"px "+display,ink,"center",780);
     }
-    ctx.textAlign = "left";
-  }
+    // One precise underline, kept below even long two-line names.
+    rule(-350,150,349,150,color.red,9);
+    ctx.restore();
 
-  function speechBubble() {
-    filled(116, 996, 855, 112, 40, C.white, C.white, 14);
-    filled(120, 991, 849, 108, 36, C.mint, C.ink, 7);
-    // A short speech-bubble tail stays outside the lettering.
-    ctx.beginPath();
-    ctx.moveTo(182, 1097);
-    ctx.lineTo(152, 1120);
-    ctx.lineTo(206, 1097);
-    ctx.closePath(); ctx.fillStyle = C.mint; ctx.fill();
-    line([[152,1120],[181,1097]], C.ink, 6);
-    text("WHY SHOULD ANOTHER YOUNG SINGLE ADULT", 544, 1038, '700 28px '+SANS, C.ink, "center", 790);
-    text("CONSIDER DATING YOUR FRIEND?", 544, 1077, '800 30px '+SANS, C.ink, "center", 790);
+    // Minimal metallic clasp explains the lanyard and adds depth.
+    box(512,693,79,53,12,color.ink);
+    box(507,688,79,49,12,color.silver,color.ink,6);
+    box(521,700,50,25,6,color.white,color.muted,3);
   }
-
-  function calendarIcon(x,y) {
-    ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.lineCap="round";
-    rounded(x,y,44,43,6);ctx.stroke();
-    line([[x,y+13],[x+44,y+13]],C.ink,4);
-    line([[x+11,y-7],[x+11,y+8]],C.ink,5);
-    line([[x+33,y-7],[x+33,y+8]],C.ink,5);
+  function footer() {
+    rule(84,1144,996,1144,color.ink,4);
+    drawText("FRI 13 NOV 2026",85,1212,"800 39px "+body,color.ink);
+    drawText("6:30 PM GMT",992,1212,"800 38px "+body,color.ink,"right");
+    drawText("PITCH   /   FUN   /   GAMES",85,1277,"800 25px "+body,color.blue);
+    drawText("SHARE CARD · NOT A TICKET",995,1277,"800 21px "+body,color.ink,"right");
   }
-  function clockIcon(x,y) {
-    ctx.beginPath(); ctx.arc(x,y,21,0,2*Math.PI);ctx.lineWidth=5;ctx.strokeStyle=C.ink;ctx.stroke();
-    line([[x,y-12],[x,y],[x+12,y+7]],C.ink,5);
-  }
-  function schedule() {
-    // Three coloured programme tickets. Crisp edges aid readability in stories.
-    const x = 116, y = 1137, w = 848, h = 55;
-    ctx.fillStyle=C.yellow;ctx.fillRect(x,y,w/3,h);
-    ctx.fillStyle=C.mint;ctx.fillRect(x+w/3,y,w/3,h);
-    ctx.fillStyle=C.cobalt;ctx.fillRect(x+2*w/3,y,w/3,h);
-    ctx.strokeStyle=C.ink;ctx.lineWidth=5;ctx.strokeRect(x,y,w,h);
-    line([[x+w/3,y],[x+w/3,y+h]],C.ink,5);
-    line([[x+2*w/3,y],[x+2*w/3,y+h]],C.ink,5);
-    text("PITCH", x+w/6, y+39, '800 34px '+SANS,C.ink,"center");
-    text("FUN", x+w/2,y+39,'800 34px '+SANS,C.ink,"center");
-    text("GAMES",x+w*5/6,y+39,'800 34px '+SANS,C.white,"center");
-
-    // Event info is deliberately unambiguous even when shared out of context.
-    filled(116, 1208, 848, 72, 2, C.white,C.ink,5);
-    ctx.fillStyle=C.mint;ctx.fillRect(546,1211,415,66);
-    line([[547,1210],[547,1277]], C.ink,5);
-    calendarIcon(140,1224);
-    clockIcon(589,1243);
-    text("FRI 13 NOV 2026",205,1254,'800 29px '+SANS,C.ink);
-    text("6:30 PM GMT",629,1254,'800 31px '+SANS,C.ink);
-    line([[116,1314],[274,1314]],C.ink,2);
-    line([[815,1314],[962,1314]],C.ink,2);
-    text("SHARE POSTER · NOT A TICKET",545,1322,'800 20px '+SANS,C.ink,"center");
-  }
-
   function render() {
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle=C.paper;ctx.fillRect(0,0,W,H);
-    // Subtle print dots; no heavy raster background or network images.
-    ctx.fillStyle="rgba(16,54,180,.042)";
-    for (let y=40;y<1320;y+=30) for(let x=36;x<1050;x+=30) {
-      ctx.fillRect(x,y,1,1);
-    }
-    originalLogo();
-    headline();
-    lanyardAndBadge();
-    speechBubble();
-    schedule();
-    canvas.setAttribute("aria-label", "Off Script Pitch Night share poster for " + (newName() || "your chosen friend"));
-    const canExport=Boolean(newName() && logoReady && fontsReady);
-    if(downloadButton) downloadButton.disabled=!canExport;
-    if(shareButton) shareButton.disabled=!canExport;
+    rectangle(0,0,W,H,color.cream);
+    title();
+    lanyard();
+    nameTag();
+    footer();
+    canvas.setAttribute("aria-label","Personalised Off Script Pitch Night friend share poster for "+(friendName()||"your friend"));
+    const ready=Boolean(friendName()&&logoReady&&fontsReady);
+    if(downloadButton)downloadButton.disabled=!ready;
+    if(shareButton)shareButton.disabled=!ready;
   }
-  function scheduleRender() {
-    if(pendingFrame) cancelAnimationFrame(pendingFrame);
-    pendingFrame=requestAnimationFrame(() => {pendingFrame=0;render();});
+  function queueRender() {
+    if(scheduled)cancelAnimationFrame(scheduled);
+    scheduled=requestAnimationFrame(()=>{scheduled=0;render();});
   }
-  logo.addEventListener("load",()=>{logoReady=true;logoFailed=false;scheduleRender();});
+  logo.addEventListener("load",()=>{logoReady=true;logoFailed=false;queueRender();});
   logo.addEventListener("error",()=>{
-    logoFailed=true;logoReady=false;
-    message("The official Off Script logo could not load. Refresh this page and try again.");
-    scheduleRender();
+    logoReady=false;logoFailed=true;
+    notify("Off Script's original logo did not load. Reload the page to try again.");
+    queueRender();
   });
   logo.src="assets/offscript-logo.png";
-
   Promise.all([
-    document.fonts?.load ? document.fonts.load('150px Anton') : Promise.resolve(),
-    document.fonts?.load ? document.fonts.load('800 34px "DM Sans"') : Promise.resolve()
-  ]).then(()=>{fontsReady=true;scheduleRender();}).catch(()=>{
-    fontsReady=true;scheduleRender();
-  });
+    document.fonts?.load?document.fonts.load("190px Anton"):Promise.resolve(),
+    document.fonts?.load?document.fonts.load('800 35px "DM Sans"'):Promise.resolve()
+  ]).then(()=>{fontsReady=true;queueRender();}).catch(()=>{fontsReady=true;queueRender();});
 
-  function openStudio(trigger) {
-    if(typeof dialog.showModal!=="function") return;
-    if(dialog.open) return;
-    previousFocus=trigger || document.activeElement;
+  function openPoster(trigger) {
+    if(typeof dialog.showModal!=="function"||dialog.open)return;
+    previousFocus=trigger||document.activeElement;
     document.getElementById("pitch-cursor")?.classList.remove("is-visible");
     dialog.showModal();
     document.body.classList.add("dialog-is-open");
-    scheduleRender();
+    queueRender();
     input.focus({preventScroll:true});
-    if(logoFailed) message("Please reload the page to load the official Off Script logo.");
+    if(logoFailed)notify("Reload the page to load the Off Script logo.");
   }
-  openers.forEach(button=>button.addEventListener("click",()=>openStudio(button)));
+  openers.forEach(b=>b.addEventListener("click",()=>openPoster(b)));
   closeButton?.addEventListener("click",()=>dialog.close());
-  dialog.addEventListener("click",e=>{if(e.target===dialog) dialog.close();});
+  dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close();});
   dialog.addEventListener("close",()=>{
     document.body.classList.remove("dialog-is-open");
     previousFocus?.focus?.({preventScroll:true});
-    message("");
+    notify("");
   });
-  input.addEventListener("input",()=>{message("");scheduleRender();});
+  input.addEventListener("input",()=>{notify("");queueRender();});
   const getPNG=()=>new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
-  function safeFilename() {
-    const slug=newName().toLowerCase().normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g,"")
-      .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,38);
-    return "pitch-night-"+(slug||"friend")+".png";
-  }
-  async function makePNG() {
-    if(!newName() || !logoReady || !fontsReady) return null;
+  const fileName=()=>"pitch-night-"+(friendName().toLowerCase().normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-|-$/g,"").slice(0,38)||"friend")+".png";
+  async function createPNG() {
+    if(!friendName()||!logoReady||!fontsReady)return null;
     render();
     const blob=await getPNG();
-    if(!blob) message("Couldn't create the image. Try again or use another browser.");
+    if(!blob)notify("Couldn't create the image. Try another browser.");
     return blob;
   }
   downloadButton?.addEventListener("click",async()=>{
-    const blob=await makePNG();
-    if(!blob)return;
+    const blob=await createPNG();if(!blob)return;
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
-    a.href=url;a.download=safeFilename();document.body.appendChild(a);a.click();a.remove();
-    window.setTimeout(()=>URL.revokeObjectURL(url),30000);
-    message("Poster prepared. Check Downloads or your browser's save menu.");
+    a.href=url;a.download=fileName();
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),30000);
+    notify("PNG prepared. Check Downloads or your browser's save menu.");
   });
-  if(shareButton && typeof navigator.share==="function" && typeof navigator.canShare==="function") {
+  if(shareButton&&typeof navigator.share==="function"&&typeof navigator.canShare==="function") {
     shareButton.hidden=false;
     shareButton.addEventListener("click",async()=>{
-      const blob=await makePNG();
-      if(!blob)return;
-      const file=new File([blob],safeFilename(),{type:"image/png"});
-      if(!navigator.canShare({files:[file]})) {
-        message("Your browser can't share this image directly. Save the PNG instead.");
-        return;
+      const blob=await createPNG();if(!blob)return;
+      const file=new File([blob],fileName(),{type:"image/png"});
+      if(!navigator.canShare({files:[file]})){
+        notify("Direct sharing isn't available here. Save the PNG instead.");return;
       }
-      try {
-        await navigator.share({files:[file],title:"Off Script Pitch Night",text:"I'm pitching a friend at Pitch Night."});
-      } catch (err) {
-        if(err?.name!=="AbortError") message("Sharing was unavailable. Try saving the poster.");
-      }
+      try{await navigator.share({files:[file],title:"Off Script Pitch Night",text:"I'm pitching a friend at Pitch Night."});}
+      catch(err){if(err?.name!=="AbortError")notify("Sharing was unavailable. Save the poster instead.");}
     });
   }
-  if(new URLSearchParams(location.search).get("poster")==="1") {
-    openStudio(document.querySelector("[data-open-pass]"));
-  }
-  scheduleRender();
+  if(new URLSearchParams(location.search).get("poster")==="1")openPoster(document.querySelector("[data-open-pass]"));
+  queueRender();
 })();
