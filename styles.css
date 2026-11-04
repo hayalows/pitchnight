@@ -1502,3 +1502,37 @@ button:disabled{cursor:not-allowed}
   html{scroll-behavior:smooth}
   :is(section,[id="about"],[id="lineup"],[id="host"],[id="details"],[id="faq"]){scroll-margin-top:1rem}
 }
+
+
+/* Interactive poster strips keep the original compact mobile grid, even
+   though the semantic element is now a button. */
+@media(max-width:620px){
+  .sticker[data-open-program]{
+    display:grid;
+    grid-template-columns:2.65rem minmax(0,1fr);
+    grid-template-rows:auto auto;
+    align-items:center;
+    column-gap:.95rem;
+    row-gap:0;
+    min-height:0;
+    padding:1rem 1.1rem;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .sticker[data-open-program] .sticker-symbol{
+    grid-column:1;grid-row:1 / 3;align-self:center;
+    width:2.45rem;height:2.45rem;
+    display:grid;place-items:center;padding:0;margin:0;
+  }
+  .sticker[data-open-program] b{
+    grid-column:2;grid-row:1;
+    font-size:clamp(1.85rem,7.8vw,2.35rem);
+    line-height:1.03;margin:0;
+  }
+  .sticker[data-open-program] small{
+    grid-column:2;grid-row:2;font-size:.82rem;
+    line-height:1.3;margin-top:.2rem;
+  }
+  .sticker[data-open-program]::after{
+    top:.88rem;right:1rem;width:.55rem;height:.55rem;
+  }
+}
