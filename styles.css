@@ -1237,3 +1237,34 @@ button:disabled{cursor:not-allowed}
   .v2-info-cell{min-height:48px;padding:.48rem .65rem}
   .v2-bottomline{display:none}
 }
+
+
+/* Intermediate laptop widths: avoid the tall desktop booth at 125% browser
+   zoom or in split view. Below 851px the familiar stacked layout takes over. */
+@media (min-width:851px) and (max-width:999px) and (max-height:750px) {
+  .site-header{min-height:68px;padding-top:.38rem;padding-bottom:.38rem}
+  .v2-topline{padding:.55rem 0}
+  .v2-layout{padding:7px 0 12px;gap:1.1rem;align-items:center}
+  .v2-kicker{font-size:1.3rem}
+  .v2-kicker-row{margin-bottom:.35rem}
+  .v2-title-first .v2-heading-row{font-size:clamp(4rem,7vw,5rem)}
+  .v2-title-case{font-size:clamp(4.9rem,9.6vw,6.3rem)}
+  .v2-question{font-size:clamp(1.1rem,2.7vh,1.35rem)}
+  .v2-question-row{margin-top:.5rem}
+  .v2-actions{margin-top:.85rem;gap:.4rem}
+  .v2-ticket-button{min-height:52px;padding:.6rem .85rem}
+  .v2-program-button{padding:.2rem 0;min-height:38px}
+  .v2-showcase{max-width:360px;padding:5px 8px 10px}
+  .v2-booth-head{padding:.55rem .7rem}
+  .v2-art{height:clamp(180px,calc(100dvh - 460px),255px)}
+  .v2-art-caption{font-size:1rem}
+  .v2-speech-panel{padding:.55rem .9rem .65rem;min-height:0}
+  .v2-speech-text{font-size:1.13rem;margin:.3rem 0 .38rem;min-height:1.5em}
+  .v2-quote-label{font-size:.55rem}
+  .v2-quip-button{min-height:30px}
+  .v2-info-cell{min-height:50px;padding:.5rem .65rem}
+  .v2-bottomline{padding:.5rem 0}
+}
+@media (min-width:851px) and (max-width:999px) and (max-height:680px) {
+  .v2-bottomline{display:none}
+}
