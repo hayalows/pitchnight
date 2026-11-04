@@ -9,6 +9,7 @@
 
   function openProgramme() {
     if (!programmeDialog) return;
+    document.getElementById("pitch-cursor")?.classList.remove("is-visible");
     previousFocus = document.activeElement;
     if (typeof programmeDialog.showModal === "function") {
       if (!programmeDialog.open) programmeDialog.showModal();
@@ -263,6 +264,7 @@
   }
   function openRegistration(trigger) {
     if (!registrationDialog || typeof registrationDialog.showModal !== "function") return false;
+    document.getElementById("pitch-cursor")?.classList.remove("is-visible");
     registrationPreviousFocus = trigger?.closest?.("#programme-dialog")
       ? document.querySelector(".nav-ticket")
       : (trigger || document.activeElement);
