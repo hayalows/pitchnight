@@ -614,6 +614,11 @@
     });
   }
 
+  // A direct, shareable route into the studio; name remains local to this page.
+  if (new URLSearchParams(window.location.search).get("poster") === "1") {
+    openPassMaker(document.querySelector("[data-open-pass]"));
+  }
+
   // Lightweight cursor accent: native pointer remains visible. Never track
   // on touch, over forms, in dialogs, or for people requesting reduced motion.
   const cursor = document.getElementById("pitch-cursor");
