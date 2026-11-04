@@ -154,16 +154,18 @@
     backdrop(height);
     if(story){
       // Dedicated story composition, not a stretched feed card.
-      text("FRIEND SPOTLIGHT",540,168,"800 43px "+FONT_BODY,PALETTE.ink,"center");
       ctx.save();ctx.translate(0,275);
     }
     connector();drawnPass();
     if(story){
       ctx.restore();
-      text("PITCH • FUN • GAMES",540,1740,"800 39px "+FONT_BODY,PALETTE.cobalt,"center");
-      text("SHARE CARD · NOT VALID FOR ENTRY",540,1820,"800 25px "+FONT_BODY,PALETTE.ink,"center");
+      box(273,1680,534,78,22,PALETTE.cream);
+      text("PITCH  •  FUN  •  GAMES",540,1731,"800 31px "+FONT_BODY,PALETTE.cobalt,"center");
+      box(285,1790,510,52,17,PALETTE.cream);
+      text("SHARE CARD · NOT VALID FOR ENTRY",540,1823,"800 22px "+FONT_BODY,PALETTE.ink,"center");
     }else{
-      text("SHARE CARD · NOT VALID FOR ENTRY",540,1306,"800 20px "+FONT_BODY,PALETTE.ink,"center");
+      box(290,1270,500,60,17,PALETTE.cream);
+      text("SHARE CARD · NOT VALID FOR ENTRY",540,1309,"800 21px "+FONT_BODY,PALETTE.ink,"center");
     }
     const ready=Boolean(person()&&logoReady&&fontReady);
     if(download)download.disabled=!ready;
