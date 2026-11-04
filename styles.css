@@ -2078,3 +2078,11 @@ button:disabled{cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){
   .last-call-dot{animation:none}
 }
+
+
+/* Final optical alignment for the condensed mobile ticket title and price. */
+@media(max-width:620px){
+  .ticket-title-first{gap:clamp(.55rem,2.6vw,.95rem)}
+  .ticket-price{align-items:center}
+  .ticket-price span{margin:0 .18rem 0 0;align-self:center;line-height:1}
+}
