@@ -105,3 +105,7 @@ The poster studio was rebuilt from the user's selected **third** graphic directi
 ## Collectible pass redesign (November 2026)
 
 The user's selected Direction 01 is implemented as a real locally rendered, lanyard-and-badge share card. The logo is the exact bundled Off Script PNG; the badge, title and personalised name use live canvas text and scalable graphics, not a screenshot with baked-in names. There are two purpose-composed downloadable formats: 1080×1350 feed PNG and 1080×1920 story PNG. The name is the principal feature in a cobalt panel, and the period stays attached to MAKE YOUR CASE. Artwork is clearly labelled SHARE CARD · NOT VALID FOR ENTRY. No payment state or attendee status is inferred. The original Google Form and Paystack integrations remain untouched.
+
+## Mobile ticket/footer and countdown update
+
+A mobile two-line ticket display condenses Save Your Spot while keeping the poster identity. The entry cost and countdown sit side by side above the main registration action; repeated helper text is removed. The footer groups the organiser logo with date, time, and venue information, with Back to Top as an independent mobile target. The closing microphone indicator softly pulses with a reduced-motion fallback. The registration desk payment action simply says PAY GH₵70, in larger lettering. Both countdowns include smaller seconds and use one UTC-based clock that recalculates from the actual event timestamp each second and on tab visibility changes. The form, Paystack destination, and poster maker are untouched.

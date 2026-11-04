@@ -48,54 +48,68 @@
     if (event.target === programmeDialog) closeProgramme();
   });
 
-  const showtime = new Date("2026-11-13T18:30:00Z").getTime(); // Ghana is UTC+0.
+  // Both displays derive from the same absolute Ghana event time.
+  // Resync from Date.now() near each second boundary; never count ticks.
+  const showtime = Date.parse("2026-11-13T18:30:00Z"); // Ghana: GMT.
   const dayEl = document.getElementById("days");
   const hourEl = document.getElementById("hours");
   const minEl = document.getElementById("mins");
+  const secEl = document.getElementById("secs");
   const heroDayEl = document.getElementById("hero-days");
   const heroHourEl = document.getElementById("hero-hours");
   const heroMinEl = document.getElementById("hero-mins");
+  const heroSecEl = document.getElementById("hero-secs");
   const heroTimerEl = document.getElementById("hero-countdown");
   const countdownEl = document.querySelector(".countdown");
   const endedEl = document.getElementById("countdown-ended");
+  const pad = n => String(n).padStart(2, "0");
+  let countdownTimeout = null;
 
   function updateCountdown() {
-    let remaining = showtime - Date.now();
-    if (remaining <= 0) {
+    const totalSeconds = Math.max(0, Math.ceil((showtime - Date.now()) / 1000));
+    if (totalSeconds === 0) {
       if (countdownEl) countdownEl.hidden = true;
       if (endedEl) endedEl.hidden = false;
       if (heroTimerEl) {
         heroTimerEl.textContent = "THE NIGHT IS HERE";
-        heroTimerEl.setAttribute("aria-label", "The Pitch Night event date has arrived");
+        heroTimerEl.setAttribute("aria-label", "Pitch Night has arrived");
       }
       return false;
     }
-    const day = Math.floor(remaining / 86400000);
-    remaining %= 86400000;
-    const hours = Math.floor(remaining / 3600000);
-    remaining %= 3600000;
-    const minutes = Math.floor(remaining / 60000);
-
-    if (dayEl) dayEl.textContent = String(day).padStart(2, "0");
-    if (hourEl) hourEl.textContent = String(hours).padStart(2, "0");
-    if (minEl) minEl.textContent = String(minutes).padStart(2, "0");
-    if (heroDayEl) heroDayEl.textContent = String(day).padStart(2, "0");
-    if (heroHourEl) heroHourEl.textContent = String(hours).padStart(2, "0");
-    if (heroMinEl) heroMinEl.textContent = String(minutes).padStart(2, "0");
-    if (heroTimerEl) heroTimerEl.setAttribute("aria-label", day + " days, " + hours + " hours and " + minutes + " minutes until Pitch Night");
-    if (countdownEl) countdownEl.setAttribute("aria-label", day + " days, " + hours + " hours and " + minutes + " minutes until Pitch Night");
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const values = [
+      [dayEl, days], [hourEl, hours], [minEl, minutes], [secEl, seconds],
+      [heroDayEl, days], [heroHourEl, hours], [heroMinEl, minutes], [heroSecEl, seconds]
+    ];
+    for (const [element, value] of values) {
+      if (element) element.textContent = pad(value);
+    }
+    // Screen readers can query the complete value without hearing every tick.
+    const description = days + " days, " + hours + " hours, " +
+      minutes + " minutes and " + seconds + " seconds until Pitch Night";
+    if (heroTimerEl) heroTimerEl.setAttribute("aria-label", description);
+    if (countdownEl) countdownEl.setAttribute("aria-label", description);
     return true;
   }
 
-  if (updateCountdown()) {
-    const timer = window.setInterval(() => {
-      if (!updateCountdown()) window.clearInterval(timer);
-    }, 30000);
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) updateCountdown();
-    });
+  function scheduleCountdown() {
+    if (countdownTimeout !== null) window.clearTimeout(countdownTimeout);
+    countdownTimeout = null;
+    if (!updateCountdown() || document.hidden) return;
+    countdownTimeout = window.setTimeout(scheduleCountdown, 1015 - (Date.now() % 1000));
   }
-
+  scheduleCountdown();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (countdownTimeout !== null) window.clearTimeout(countdownTimeout);
+      countdownTimeout = null;
+    } else {
+      scheduleCountdown();
+    }
+  });
 
   // Animate the single Off Script brand seal only when it becomes visible.
   const brandSeal = document.querySelector(".about-brand-stamp");

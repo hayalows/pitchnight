@@ -83,7 +83,7 @@
     <section class="hero hero--v2" id="top" aria-labelledby="hero-title">
       <div class="v2-topline">
         <span class="v2-topline-left"><span class="v2-live-dot" aria-hidden="true"></span> FRI, 13 NOV 2026 <span class="v2-topline-sep">/</span> 6:30 PM</span>
-        <span class="v2-topline-right hero-countdown" id="hero-countdown" role="timer" aria-live="off" aria-label="Countdown to Pitch Night"><span class="hero-countdown-label">SHOWTIME IN</span><span class="hero-countdown-value"><strong id="hero-days">--</strong><small>D</small></span><span class="hero-countdown-value"><strong id="hero-hours">--</strong><small>H</small></span><span class="hero-countdown-value"><strong id="hero-mins">--</strong><small>M</small></span></span>
+        <span class="v2-topline-right hero-countdown" id="hero-countdown" role="timer" aria-live="off" aria-label="Countdown to Pitch Night"><span class="hero-countdown-label">SHOWTIME IN</span><span class="hero-countdown-value"><strong id="hero-days">--</strong><small>D</small></span><span class="hero-countdown-value"><strong id="hero-hours">--</strong><small>H</small></span><span class="hero-countdown-value"><strong id="hero-mins">--</strong><small>M</small></span><span class="hero-countdown-value hero-countdown-seconds"><strong id="hero-secs">--</strong><small>S</small></span></span>
       </div>
 
       <div class="v2-layout">
@@ -313,11 +313,12 @@
               <div><strong id="days">--</strong><span>DAYS</span></div>
               <div><strong id="hours">--</strong><span>HRS</span></div>
               <div><strong id="mins">--</strong><span>MINS</span></div>
+              <div class="countdown-seconds"><strong id="secs">--</strong><span>SEC</span></div>
             </div>
             <p id="countdown-ended" hidden>The date has arrived. See you there!</p>
           </div>
           <a class="button button-red ticket-cta" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">REGISTER NOW <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
-          <p class="registration-note">Register on this site using the original Off Script form.</p>
+
         </div>
       </div>
       <div class="ticket-actions">
@@ -385,12 +386,15 @@
   </main>
 
   <footer class="site-footer">
-    <a class="footer-brand" href="#top" aria-label="Off Script, back to top">
-      <img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" />
-    </a>
-    <div class="footer-event-meta">
-      <strong>FRIDAY 13 NOVEMBER 2026</strong>
-      <span>6:30 PM GMT <span aria-hidden="true">·</span> VENUE SHARED AFTER REGISTRATION</span>
+    <div class="footer-signoff">
+      <a class="footer-brand" href="#top" aria-label="Off Script, back to top">
+        <img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" />
+      </a>
+      <div class="footer-event-meta">
+        <strong>FRI, 13 NOVEMBER 2026</strong>
+        <span>6:30 PM GMT</span>
+        <span class="footer-venue">Venue shared after registration</span>
+      </div>
     </div>
     <a class="footer-up" href="#top">BACK TO TOP <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up"></use></svg></a>
   </footer>
@@ -496,7 +500,7 @@
         </label>
         <div class="registration-action-row">
           <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/pitchnight" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
-            PAY GH₵70 IF NEEDED
+            PAY GH₵70
             <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
           </a>
           <a class="registration-open-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
