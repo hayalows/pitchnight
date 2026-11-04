@@ -1536,3 +1536,9 @@ button:disabled{cursor:not-allowed}
     top:.88rem;right:1rem;width:.55rem;height:.55rem;
   }
 }
+
+/* Small-text contrast corrections: keep the bright brand red for decoration,
+   use a deeper red where copy needs an accessible foreground/background. */
+.teaser-rows span > b:first-child{color:#a9231a}
+.button-red{background:#b9251b;color:#fff}
+.button-red:hover{background:#9e1d16}
