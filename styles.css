@@ -1542,3 +1542,12 @@ button:disabled{cursor:not-allowed}
 .teaser-rows span > b:first-child{color:#a9231a}
 .button-red{background:#b9251b;color:#fff}
 .button-red:hover{background:#9e1d16}
+
+/* Readable final form guidance with less copy; keep form height available. */
+.registration-form-hint{font-size:.72rem}
+.registration-footnote{font-size:.75rem;line-height:1.42}
+@media(max-width:620px){
+ .registration-form-hint{font-size:.72rem}
+ .registration-footnote{font-size:.73rem;line-height:1.4}
+ .registration-open-form{font-size:.7rem}
+}
