@@ -80,15 +80,15 @@
   function badgeName(name) {
     const parts=splitName(name);
     const maxWidth=687;
-    let size=parts.length===1?140:102;
-    size=Math.min(...parts.map(s=>fit(s,maxWidth,size,45)));
+    let size=parts.length===1?140:82;
+    size=Math.min(...parts.map(s=>fit(s,maxWidth,size,39)));
     ctx.fillStyle=person()?PALETTE.white:"rgba(255,255,255,.72)";
     ctx.textAlign="center";ctx.font=size+"px "+FONT_HEAD;
     if(parts.length===1){
       ctx.fillText(parts[0],0,73,maxWidth);
     }else{
-      ctx.fillText(parts[0],0,-1,maxWidth);
-      ctx.fillText(parts[1],0,122,maxWidth);
+      ctx.fillText(parts[0],0,-6,maxWidth);
+      ctx.fillText(parts[1],0,95,maxWidth);
     }
     ctx.textAlign="left";
   }
