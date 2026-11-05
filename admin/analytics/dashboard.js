@@ -117,6 +117,7 @@ function renderBarList(target, items, total, emptyText) {
       body.append(row);
     }
     setText("campaign-total", fmt(total));
+    setText("campaign-share", total ? "100%" : "0%");
     setText("campaign-summary", fmt(quality.taggedSessions) + " tagged · " + fmt(quality.untaggedSessions) + " without a campaign tag. Both are included.");
   }
   function drawTrend(days) {
@@ -198,6 +199,10 @@ function render(data) {
     setText("metric-ticket", fmt(totals.ticketSessions));
     setText("metric-posters", fmt(totals.posterSessions));
     setText("metric-engaged", fmt(totals.engagedSessions));
+    const rate = value => total ? (100 * (Number(value) || 0) / total).toFixed(1) + "% of measured sessions" : "No sessions measured yet";
+    setText("metric-ticket-share", rate(totals.ticketSessions));
+    setText("metric-poster-share", rate(totals.posterSessions));
+    setText("metric-engaged-share", rate(totals.engagedSessions));
     setText("views", fmt(totals.pageViews) + " page views · " + fmt(total) + " sessions");
     drawTrend(data.daily);
     renderBarList(byId("sources"), data.sources, total, "No traffic sources measured yet.");
