@@ -35,24 +35,45 @@
     };
   }
   let dirty = false, timer = null, busy = false;
-  let writes = 0;
+  let writes = 0, failures = 0;
+  const MAX_WRITES_PER_PAGE = 20;
   function saveLocal() {
     try { sessionStorage.setItem(KEY, JSON.stringify(session)); } catch (_) {}
   }
+  function schedule(delay = 1900) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => { timer = null; void flush(); }, delay);
+  }
   async function flush() {
-    if (!dirty || busy || writes >= 12) return;
+    if (!dirty || busy || writes >= MAX_WRITES_PER_PAGE) return;
     busy = true;
     dirty = false;
     writes++;
+    // A snapshot is immutable for the duration of this request. Events added
+    // during an in-flight request keep dirty=true and trigger another update.
+    const snapshot = JSON.stringify(session);
     try {
       const response = await fetch("/api/track", {
         method: "POST", credentials: "same-origin", keepalive: true,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(session)
+        body: snapshot
       });
-      if (!response.ok) dirty = true;
-    } catch (_) { dirty = true; }
-    finally { busy = false; }
+      if (!response.ok) {
+        dirty = true;
+        failures++;
+      } else {
+        failures = 0;
+      }
+    } catch (_) {
+      dirty = true;
+      failures++;
+    } finally {
+      busy = false;
+      if (dirty && writes < MAX_WRITES_PER_PAGE && document.visibilityState !== "hidden") {
+        // Avoid rapid retry loops on flaky connections.
+        schedule(failures ? Math.min(12000, 2500 * Math.pow(2, Math.min(failures, 3))) : 300);
+      }
+    }
   }
   function track(name) {
     if (!ALLOWED.has(name)) return;
@@ -61,8 +82,7 @@
     session.updatedAt = new Date().toISOString();
     saveLocal();
     dirty = true;
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(flush, 1800);
+    schedule();
   }
   track("page_view");
   document.addEventListener("click", event => {
@@ -90,8 +110,16 @@
   ack?.addEventListener("change", () => { if (ack.checked) track("form_acknowledged"); });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden" && dirty) {
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
+      timer = null;
       void flush();
+    } else if (document.visibilityState === "visible" && dirty && !busy) {
+      schedule(300);
     }
+  });
+  window.addEventListener("pagehide", () => {
+    if (timer) clearTimeout(timer);
+    timer = null;
+    if (dirty && !busy) void flush();
   });
 })();
