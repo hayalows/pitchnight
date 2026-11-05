@@ -59,9 +59,9 @@
       <div id="coverage" class="warning" hidden role="alert"></div>
       <section aria-label="Website activity at a glance" class="kpis">
         <article class="kpi"><span>Measured sessions</span><strong id="metric-sessions">—</strong><small>Anonymous browser-tab sessions</small></article>
-        <article class="kpi"><span>Sessions showing ticket interest</span><strong id="metric-ticket">—</strong><small>Sessions clicking registration</small></article>
-        <article class="kpi"><span>Sessions opening poster studio</span><strong id="metric-posters">—</strong><small>Sessions opening the poster maker</small></article>
-        <article class="kpi"><span>Sessions taking an action</span><strong id="metric-engaged">—</strong><small>Sessions with any tracked interaction</small></article>
+        <article class="kpi"><span>Sessions showing ticket interest</span><strong id="metric-ticket">—</strong><small id="metric-ticket-share">Sessions clicking registration</small></article>
+        <article class="kpi"><span>Sessions opening poster studio</span><strong id="metric-posters">—</strong><small id="metric-poster-share">Sessions opening the poster maker</small></article>
+        <article class="kpi"><span>Sessions taking an action</span><strong id="metric-engaged">—</strong><small id="metric-engaged-share">Sessions with any tracked interaction</small></article>
       </section>
       <div class="reading-note">
         <span class="reading-icon" aria-hidden="true">i</span>
@@ -96,7 +96,7 @@
         </section>
         <section class="panel" aria-labelledby="campaign-title">
           <div class="panel-header"><div><span class="eyebrow">04 / ATTRIBUTION</span><h2 id="campaign-title">Campaigns, accounted for</h2><p class="panel-intro" id="campaign-summary">Includes visits without campaign tags.</p></div></div>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Campaign</th><th scope="col">Sessions</th><th scope="col">Share</th></tr></thead><tbody id="campaigns"></tbody><tfoot><tr><th scope="row">All sessions</th><td id="campaign-total">—</td><td>100%</td></tr></tfoot></table></div>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Campaign</th><th scope="col">Sessions</th><th scope="col">Share</th></tr></thead><tbody id="campaigns"></tbody><tfoot><tr><th scope="row">All sessions</th><td id="campaign-total">—</td><td id="campaign-share">—</td></tr></tfoot></table></div>
           <div class="campaign-example"><span>Example tagged WhatsApp link:</span><code>/?utm_source=whatsapp&amp;utm_campaign=november</code></div>
           <p class="hint">No campaign tag is a genuine category. Campaign names do not prove a registration or purchase.</p>
         </section>
