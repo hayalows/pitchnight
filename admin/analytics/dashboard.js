@@ -37,141 +37,200 @@
     p.textContent = message;
     element.replaceChildren(p);
   }
-  function renderBarList(target, items) {
+function renderBarList(target, items, total, emptyText) {
     target.replaceChildren();
-    if (!items || !items.length) return empty(target, "No measured sessions in this period.");
-    const maximum = Math.max(...items.map(i => i.value), 1);
-    for (const item of items.slice(0, 8)) {
+    if (!items || !items.length) return empty(target, emptyText || "No measured sessions in this period.");
+    for (const item of items) {
+      const share = total > 0 ? (item.value / total) * 100 : 0;
       const wrap = document.createElement("div");
+      wrap.className = "bar-item";
       const label = document.createElement("div");
       label.className = "bar-label";
       const name = document.createElement("span");
-      name.textContent = item.name === "direct" ? "Direct / unknown" : item.name;
+      const aliases = { direct: "Direct / unknown", mobile: "Mobile", desktop: "Desktop", none: "No campaign tag" };
+      name.textContent = aliases[item.name] || item.name;
       const number = document.createElement("span");
-      number.textContent = fmt(item.value);
+      number.textContent = fmt(item.value) + " of " + fmt(total) + " · " + share.toFixed(1) + "%";
       label.append(name, number);
       const track = document.createElement("div");
       track.className = "bar-track";
+      track.setAttribute("role", "img");
+      track.setAttribute("aria-label", name.textContent + ": " + fmt(item.value) + " of " + fmt(total) + " sessions");
       const bar = document.createElement("div");
       bar.className = "bar-fill";
-      bar.style.width = (100 * item.value / maximum).toFixed(1) + "%";
+      bar.style.width = Math.max(0, Math.min(100, share)).toFixed(1) + "%";
       track.append(bar);
       wrap.append(label, track);
       target.append(wrap);
     }
   }
-  function renderActions(totals) {
+  function renderActions(totals, actionSessions) {
     const container = byId("actions");
     container.replaceChildren();
     const rows = [
+      ["Registration link opens", "ticket_open"],
       ["Programme opens", "programme_open"],
       ["Poster studio opens", "poster_open"],
-      ["Poster download clicks", "poster_download_click"],
-      ["Poster share clicks", "poster_share_click"],
-      ["Form completion acknowledgements", "form_acknowledged"],
-      ["Website share clicks", "site_share_click"]
+      ["Poster download attempts", "poster_download_click"],
+      ["Poster share attempts", "poster_share_click"],
+      ["Website share attempts", "site_share_click"],
+      ["Form-submitted checkbox", "form_acknowledged"],
+      ["On-site Paystack link clicks", "payment_link_click"]
     ];
     for (const [label, key] of rows) {
       const row = document.createElement("div");
       row.className = "action-row";
       const t = document.createElement("span");
       t.textContent = label;
-      const v = document.createElement("strong");
-      v.textContent = fmt(totals[key]);
-      row.append(t, v);
+      const unique = document.createElement("strong");
+      unique.textContent = fmt(actionSessions[key]);
+      unique.title = "Browser sessions that recorded this action";
+      const clicks = document.createElement("strong");
+      clicks.textContent = fmt(totals[key]);
+      clicks.className = "action-secondary";
+      clicks.title = "Recorded clicks or attempts, including repeats";
+      row.append(t, unique, clicks);
       container.append(row);
     }
   }
-  function renderCampaigns(items) {
+  function renderCampaigns(items, total, quality) {
     const body = byId("campaigns");
     body.replaceChildren();
-    const filtered = (items || []).filter(i => i.name !== "none");
-    if (!filtered.length) {
+    const entries = [...(items || [])].sort((a, b) => a.name === "none" ? 1 : b.name === "none" ? -1 : b.value - a.value);
+    if (!entries.length) {
       const row = document.createElement("tr");
       const cell = document.createElement("td");
-      cell.colSpan = 2;
-      cell.textContent = "No tagged campaigns recorded yet";
-      row.append(cell);
-      body.append(row);
-      return;
+      cell.colSpan = 3;
+      cell.textContent = "No sessions have been recorded yet.";
+      row.append(cell); body.append(row);
     }
-    for (const entry of filtered.slice(0, 12)) {
+    for (const entry of entries) {
       const row = document.createElement("tr");
-      const a = document.createElement("td"), b = document.createElement("td");
-      a.textContent = entry.name;
-      b.textContent = fmt(entry.value);
-      row.append(a, b);
+      const name = document.createElement("td");
+      const value = document.createElement("td");
+      const share = document.createElement("td");
+      name.textContent = entry.name === "none" ? "No campaign tag" : entry.name;
+      if (entry.name === "none") row.className = "untagged-row";
+      value.textContent = fmt(entry.value);
+      share.textContent = total ? (100 * entry.value / total).toFixed(1) + "%" : "0%";
+      row.append(name, value, share);
       body.append(row);
     }
+    setText("campaign-total", fmt(total));
+    setText("campaign-share", total ? "100%" : "0%");
+    setText("campaign-summary", fmt(quality.taggedSessions) + " tagged · " + fmt(quality.untaggedSessions) + " without a campaign tag. Both are included.");
   }
-  function drawTrend(data) {
-    const container = byId("traffic-chart");
-    container.replaceChildren();
-    const daily = data || [];
-    if (!daily.some(item => item.sessions > 0)) {
-      container.classList.add("chart-empty");
-      container.textContent = "No traffic recorded in this date range.";
-      return;
+  function drawTrend(days) {
+    const target = byId("traffic-chart");
+    const table = byId("daily-table-body");
+    target.replaceChildren();
+    table.replaceChildren();
+    const daily = days || [];
+    for (const entry of daily) {
+      const row = document.createElement("tr");
+      for (const value of [entry.day, fmt(entry.sessions), fmt(entry.pageViews)]) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        row.append(td);
+      }
+      table.append(row);
     }
-    container.classList.remove("chart-empty");
-    const NS = "http://www.w3.org/2000/svg";
-    const el = (name, attrs) => {
-      const x = document.createElementNS(NS, name);
-      for (const [k, v] of Object.entries(attrs || {})) x.setAttribute(k, String(v));
-      return x;
-    };
-    const svg = el("svg", { viewBox: "0 0 620 206", role: "img", "aria-label": "Daily measured sessions, from " + daily[0].day + " to " + daily[daily.length - 1].day });
-    const max = Math.max(1, ...daily.map(x => x.sessions));
-    const plotX = 13, plotY = 15, width = 595, height = 145;
-    for (let j = 0; j < 4; j++) {
-      const y = plotY + j * height / 3;
-      svg.append(el("line", { x1: plotX, y1: y, x2: plotX + width, y2: y, stroke: "#d6d0c5", "stroke-dasharray": "4 5" }));
+    if (!daily.length) return empty(target, "No dates available.");
+    const maxValue = Math.max(1, ...daily.map(d => d.sessions));
+    const axisMaximum = Math.max(2, Math.ceil(maxValue / 2) * 2);
+    const graph = document.createElement("div");
+    graph.className = "trend-graph";
+    const axis = document.createElement("div");
+    axis.className = "trend-axis";
+    [axisMaximum, axisMaximum / 2, 0].forEach(n => {
+      const label = document.createElement("span");
+      label.textContent = fmt(n);
+      axis.append(label);
+    });
+    const scroll = document.createElement("div");
+    scroll.className = "trend-scroll";
+    scroll.tabIndex = 0;
+    scroll.setAttribute("role", "region");
+    scroll.setAttribute("aria-label", "Session bar chart. Scroll to view more days.");
+    const bars = document.createElement("div");
+    bars.className = "trend-bars";
+    bars.style.minWidth = Math.max(400, daily.length * 48) + "px";
+    for (const entry of daily) {
+      const figure = document.createElement("div");
+      figure.className = "trend-day";
+      figure.setAttribute("role", "img");
+      figure.setAttribute("aria-label", entry.day + ": " + fmt(entry.sessions) + " sessions, " + fmt(entry.pageViews) + " page views");
+      figure.title = entry.day + " · " + fmt(entry.sessions) + " sessions";
+      const area = document.createElement("div");
+      area.className = "trend-area";
+      const label = document.createElement("span");
+      label.className = "trend-value";
+      label.textContent = fmt(entry.sessions);
+      const bar = document.createElement("span");
+      bar.className = "trend-column";
+      bar.style.height = entry.sessions ? Math.max(2.5, entry.sessions / axisMaximum * 100).toFixed(1) + "%" : "0%";
+      const date = document.createElement("span");
+      date.className = "trend-date";
+      date.textContent = new Date(entry.day + "T00:00:00Z").toLocaleDateString("en-GH", { day: "numeric", month: "short", timeZone: "UTC" });
+      area.append(label, bar); figure.append(area, date); bars.append(figure);
     }
-    const coords = daily.map((x, i) => [
-      plotX + (daily.length === 1 ? width / 2 : width * i / (daily.length - 1)),
-      plotY + height * (1 - x.sessions / max)
-    ]);
-    const d = coords.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
-    svg.append(el("path", { d: d + " L" + coords[coords.length - 1][0] + " 160 L" + coords[0][0] + " 160 Z", fill: "#123cb3", "fill-opacity": ".09" }));
-    svg.append(el("path", { d, stroke: "#123cb3", "stroke-width": 3, fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round" }));
-    if (daily.length <= 7) for (const p of coords) svg.append(el("circle", { cx: p[0], cy: p[1], r: 3.5, fill: "#123cb3" }));
-    const positions = [...new Set([0, Math.floor((daily.length - 1) / 2), daily.length - 1])];
-    for (const i of positions) {
-      const date = new Date(daily[i].day + "T00:00:00Z");
-      const label = el("text", {
-        x: coords[i][0], y: 193, fill: "#6b685e", "font-size": 11,
-        "text-anchor": i === 0 ? "start" : i === daily.length - 1 ? "end" : "middle"
-      });
-      label.textContent = date.toLocaleDateString("en-GH", { month: "short", day: "numeric", timeZone: "UTC" });
-      svg.append(label);
+    scroll.append(bars);
+    graph.append(axis, scroll);
+    target.append(graph);
+    if (daily.length > 7) {
+      const tip = document.createElement("p");
+      tip.className = "hint scroll-tip";
+      tip.textContent = "Scroll across to see all " + daily.length + " days. Exact numbers are available below.";
+      target.append(tip);
     }
-    container.append(svg);
   }
-  function renderFigures(figures) {
+    function renderFigures(figures) {
     const items = [["figure-forms", "formResponses"], ["figure-paid", "paidTickets"], ["figure-gross", "grossCedis"]];
     for (const [id, key] of items) byId(id).value = figures && typeof figures[key] === "number" ? String(figures[key]) : "";
     setText("figure-updated", figures?.updatedAt ? "Last updated " + new Date(figures.updatedAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT" : "No reported totals saved");
   }
-  function render(data) {
+function render(data) {
     current = data;
     const totals = data.totals || {};
-    setText("metric-sessions", fmt(totals.sessions));
-    setText("metric-ticket", fmt(totals.ticket_open));
-    setText("metric-posters", fmt(totals.poster_download_click));
-    setText("metric-payment", fmt(totals.payment_link_click));
-    setText("views", fmt(totals.pageViews) + " page views");
+    const quality = data.quality || {};
+    const actions = data.actionSessions || {};
+    const total = totals.sessions || 0;
+    setText("metric-sessions", fmt(total));
+    setText("metric-ticket", fmt(totals.ticketSessions));
+    setText("metric-posters", fmt(totals.posterSessions));
+    setText("metric-engaged", fmt(totals.engagedSessions));
+    const rate = value => total ? (100 * (Number(value) || 0) / total).toFixed(1) + "% of measured sessions" : "No sessions measured yet";
+    setText("metric-ticket-share", rate(totals.ticketSessions));
+    setText("metric-poster-share", rate(totals.posterSessions));
+    setText("metric-engaged-share", rate(totals.engagedSessions));
+    setText("views", fmt(totals.pageViews) + " page views · " + fmt(total) + " sessions");
     drawTrend(data.daily);
-    renderBarList(byId("sources"), data.sources);
-    renderActions(totals);
-    renderCampaigns(data.campaigns);
+    renderBarList(byId("sources"), data.sources, total, "No traffic sources measured yet.");
+    renderBarList(byId("devices"), data.devices, total, "No device information recorded yet.");
+    renderActions(totals, actions);
+    renderCampaigns(data.campaigns, total, quality);
     renderFigures(data.figures);
     const coverage = byId("coverage");
-    coverage.hidden = data.coverage?.complete !== false && !data.coverage?.unreadable;
-    if (!coverage.hidden) coverage.textContent = "Data coverage is incomplete. Storage scan limit reached or some records could not be read; shown counts may be lower than actual activity.";
-    setText("generated-at", "Report updated " + new Date(data.generatedAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT");
-    status.textContent = "Measured activity · " + data.windowDays + " day window · Ghana time (GMT)";
+    coverage.hidden = data.coverage?.complete === true;
+    if (!coverage.hidden) {
+      coverage.textContent = "Incomplete coverage: this report can read up to " + fmt(data.coverage?.cap || 400) +
+        " session records per request. Some stored records may be unavailable or outside the scan. " +
+        "Counts shown here are partial, and percentages apply only to the sessions included.";
+    }
+    const equal = Number(quality.sourceSessions) === total && Number(quality.campaignSessions) === total &&
+      Number(quality.deviceSessions) === total && Number(quality.dailySessions) === total && quality.reconciled === true;
+    const statusLine = byId("reconciliation");
+    statusLine.classList.toggle("mismatch", !equal);
+    statusLine.textContent = equal
+      ? "Count check passed · " + fmt(total) + " sessions = " + fmt(quality.sourceSessions) + " source sessions = " +
+        fmt(quality.campaignSessions) + " campaign sessions = " + fmt(quality.deviceSessions) + " device sessions = " +
+        fmt(quality.dailySessions) + " daily sessions."
+      : "Count check failed: the session breakdowns do not reconcile. Do not use this report for decisions until the data is checked.";
+    setText("generated-at", "Generated " + new Date(data.generatedAt).toLocaleString("en-GH", { timeZone: "UTC" }) +
+      " GMT. Last visitor activity: " + (data.lastActivityAt ? new Date(data.lastActivityAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT" : "none recorded"));
+    status.textContent = "Showing the last " + data.windowDays + " days · " + data.minDate + " to " + data.maxDate + " · Ghana time (GMT)";
   }
-  async function load() {
+    async function load() {
     status.textContent = "Loading real analytics…";
     try {
       const data = await api("GET", null, "?days=" + byId("period").value);
@@ -245,9 +304,15 @@
       ["Reporting", "Generated at UTC", current.generatedAt],
       ["Quality", "Complete", current.coverage?.complete ? "Yes" : "No"]];
     for (const [key, value] of Object.entries(current.totals || {})) rows.push(["Activity", key, value]);
-    for (const item of current.daily || []) rows.push(["Daily sessions", item.day, item.sessions]);
-    for (const item of current.sources || []) rows.push(["Source", item.name, item.value]);
-    for (const item of current.campaigns || []) rows.push(["Campaign", item.name, item.value]);
+    for (const [key, value] of Object.entries(current.actionSessions || {})) rows.push(["Sessions with action", key, value]);
+    for (const item of current.daily || []) {
+      rows.push(["Daily sessions", item.day, item.sessions]);
+      rows.push(["Daily page views", item.day, item.pageViews]);
+    }
+    for (const item of current.sources || []) rows.push(["Source sessions", item.name, item.value]);
+    for (const item of current.campaigns || []) rows.push(["Campaign sessions", item.name, item.value]);
+    for (const item of current.devices || []) rows.push(["Device sessions", item.name, item.value]);
+    rows.push(["Quality", "Session breakdowns reconcile", Boolean(current.quality?.reconciled)]);
     if (current.figures) for (const key of ["formResponses","paidTickets","grossCedis","updatedAt"]) rows.push(["Organiser reported", key, current.figures[key]]);
     const csv = rows.map(row => row.map(csvCell).join(",")).join("\r\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));

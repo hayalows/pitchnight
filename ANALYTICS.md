@@ -22,13 +22,13 @@ This token stays on the server. Never publish it or the blob URLs.
 
 ## What the numbers mean
 
-- Measured sessions = anonymous browser-tab sessions, not identifiable or deduplicated people.
+- Measured sessions = anonymous browser-tab sessions, not identifiable or deduplicated people. Each valid stored session is counted once within the 7/30 day window.
 - Page views = reloads/loads captured in those sessions.
-- Ticket opens = clicks on an existing registration CTA, not completed Google Form responses.
+- Ticket interest (top card) = number of sessions that clicked a registration CTA. The Actions table also shows all registration-link clicks separately. Neither is a completed Google Form response.
 - Form acknowledgements = visitors ticking the checkbox, not verified submissions.
 - Payment link clicks = visitors opening Paystack, not successful payment.
 - Poster download/share clicks = attempted actions, not proof of completed download or delivery.
-- Source/campaign = link tags or available referrer; messaging apps sometimes show as direct.
+- Source/campaign = link tags or available referrer; messaging apps sometimes show as direct. The source, campaign (including No campaign tag), device and daily session totals each add up to the measured session total for that report.
 - Reported form responses/paid tickets/gross = organiser-entered totals checked outside this site. No automatic Google Forms/Paystack API reconciliation is claimed.
 
 Do not calculate a true website-visitor-to-payment conversion rate from these sources. The platform cannot join individuals between Google Forms, Paystack and browser sessions.
@@ -44,9 +44,9 @@ It never records a poster friend's name, form answers, email, IP address, paymen
 
 ## Reporting and cost controls
 
-Reports are available for the previous 7 or 30 UTC days, matching Ghana time.
-The dashboard limits Blob scans to 400 session records per request and displays an explicit partial-data warning when it cannot report complete coverage.
-Each browser session uses one Blob path and overwrites it at most 12 times per page lifetime (debounced).
+Reports are available for the previous 7 or 30 UTC days, matching Ghana time. The new dashboard uses one denominator (measured sessions) for its four top cards, traffic sources, campaign attribution and device shares. The Actions table explicitly separates sessions with an action from total click attempts; chart values are available in a detailed daily table.
+The dashboard limits Blob reporting to 400 session records per request and displays an explicit partial-data warning when it cannot report complete coverage. It also flags unreconciled counts. Its reported totals are valid within the displayed coverage, not a guarantee of complete real-world visitor activity.
+Each browser session uses one Blob path and sends at most 20 update attempts per page lifetime (debounced). New actions arriving during an in-flight request are scheduled for a subsequent flush. Delivery is still best effort on page exit and interrupted connections.
 This is a bounded, low-volume event implementation, not a large-scale analytics warehouse.
 
 Vercel Hobby Blob includes limited monthly operations. At high traffic or in abusive conditions telemetry may become unavailable.
@@ -85,3 +85,9 @@ Required production env: BLOB_READ_WRITE_TOKEN, MYC_ADMIN_PASSWORD
 - No verification of Google Form responses or Paystack payments.
 - No individual transaction reconciliation, refunds ledger or automatic API import.
 - No completed independent production browser E2E test until it is actually run.
+
+## Measurement reconciliation in v2
+
+The dashboard performs five checks on the same eligible stored sessions: total sessions; sum of daily sessions; sum of source sessions; sum of campaign sessions (including untagged); and sum of mobile/desktop sessions. All five should match. A mismatch becomes an explicit alert. A valid match means the displayed *recorded* data is internally consistent, not that tracking captured every real visitor.
+
+The old campaign table omitted the `none` category, which made the visible campaign total smaller than all sessions. The old cards counted clicks while traffic-source rows counted sessions. Both issues have been corrected in the display and aggregation. Existing anonymous session JSON files remain compatible, with no historical backfill or external-service integration.
