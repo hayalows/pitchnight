@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
     const d = req.body || {};
     if (![d.formResponses, d.paidTickets].every(v => Number.isSafeInteger(v) && v >= 0 && v <= 100000) ||
         typeof d.grossCedis !== "number" || !Number.isFinite(d.grossCedis) || d.grossCedis < 0 ||
-        d.grossCedis > 10000000 || Math.round(d.grossCedis * 100) !== d.grossCedis * 100) {
+        d.grossCedis > 10000000 || Math.abs(d.grossCedis * 100 - Math.round(d.grossCedis * 100)) > 0.0000001) {
       return res.status(400).json({ error: "Enter valid whole-number counts and a valid amount" });
     }
     const data = {
