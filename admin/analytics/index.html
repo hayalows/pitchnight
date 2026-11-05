@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#faf4e7">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <title>Make Your Case | Organiser Analytics</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/admin/analytics/dashboard.css">
+  <script defer src="/admin/analytics/dashboard.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Return to Make Your Case">
+      <span class="brand-mark" aria-hidden="true">✳</span><span>OFF SCRIPT <small>/ THE DESK</small></span>
+    </a>
+    <a class="backlink" href="/">View event site <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main" class="shell">
+    <section id="login-panel" class="login-panel" aria-labelledby="login-title">
+      <span class="eyebrow">ORGANISER ACCESS / PRIVATE</span>
+      <h1 id="login-title">The numbers<br>behind the night<span class="period">.</span></h1>
+      <p>See ticket interest, poster activity and organiser-reported sales in one place.</p>
+      <form id="login-form" class="login-form">
+        <label for="admin-password">Admin password</label>
+        <div class="login-line">
+          <input type="password" name="password" id="admin-password" autocomplete="current-password" required minlength="24" placeholder="Enter access password">
+          <button type="submit" class="primary">Open dashboard <span aria-hidden="true">→</span></button>
+        </div>
+        <p id="login-error" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+      <p class="understated">This page is separate from public registration. It does not collect form answers or card details.</p>
+    </section>
+
+    <section id="workspace" hidden>
+      <div class="headline">
+        <div>
+          <span class="eyebrow">MAKE YOUR CASE / 13 NOVEMBER 2026</span>
+          <h1>Event <span>analytics.</span></h1>
+          <p>Understand interest, activity and reported ticket outcomes.</p>
+        </div>
+        <div class="controls">
+          <label for="period">Time range</label>
+          <select id="period"><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select>
+          <button type="button" id="refresh" class="quiet">Refresh</button>
+          <button type="button" id="logout" class="quiet">Sign out</button>
+        </div>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite">Loading analytics…</p>
+      <div id="coverage" class="warning" hidden></div>
+
+      <section aria-label="Key event measures" class="kpis">
+        <article class="kpi"><span>Measured sessions</span><strong id="metric-sessions">—</strong><small>Anonymous browser sessions</small></article>
+        <article class="kpi"><span>Ticket desk opens</span><strong id="metric-ticket">—</strong><small>Interest, not completed registration</small></article>
+        <article class="kpi"><span>Poster download clicks</span><strong id="metric-posters">—</strong><small>Attempts, not verified downloads</small></article>
+        <article class="kpi"><span>Payment link clicks</span><strong id="metric-payment">—</strong><small>Not confirmed transactions</small></article>
+      </section>
+
+      <div class="analysis-grid">
+        <section class="panel activity-panel" aria-labelledby="activity-title">
+          <div class="panel-header">
+            <div><span class="eyebrow">01 / ACTIVITY</span><h2 id="activity-title">Traffic over time</h2></div>
+            <span id="views" class="statline"></span>
+          </div>
+          <div id="traffic-chart" class="chart" role="img" aria-label="Measured sessions by day"></div>
+          <p class="hint">Only sessions observed after tracking was enabled are included.</p>
+        </section>
+        <section class="panel" aria-labelledby="sources-title">
+          <div class="panel-header"><div><span class="eyebrow">02 / ACQUISITION</span><h2 id="sources-title">Where people came from</h2></div></div>
+          <div id="sources" class="bars"></div>
+          <p class="hint">Tagged campaign links give the most reliable source labels. Unknown traffic appears as direct.</p>
+        </section>
+      </div>
+
+      <div class="analysis-grid">
+        <section class="panel" aria-labelledby="actions-title">
+          <div class="panel-header"><div><span class="eyebrow">03 / INTERACTIONS</span><h2 id="actions-title">What visitors did</h2></div></div>
+          <div class="action-list" id="actions"></div>
+          <p class="hint">Counts are separate actions. They do not prove that one person completed every step.</p>
+        </section>
+        <section class="panel" aria-labelledby="campaign-title">
+          <div class="panel-header"><div><span class="eyebrow">04 / CAMPAIGNS</span><h2 id="campaign-title">Tagged campaigns</h2></div></div>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Campaign</th><th scope="col">Sessions</th></tr></thead><tbody id="campaigns"></tbody></table></div>
+          <div class="campaign-example"><span>For WhatsApp promotions:</span><code>/?utm_source=whatsapp&amp;utm_campaign=november</code></div>
+        </section>
+      </div>
+
+      <section class="panel organiser-panel" aria-labelledby="figures-title">
+        <div class="panel-header">
+          <div><span class="eyebrow">05 / ORGANISER REPORT</span><h2 id="figures-title">Registration &amp; sales</h2></div>
+          <span class="self-reported">MANUALLY ENTERED</span>
+        </div>
+        <p class="section-copy">Enter counts checked against the Google Form responses and Paystack dashboard. These are organiser-reported totals, not independently verified by MakeYourCase.</p>
+        <form id="figures-form">
+          <div class="figures-fields">
+            <label>Form responses<input id="figure-forms" type="number" min="0" max="100000" step="1" required placeholder="0"></label>
+            <label>Paid tickets<input id="figure-paid" type="number" min="0" max="100000" step="1" required placeholder="0"></label>
+            <label>Gross revenue (GH₵)<input id="figure-gross" type="number" min="0" max="10000000" step=".01" required placeholder="0.00"></label>
+          </div>
+          <div class="save-line">
+            <button type="submit" id="save-figures" class="primary">Save reported totals <span aria-hidden="true">→</span></button>
+            <span id="figure-updated">No reported totals saved</span>
+          </div>
+          <p id="figure-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+        <p class="hint">Figures cover the entire event, not the selected traffic date range. Remove duplicate transactions and refunds when reconciling. These totals cannot establish individual visitor-to-sale conversion.</p>
+      </section>
+
+      <section class="footer-tools" aria-label="Reporting tools">
+        <div><span class="eyebrow">EXPORT / SUMMARY</span><h2>Keep a copy of the report.</h2><p id="generated-at">All times are UTC (Ghana time).</p></div>
+        <button type="button" id="export" class="outline">Export summary CSV <span aria-hidden="true">↓</span></button>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer"><span>OFF SCRIPT × MAKE YOUR CASE</span><span>PRIVATE EVENT REPORTING / GHANA</span></footer>
+</body>
+</html>

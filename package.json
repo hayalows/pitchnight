@@ -1,0 +1,9 @@
+{
+  "name": "offscript-pitch-night",
+  "version": "1.5.0",
+  "private": true,
+  "description": "Static Make Your Case website with private event analytics",
+  "dependencies": {
+    "@vercel/blob": "2.8.2"
+  }
+}
