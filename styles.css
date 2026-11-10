@@ -2221,3 +2221,26 @@ button:disabled{cursor:not-allowed}
 @media(max-width:1150px){.menu-trigger:not([hidden]){display:inline-flex}}
 @media(max-width:620px){.site-header:has(.menu-trigger:not([hidden])) .nav-ticket{display:none}.menu-trigger{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){.site-menu[open]{animation:none}}
+
+/* The floating control stays compact and uses the same ink and vector icons as the site. */
+.menu-trigger{color:var(--ink)}
+.menu-trigger .ui-icon,.site-menu-close .ui-icon{width:1.2rem;height:1.2rem}
+.site-menu-close{display:grid;place-items:center}
+.site-menu-body nav a .ui-icon{margin-left:auto;width:1.15rem;height:1.15rem}
+.site-menu-ticket .ui-icon{width:1.15rem;height:1.15rem}
+.site-menu-kicker .ui-icon{width:.85rem;height:.85rem}
+@media(max-width:1150px){.menu-trigger-floating:not([hidden]){position:fixed;z-index:40;top:max(.65rem,env(safe-area-inset-top));right:1rem;box-shadow:3px 3px 0 var(--ink)}}
+@media(max-width:1150px){:is(#about,#lineup,#host,#details,#faq){scroll-margin-top:0}}
+.website-feedback{background:var(--paper);color:var(--ink);border-block:0;padding:2rem clamp(20px,5.5vw,100px)}
+.website-feedback details{max-width:42rem;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.website-feedback summary{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:64px;list-style:none;color:var(--ink);font-weight:800}
+.website-feedback summary::-webkit-details-marker{display:none}
+.website-feedback summary small{display:block;margin-top:.2rem;font-size:.75rem;font-weight:500;color:#4a4a4a}
+.website-feedback summary .ui-icon{width:1.4rem;height:1.4rem;color:var(--blue);transition:transform .2s}
+.website-feedback details[open] summary .ui-icon{transform:rotate(45deg)}
+.website-feedback details[open]{padding-bottom:1.2rem}
+#website-feedback-form select,#website-feedback-form textarea{border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink)}
+#website-feedback-form button{min-height:44px;border:2px solid var(--ink);border-radius:0;background:var(--blue);color:#fff;box-shadow:3px 3px 0 var(--ink);font-weight:800;cursor:pointer}
+#website-feedback-form button:disabled{opacity:.6;cursor:wait}
+.website-feedback summary:focus-visible,#website-feedback-form :focus-visible,#website-measurement-toggle:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.website-feedback summary .ui-icon{transition:none}}

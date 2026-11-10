@@ -104,22 +104,43 @@
       menuClose?.focus();
     });
     menuClose?.addEventListener("click", () => siteMenu.close());
+    let menuDestination = null;
     siteMenu.addEventListener("click", (event) => {
       if (event.target === siteMenu) siteMenu.close();
       const link = event.target.closest("a[href^='#']");
       if (link) {
         event.preventDefault();
-        const target = document.getElementById(link.hash.slice(1));
-        siteMenu.close();
-        target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+        menuDestination = document.getElementById(link.hash.slice(1));
         history.replaceState(null, "", link.hash);
+        siteMenu.close();
       }
     });
     siteMenu.addEventListener("close", () => {
       document.body.classList.remove("dialog-is-open");
       menuTrigger.setAttribute("aria-expanded", "false");
-      menuTrigger.focus({ preventScroll: true });
+      if (menuDestination) {
+        const target = menuDestination;
+        menuDestination = null;
+        requestAnimationFrame(() => {
+          target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+          target.scrollIntoView({ block: "start", behavior: "instant" });
+        });
+      } else {
+        menuTrigger.focus({ preventScroll: true });
+      }
     });
+    // Keep the labelled menu within reach after the original header leaves view.
+    const header = document.querySelector(".site-header");
+    if (header && "IntersectionObserver" in window) {
+      const marker = document.createElement("div");
+      marker.setAttribute("aria-hidden", "true");
+      header.after(marker);
+      new IntersectionObserver(entries => {
+        menuTrigger.classList.toggle("menu-trigger-floating", !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0);
+      }).observe(marker);
+    }
+
   }
 
   // Both displays derive from the same absolute Ghana event time.
