@@ -25,16 +25,16 @@
   const notice = document.getElementById("measurement-notice");
   const settings = document.getElementById("measurement-settings");
   const dismiss = document.getElementById("measurement-dismiss");
-  if (notice && settings && dismiss) {
+  if (notice && dismiss) {
     let seen = false;
     try { seen = localStorage.getItem("myc-analytics-notice-seen") === "1"; } catch (_) {}
-    settings.hidden = false;
+    if (settings) settings.hidden = false;
     notice.hidden = seen;
     dismiss.addEventListener("click", () => {
       notice.hidden = true;
       try { localStorage.setItem("myc-analytics-notice-seen", "1"); } catch (_) {}
     });
-    settings.addEventListener("click", () => {
+    settings?.addEventListener("click", () => {
       const menu = document.getElementById("site-menu");
       if (menu?.open) menu.close();
       notice.hidden = false;

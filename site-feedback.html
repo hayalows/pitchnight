@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#faf4e7"><title>Feedback &amp; site settings | Pitch Night</title><link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/styles.css?v=5"><script src="/analytics-client.js?v=6" defer></script></head>
+<body class="feedback-page"><header class="feedback-page-header"><a href="/">BACK TO PITCH NIGHT</a><span>OFF SCRIPT / MAKE YOUR CASE</span></header><main class="feedback-page-main"><p class="section-label">HELP US MAKE THE SITE BETTER</p><h1>YOUR THOUGHTS<span>.</span></h1><p>Tell us if something was confusing or hard to use. You can also manage analytics below.</p>  <section class="website-feedback" aria-label="Website feedback">
+    <details id="website-feedback" open>
+      <summary><span>Give feedback on this site <small>Help us make it easier to use</small></span><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></summary>
+      <p>Was anything confusing or hard to use? Tell the organisers what you tried. Please leave out names, contact details and payment information.</p>
+      <form id="website-feedback-form" method="post">
+        <label>What were you doing?
+          <select name="topic" required>
+            <option value="">Choose a topic</option>
+            <option value="registration">Registering or paying</option>
+            <option value="programme">Checking the programme or host</option>
+            <option value="poster">Making a poster</option>
+            <option value="other">Something else</option>
+          </select>
+        </label>
+        <label>How easy was it?
+          <select name="rating" required>
+            <option value="">Choose a rating</option>
+            <option value="5">5 · Very easy</option>
+            <option value="4">4 · Easy</option>
+            <option value="3">3 · Okay</option>
+            <option value="2">2 · Difficult</option>
+            <option value="1">1 · Very difficult</option>
+          </select>
+        </label>
+        <label class="feedback-message">What happened?
+          <textarea name="message" rows="3" required minlength="5" maxlength="500"></textarea>
+        </label>
+        <button type="submit" disabled>Send feedback</button>
+        <noscript>Enable JavaScript to send feedback.</noscript>
+        <p id="website-feedback-status" role="status"></p>
+      </form>
+    </details>
+    <button type="button" class="measurement-settings" id="measurement-settings" hidden>Analytics settings</button>
+  </section></main><aside class="measurement-notice" id="measurement-notice" aria-label="Analytics settings" hidden><div><strong>ABOUT SITE ANALYTICS</strong><p>We count visits and site actions by browser session. Reports include approximate country and referral source.</p></div><div class="measurement-actions"><button type="button" id="website-measurement-toggle" hidden></button><button type="button" id="measurement-dismiss">Done</button></div></aside></body></html>

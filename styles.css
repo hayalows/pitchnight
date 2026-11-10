@@ -2276,3 +2276,13 @@ body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden])
 .site-menu .website-feedback details{max-width:none}
 .site-menu .measurement-settings{display:block;margin-top:.3rem;font-size:.75rem}
 .site-menu .measurement-settings[hidden]{display:none}
+
+/* Feedback has its own quiet page, keeping the navigation short. */
+.feedback-page-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem clamp(20px,5vw,70px);border-bottom:2px solid var(--ink);font-size:.7rem;font-weight:800;letter-spacing:.04em}
+.feedback-page-header a{color:var(--ink);text-decoration:none;min-height:44px;display:flex;align-items:center}
+.feedback-page-main{max-width:780px;margin:0 auto;padding:clamp(2rem,6vw,5rem) 20px}
+.feedback-page-main h1{font:400 clamp(3rem,10vw,6rem)/1 var(--display);color:var(--blue);margin:.5rem 0 1rem}
+.feedback-page-main h1 span{color:var(--red)}
+.feedback-page-main>p:not(.section-label){line-height:1.6;max-width:44rem}
+.feedback-page .website-feedback{padding:1.5rem 0;background:transparent}
+@media(max-width:480px){.feedback-page-header span{display:none}}
