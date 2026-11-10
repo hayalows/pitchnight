@@ -216,7 +216,7 @@
     const entranceTargets = document.querySelectorAll(
       "#about .section-heading, #about .about-copy, #about .sticker, " +
       "#lineup .section-heading, #lineup .programme-teaser, " +
-      "#host .host-visual, #host .host-copy, " +
+      "#host .host-copy, " +
       "#details .ticket-shell, #faq .faq-list, .last-call-copy, .last-call-action"
     );
     const revealObserver = new IntersectionObserver((entries) => {
