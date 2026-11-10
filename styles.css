@@ -2286,3 +2286,27 @@ body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden])
 .feedback-page-main>p:not(.section-label){line-height:1.6;max-width:44rem}
 .feedback-page .website-feedback{padding:1.5rem 0;background:transparent}
 @media(max-width:480px){.feedback-page-header span{display:none}}
+
+/* Host: one clear introduction, followed by the portrait and profile action. */
+.host-section .host-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);grid-template-areas:"portrait intro" "portrait copy";column-gap:clamp(2.5rem,7vw,7rem);row-gap:0;align-items:start}
+.host-intro{grid-area:intro;align-self:end;padding-top:1rem}
+.host-stage{grid-area:portrait;align-self:center}
+.host-section .host-copy{grid-area:copy;align-self:start}
+.host-intro .section-label{margin:0 0 1rem}
+.host-title{font-family:var(--display);font-size:clamp(4rem,7vw,7.6rem);font-weight:400;line-height:.98;letter-spacing:-.025em;color:var(--blue);margin:0;overflow-wrap:anywhere}
+.host-title span{color:var(--red)}
+.host-real-name{margin:.7rem 0 1.4rem;font-size:.76rem;font-weight:800;letter-spacing:.12em;color:var(--ink)}
+.host-summary{margin-top:0}
+@media(max-width:850px){
+ .host-section .host-grid{grid-template-columns:1fr;grid-template-areas:"intro" "portrait" "copy";gap:0}
+ .host-intro,.host-section .host-copy{width:100%;max-width:570px;margin-inline:auto}
+ .host-intro{padding-top:.5rem}
+ .host-title{font-size:clamp(3.7rem,12vw,6rem)}
+ .host-real-name{margin:.5rem 0 .6rem}
+ .host-stage{width:min(70vw,310px);margin:1rem auto 1.8rem}
+}
+@media(max-width:620px){
+ .host-title{font-size:clamp(3.1rem,12.8vw,5rem)}
+ .host-stage{width:min(67vw,270px);margin:.7rem auto 1.65rem}
+ .host-summary{margin-bottom:1.25rem}
+}
