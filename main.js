@@ -32,7 +32,7 @@
 
   function restoreFocus() {
     // The ticket desk may already be opening after the programme closes.
-    if (registrationDialog?.open) return;
+    if (registrationDialog?.open || hostDialog?.open) return;
     document.body.classList.remove("dialog-is-open");
     if (previousFocus && typeof previousFocus.focus === "function") {
       previousFocus.focus();
@@ -46,6 +46,48 @@
   // Clicking the area outside the printed programme closes it.
   programmeDialog?.addEventListener("click", (event) => {
     if (event.target === programmeDialog) closeProgramme();
+  });
+
+  // The host profile follows the programme's native modal pattern.
+  // Name and short bio stay on the page even if JavaScript is unavailable.
+  const hostDialog = document.getElementById("host-dialog");
+  const hostOpeners = document.querySelectorAll("[data-open-host]");
+  const hostCloser = document.querySelector("[data-close-host]");
+  let hostPreviousFocus = null;
+
+  function openHost() {
+    if (!hostDialog) return;
+    hostPreviousFocus = document.activeElement;
+    document.getElementById("pitch-cursor")?.classList.remove("is-visible");
+    if (typeof hostDialog.showModal === "function") {
+      if (!hostDialog.open) hostDialog.showModal();
+    } else {
+      hostDialog.setAttribute("open", "");
+    }
+    document.body.classList.add("dialog-is-open");
+    hostCloser?.focus();
+  }
+
+  function closeHost() {
+    if (!hostDialog) return;
+    if (typeof hostDialog.close === "function" && hostDialog.open) {
+      hostDialog.close();
+    } else {
+      hostDialog.removeAttribute("open");
+      restoreHostFocus();
+    }
+  }
+
+  function restoreHostFocus() {
+    document.body.classList.toggle("dialog-is-open", Boolean(programmeDialog?.open || registrationDialog?.open));
+    hostPreviousFocus?.focus?.();
+  }
+
+  hostOpeners.forEach(button => button.addEventListener("click", openHost));
+  hostCloser?.addEventListener("click", closeHost);
+  hostDialog?.addEventListener("close", restoreHostFocus);
+  hostDialog?.addEventListener("click", event => {
+    if (event.target === hostDialog) closeHost();
   });
 
   // Both displays derive from the same absolute Ghana event time.
@@ -273,7 +315,7 @@
   function registrationLockScroll() {
     document.body.classList.toggle(
       "dialog-is-open",
-      Boolean(registrationDialog?.open || programmeDialog?.open)
+      Boolean(registrationDialog?.open || programmeDialog?.open || hostDialog?.open)
     );
   }
   function openRegistration(trigger) {
