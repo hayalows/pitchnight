@@ -34,7 +34,12 @@
       notice.hidden = true;
       try { localStorage.setItem("myc-analytics-notice-seen", "1"); } catch (_) {}
     });
-    settings.addEventListener("click", () => { notice.hidden = false; dismiss.focus(); });
+    settings.addEventListener("click", () => {
+      const menu = document.getElementById("site-menu");
+      if (menu?.open) menu.close();
+      notice.hidden = false;
+      requestAnimationFrame(() => dismiss.focus());
+    });
     if (navigator.globalPrivacyControl === true) {
       notice.querySelector("p").textContent = "Analytics are paused because your browser sent a Global Privacy Control signal.";
     }

@@ -137,7 +137,7 @@
       ["top", "PITCH NIGHT"], ["about", "THE IDEA"],
       ["lineup", "PROGRAMME"], ["host", "THE HOST"],
       ["details", "TICKETS"], ["faq", "FAQ"],
-      ["last-call", "THE FINALE"], ["website-feedback", "FEEDBACK"], ["site-footer", ""]
+      ["last-call", "THE FINALE"], ["site-footer", ""]
     ].map(([id, label]) => ({ element: document.getElementById(id) || document.querySelector("." + id), label }))
      .filter(area => area.element);
     let menuUpdatePending = false;

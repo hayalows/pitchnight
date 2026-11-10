@@ -2268,3 +2268,11 @@ body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden])
 
 /* At the footer, keep the menu action without a misleading section label. */
 .menu-trigger-floating.menu-no-context .menu-context{display:none}
+
+/* Feedback and measurement controls live in the menu, away from the event footer. */
+.site-menu .website-feedback{padding:1.4rem 0 0;background:transparent}
+.site-menu .website-feedback summary{font-size:.85rem}
+.site-menu .website-feedback p{font-size:.8rem}
+.site-menu .website-feedback details{max-width:none}
+.site-menu .measurement-settings{display:block;margin-top:.3rem;font-size:.75rem}
+.site-menu .measurement-settings[hidden]{display:none}
