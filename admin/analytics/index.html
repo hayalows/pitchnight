@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#faf4e7">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; base-uri 'none'; form-action 'self'">
   <title>Make Your Case | Organiser Analytics</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/admin/analytics/dashboard.css">
-  <script defer src="/admin/analytics/dashboard.js"></script>
+  <link rel="stylesheet" href="/admin/analytics/dashboard.css?v=3">
+  <script defer src="/admin/analytics/dashboard.js?v=3"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -25,9 +25,9 @@
   <main id="main" class="shell">
     <section id="login-panel" class="login-panel" aria-labelledby="login-title">
       <span class="eyebrow">ORGANISER ACCESS / PRIVATE</span>
-      <h1 id="login-title">The numbers<br>behind the night<span class="period">.</span></h1>
-      <p>See ticket interest, poster activity and organiser-reported sales in one place.</p>
-      <form id="login-form" class="login-form">
+      <h1 id="login-title">Pitch Night<br>analytics<span class="period">.</span></h1>
+      <p>Sign in to see website activity, visitor feedback and event totals.</p>
+      <form id="login-form" class="login-form" method="post">
         <label for="admin-password">Admin password</label>
         <div class="login-line">
           <input type="password" name="password" id="admin-password" autocomplete="current-password" required minlength="24" placeholder="Enter access password">
@@ -35,15 +35,14 @@
         </div>
         <p id="login-error" class="form-message" role="status" aria-live="polite"></p>
       </form>
-      <p class="understated">This page is separate from public registration. It does not collect form answers or card details.</p>
     </section>
 
     <section id="workspace" hidden>
-      <div class="headline">
+      <div class="headline" id="overview">
         <div>
           <span class="eyebrow">MAKE YOUR CASE / 13 NOVEMBER 2026</span>
-          <h1>Event <span>overview.</span></h1>
-          <p>See what happened on the website, how visitors arrived, and which actions they took.</p>
+          <h1>Event analytics<span class="period">.</span></h1>
+
         </div>
         <div class="controls">
           <label for="period">Time range</label>
@@ -52,62 +51,76 @@
           <button type="button" id="logout" class="quiet">Sign out</button>
         </div>
       </div>
+      <nav class="report-nav" aria-label="Analytics sections">
+        <a href="#overview">Overview</a><a href="#audience">Audience</a><a href="#interactions">Interactions</a>
+        <a href="#feedback">Feedback</a><a href="#registration">Event totals</a>
+      </nav>
       <div class="report-meta">
         <p id="status" class="status" role="status" aria-live="polite">Loading measurements…</p>
-        <span class="report-meta-label">Tracking began 5 Nov 2026 · Ghana time (GMT)</span>
+        <span class="report-meta-label">Ghana time (GMT)</span>
       </div>
       <div id="coverage" class="warning" hidden role="alert"></div>
       <section aria-label="Website activity at a glance" class="kpis">
-        <article class="kpi"><span>Measured sessions</span><strong id="metric-sessions">—</strong><small>Anonymous browser-tab sessions</small></article>
-        <article class="kpi"><span>Sessions showing ticket interest</span><strong id="metric-ticket">—</strong><small id="metric-ticket-share">Sessions clicking registration</small></article>
-        <article class="kpi"><span>Sessions opening poster studio</span><strong id="metric-posters">—</strong><small id="metric-poster-share">Sessions opening the poster maker</small></article>
-        <article class="kpi"><span>Sessions taking an action</span><strong id="metric-engaged">—</strong><small id="metric-engaged-share">Sessions with any tracked interaction</small></article>
+        <article class="kpi"><span>Recorded sessions</span><strong id="metric-sessions">—</strong><small>Browser sessions, including repeat visits</small></article>
+        <article class="kpi"><span>Registration interest</span><strong id="metric-ticket">—</strong><small id="metric-ticket-share">Sessions clicking registration</small></article>
+        <article class="kpi"><span>Poster studio interest</span><strong id="metric-posters">—</strong><small id="metric-poster-share">Sessions opening the poster maker</small></article>
+        <article class="kpi"><span>Checkout interest</span><strong id="metric-engaged">—</strong><small id="metric-engaged-share">Sessions opening the Paystack link</small></article>
       </section>
       <div class="reading-note">
         <span class="reading-icon" aria-hidden="true">i</span>
-        <p><strong>All four figures count sessions, not individual people.</strong> Source, campaign and device breakdowns add up to the session total. The actions table separates sessions from repeated clicks. No website metric confirms a payment.</p>
+        <p><strong>A session counts activity in one browser tab.</strong> Repeat visits can create new sessions. Paid tickets appear separately in the event totals.</p>
       </div>
 
-      <div class="analysis-grid">
+      <div class="analysis-grid" id="audience">
         <section class="panel activity-panel" aria-labelledby="activity-title">
           <div class="panel-header">
-            <div><span class="eyebrow">01 / DAILY ACTIVITY</span><h2 id="activity-title">Sessions by day</h2><p class="panel-intro">Every bar represents the number of recorded sessions that started that day.</p></div>
+            <div><span class="eyebrow">01 / DAILY ACTIVITY</span><h2 id="activity-title">Sessions by day</h2><p class="panel-intro">Sessions by start date. Today’s count is still changing.</p></div>
             <span id="views" class="statline"></span>
           </div>
           <div id="traffic-chart" class="chart" aria-label="Daily measured browser sessions"></div>
           <details class="data-details"><summary>See the exact daily figures</summary>
             <div class="table-wrap"><table><thead><tr><th scope="col">Day (GMT)</th><th scope="col">Sessions</th><th scope="col">Page views</th></tr></thead><tbody id="daily-table-body"></tbody></table></div>
           </details>
-          <p class="hint">Tracking started on 5 November. It cannot recover earlier visits, and a new browser tab can count as another session.</p>
+
         </section>
         <section class="panel" aria-labelledby="sources-title">
-          <div class="panel-header"><div><span class="eyebrow">02 / TRAFFIC SOURCES</span><h2 id="sources-title">Where sessions came from</h2><p class="panel-intro" id="source-summary">Every recorded session is accounted for.</p></div></div>
-          <div id="sources" class="bars"></div>
-          <div class="sub-section"><h3>Device type</h3><div id="devices" class="device-bars"></div></div>
+          <div class="panel-header"><div><span class="eyebrow">02 / TRAFFIC SOURCES</span><h2 id="sources-title">Audience breakdown</h2><p class="panel-intro" id="source-summary">Referral source, approximate country and screen size.</p></div></div>
+          <div class="sub-section"><h3>Referral source</h3><div id="sources" class="device-bars"></div></div>
+          <div class="sub-section"><h3>Country</h3><div id="countries" class="device-bars"></div></div>
+          <div class="sub-section"><h3>Screen size</h3><div id="devices" class="device-bars"></div></div>
           <p class="hint">Direct / unknown means no recognised referral source. A tagged link makes campaign attribution clearer.</p>
         </section>
       </div>
 
-      <div class="analysis-grid">
+      <div class="analysis-grid" id="interactions">
         <section class="panel" aria-labelledby="actions-title">
-          <div class="panel-header"><div><span class="eyebrow">03 / INTERACTIONS</span><h2 id="actions-title">What people tried to do</h2><p class="panel-intro">A browser session can click the same button more than once.</p></div></div>
-          <div class="action-list"><div class="action-row action-heading"><span>Action</span><span>Sessions</span><span>Clicks</span></div><div id="actions"></div></div>
-          <p class="hint">Sessions = sessions that took the action. Clicks = recorded attempts including repeats. Neither proves a payment or completed download.</p>
+          <div class="panel-header"><div><span class="eyebrow">03 / INTERACTIONS</span><h2 id="actions-title">Website interactions</h2><p class="panel-intro">Session counts and total recorded actions.</p></div></div>
+          <div class="table-wrap interaction-table"><table>
+            <thead><tr><th scope="col">Action</th><th scope="col">Sessions</th><th scope="col">Events</th></tr></thead>
+            <tbody id="actions"></tbody>
+          </table></div>
+          <p class="hint">A session counts once per action. Events include repeats. “Section seen” means at least a quarter of the section entered the viewport.</p>
         </section>
         <section class="panel" aria-labelledby="campaign-title">
-          <div class="panel-header"><div><span class="eyebrow">04 / ATTRIBUTION</span><h2 id="campaign-title">Campaigns, accounted for</h2><p class="panel-intro" id="campaign-summary">Includes visits without campaign tags.</p></div></div>
+          <div class="panel-header"><div><span class="eyebrow">04 / CAMPAIGNS</span><h2 id="campaign-title">Campaign tags</h2><p class="panel-intro" id="campaign-summary">Includes visits without campaign tags.</p></div></div>
           <div class="table-wrap"><table><thead><tr><th scope="col">Campaign</th><th scope="col">Sessions</th><th scope="col">Share</th></tr></thead><tbody id="campaigns"></tbody><tfoot><tr><th scope="row">All sessions</th><td id="campaign-total">—</td><td id="campaign-share">—</td></tr></tfoot></table></div>
           <div class="campaign-example"><span>Example tagged WhatsApp link:</span><code>/?utm_source=whatsapp&amp;utm_campaign=november</code></div>
-          <p class="hint">No campaign tag is a genuine category. Campaign names do not prove a registration or purchase.</p>
+          <p class="hint">Links without a campaign tag are included.</p>
         </section>
       </div>
 
-      <section class="panel organiser-panel" aria-labelledby="figures-title">
+      <section class="panel feedback-panel" id="feedback" aria-labelledby="feedback-title">
+        <div class="panel-header"><div><span class="eyebrow">05 / WEBSITE FEEDBACK</span><h2 id="feedback-title">What visitors told us</h2></div></div>
+        <p id="feedback-summary" class="panel-intro"></p>
+        <ul id="feedback-notes" class="feedback-notes"></ul>
+      </section>
+
+      <section class="panel organiser-panel" id="registration" aria-labelledby="figures-title">
         <div class="panel-header">
-          <div><span class="eyebrow">05 / ORGANISER REPORT</span><h2 id="figures-title">Registration &amp; sales</h2></div>
+          <div><span class="eyebrow">06 / ORGANISER REPORT</span><h2 id="figures-title">Registration &amp; sales</h2></div>
           <span class="self-reported">MANUALLY ENTERED</span>
         </div>
-        <p class="section-copy">Enter totals checked independently by the organiser. These are not collected or verified automatically by MakeYourCase.</p>
+        <p class="section-copy">Whole-event totals entered by the organiser. Check the registration form and payment records before updating them.</p>
         <form id="figures-form">
           <div class="figures-fields">
             <label>Form responses<input id="figure-forms" type="number" min="0" max="100000" step="1" required placeholder="0"></label>
@@ -120,13 +133,17 @@
           </div>
           <p id="figure-message" class="form-message" role="status" aria-live="polite"></p>
         </form>
-        <p class="hint">Figures cover the entire event, not the selected traffic date range. Remove duplicate transactions and refunds when reconciling. These totals cannot establish individual visitor-to-sale conversion.</p>
+        <p class="hint">The traffic date range does not apply to these totals.</p>
       </section>
 
-      <div id="reconciliation" class="reconciliation" role="status" aria-live="polite">Checking session consistency…</div>
+      <details class="data-details quality-details">
+        <summary>Data quality and definitions</summary>
+        <div id="reconciliation" class="reconciliation" role="status">Checking session totals…</div>
+        <p class="hint">Early records can have an unknown country. Privacy choices and interrupted connections can leave visits unrecorded. The report groups events by when the session began.</p>
+      </details>
       <section class="footer-tools" aria-label="Reporting tools">
-        <div><span class="eyebrow">EXPORT / SUMMARY</span><h2>Keep a copy of the report.</h2><p id="generated-at">All times are UTC (Ghana time).</p></div>
-        <button type="button" id="export" class="outline">Export summary CSV <span aria-hidden="true">↓</span></button>
+        <div><span class="eyebrow">EXPORT / SUMMARY</span><h2>Export the report</h2><p id="generated-at">All times are UTC (Ghana time).</p></div>
+        <button type="button" id="export" class="outline">Download CSV <span aria-hidden="true">↓</span></button>
       </section>
     </section>
   </main>

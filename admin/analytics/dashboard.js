@@ -8,8 +8,10 @@
   const error = byId("login-error");
   const status = byId("status");
   let current = null;
+  let loadId = 0;
+  let figuresDirty = false;
+  const countryNames = new Intl.DisplayNames(["en-GH"], { type: "region" });
   const fmt = n => Number(n || 0).toLocaleString("en-GH", { maximumFractionDigits: 0 });
-  const cedi = n => "GH₵" + Number(n || 0).toLocaleString("en-GH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const setText = (id, text) => { const el = byId(id); if (el) el.textContent = text; };
   function visible(signedIn) {
     login.hidden = signedIn;
@@ -37,7 +39,7 @@
     p.textContent = message;
     element.replaceChildren(p);
   }
-function renderBarList(target, items, total, emptyText) {
+  function renderBarList(target, items, total, emptyText, labelFor) {
     target.replaceChildren();
     if (!items || !items.length) return empty(target, emptyText || "No measured sessions in this period.");
     for (const item of items) {
@@ -47,8 +49,8 @@ function renderBarList(target, items, total, emptyText) {
       const label = document.createElement("div");
       label.className = "bar-label";
       const name = document.createElement("span");
-      const aliases = { direct: "Direct / unknown", mobile: "Mobile", desktop: "Desktop", none: "No campaign tag" };
-      name.textContent = aliases[item.name] || item.name;
+      const aliases = { direct: "Direct / unknown", mobile: "700 px or less", desktop: "Over 700 px", none: "No campaign tag" };
+      name.textContent = labelFor ? labelFor(item.name) : Object.hasOwn(aliases, item.name) ? aliases[item.name] : item.name;
       const number = document.createElement("span");
       number.textContent = fmt(item.value) + " of " + fmt(total) + " · " + share.toFixed(1) + "%";
       label.append(name, number);
@@ -68,29 +70,63 @@ function renderBarList(target, items, total, emptyText) {
     const container = byId("actions");
     container.replaceChildren();
     const rows = [
-      ["Registration link opens", "ticket_open"],
-      ["Programme opens", "programme_open"],
-      ["Poster studio opens", "poster_open"],
-      ["Poster download attempts", "poster_download_click"],
-      ["Poster share attempts", "poster_share_click"],
-      ["Website share attempts", "site_share_click"],
-      ["Form-submitted checkbox", "form_acknowledged"],
-      ["On-site Paystack link clicks", "payment_link_click"]
+      ["Registration button selected", "ticket_open"],
+      ["Registration desk opened", "registration_desk_open"],
+      ["Google Form link opened", "registration_form_link"],
+      ["Form submission box ticked", "form_acknowledged"],
+      ["Paystack link selected", "payment_link_click"],
+      ["Ticket section seen", "tickets_seen"],
+      ["Programme section seen", "programme_seen"],
+      ["Programme opened", "programme_open"],
+      ["Host section seen", "host_seen"],
+      ["Host profile opened", "host_open"],
+      ["FAQ answer opened", "faq_open"],
+      ["Poster studio opened", "poster_open"],
+      ["Poster format changed", "poster_format_change"],
+      ["Poster download attempted", "poster_download_click"],
+      ["Poster share attempted", "poster_share_click"],
+      ["Website share attempted", "site_share_click"],
+      ["Feedback form opened", "feedback_open"]
     ];
     for (const [label, key] of rows) {
-      const row = document.createElement("div");
-      row.className = "action-row";
-      const t = document.createElement("span");
-      t.textContent = label;
-      const unique = document.createElement("strong");
-      unique.textContent = fmt(actionSessions[key]);
-      unique.title = "Browser sessions that recorded this action";
-      const clicks = document.createElement("strong");
-      clicks.textContent = fmt(totals[key]);
-      clicks.className = "action-secondary";
-      clicks.title = "Recorded clicks or attempts, including repeats";
-      row.append(t, unique, clicks);
+      const row = document.createElement("tr");
+      const title = document.createElement("th");
+      title.scope = "row";
+      title.textContent = label;
+      const sessions = document.createElement("td");
+      sessions.textContent = fmt(actionSessions[key]);
+      const events = document.createElement("td");
+      events.textContent = fmt(totals[key]);
+      row.append(title, sessions, events);
       container.append(row);
+    }
+  }
+  function renderFeedback(feedback) {
+    const notes = feedback?.notes || [];
+    const list = byId("feedback-notes");
+    list.replaceChildren();
+    const count = notes.length;
+    if (feedback?.unavailable) {
+      setText("feedback-summary", "Feedback could not be loaded. Use Refresh to try again.");
+      return;
+    }
+    const average = count ? notes.reduce((sum, note) => sum + note.rating, 0) / count : 0;
+    const partial = feedback?.truncated || feedback?.unreadable > 0;
+    setText("feedback-summary", count ? fmt(count) + " responses shown · " + average.toFixed(1) + "/5 average ease" +
+      (partial ? " · Some notes are missing" : "") :
+      (partial ? "Feedback records could not be read." : "No feedback in this date range."));
+    const topics = { registration: "Registration or payment", programme: "Programme or host", poster: "Poster", other: "Other" };
+    for (const note of notes) {
+      const li = document.createElement("li");
+      const title = document.createElement("h3");
+      title.textContent = topics[note.topic] + " · " + note.rating + "/5";
+      const time = document.createElement("time");
+      time.dateTime = note.submittedAt;
+      time.textContent = new Date(note.submittedAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT";
+      const message = document.createElement("p");
+      message.textContent = note.message;
+      li.append(title, time, message);
+      list.append(li);
     }
   }
   function renderCampaigns(items, total, quality) {
@@ -135,7 +171,7 @@ function renderBarList(target, items, total, emptyText) {
       }
       table.append(row);
     }
-    if (!daily.length) return empty(target, "No dates available.");
+    if (!daily.some(entry => entry.sessions > 0)) return empty(target, "No recorded sessions in this date range.");
     const maxValue = Math.max(1, ...daily.map(d => d.sessions));
     const axisMaximum = Math.max(2, Math.ceil(maxValue / 2) * 2);
     const graph = document.createElement("div");
@@ -168,7 +204,7 @@ function renderBarList(target, items, total, emptyText) {
       label.textContent = fmt(entry.sessions);
       const bar = document.createElement("span");
       bar.className = "trend-column";
-      bar.style.height = entry.sessions ? Math.max(2.5, entry.sessions / axisMaximum * 100).toFixed(1) + "%" : "0%";
+      bar.style.height = entry.sessions ? (entry.sessions / axisMaximum * 100).toFixed(1) + "%" : "0%";
       const date = document.createElement("span");
       date.className = "trend-date";
       date.textContent = new Date(entry.day + "T00:00:00Z").toLocaleDateString("en-GH", { day: "numeric", month: "short", timeZone: "UTC" });
@@ -184,12 +220,12 @@ function renderBarList(target, items, total, emptyText) {
       target.append(tip);
     }
   }
-    function renderFigures(figures) {
+  function renderFigures(figures) {
     const items = [["figure-forms", "formResponses"], ["figure-paid", "paidTickets"], ["figure-gross", "grossCedis"]];
     for (const [id, key] of items) byId(id).value = figures && typeof figures[key] === "number" ? String(figures[key]) : "";
     setText("figure-updated", figures?.updatedAt ? "Last updated " + new Date(figures.updatedAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT" : "No reported totals saved");
   }
-function render(data) {
+  function render(data) {
     current = data;
     const totals = data.totals || {};
     const quality = data.quality || {};
@@ -198,50 +234,60 @@ function render(data) {
     setText("metric-sessions", fmt(total));
     setText("metric-ticket", fmt(totals.ticketSessions));
     setText("metric-posters", fmt(totals.posterSessions));
-    setText("metric-engaged", fmt(totals.engagedSessions));
+    setText("metric-engaged", fmt(totals.paymentSessions));
     const rate = value => total ? (100 * (Number(value) || 0) / total).toFixed(1) + "% of measured sessions" : "No sessions measured yet";
     setText("metric-ticket-share", rate(totals.ticketSessions));
     setText("metric-poster-share", rate(totals.posterSessions));
-    setText("metric-engaged-share", rate(totals.engagedSessions));
+    setText("metric-engaged-share", rate(totals.paymentSessions));
     setText("views", fmt(totals.pageViews) + " page views · " + fmt(total) + " sessions");
     drawTrend(data.daily);
     renderBarList(byId("sources"), data.sources, total, "No traffic sources measured yet.");
+    renderBarList(byId("countries"), data.countries, total, "No country information recorded.",
+      code => code === "unknown" ? "Unknown" : countryNames.of(code));
     renderBarList(byId("devices"), data.devices, total, "No device information recorded yet.");
     renderActions(totals, actions);
     renderCampaigns(data.campaigns, total, quality);
-    renderFigures(data.figures);
+    renderFeedback(data.feedback);
+    if (!figuresDirty) renderFigures(data.figures);
+    byId("save-figures").disabled = data.figuresUnavailable;
+    if (data.figuresUnavailable) setText("figure-updated", "Event totals could not be loaded. Refresh before editing.");
     const coverage = byId("coverage");
     coverage.hidden = data.coverage?.complete === true;
     if (!coverage.hidden) {
-      coverage.textContent = "Incomplete coverage: this report can read up to " + fmt(data.coverage?.cap || 400) +
-        " session records per request. Some stored records may be unavailable or outside the scan. " +
-        "Counts shown here are partial, and percentages apply only to the sessions included.";
+      const gaps = [];
+      if (data.coverage?.truncated) gaps.push("the " + fmt(data.coverage.cap) + "-record limit was reached");
+      if (data.coverage?.unreadable) gaps.push(fmt(data.coverage.unreadable) + " records could not be read");
+      if (data.coverage?.duplicates) gaps.push(fmt(data.coverage.duplicates) + " duplicate records were excluded");
+      coverage.textContent = "Partial report. " + gaps.join("; ") + ". Charts and shares cover the " + fmt(total) + " included sessions.";
     }
     const equal = Number(quality.sourceSessions) === total && Number(quality.campaignSessions) === total &&
-      Number(quality.deviceSessions) === total && Number(quality.dailySessions) === total && quality.reconciled === true;
+      Number(quality.deviceSessions) === total && Number(quality.countrySessions) === total && Number(quality.dailySessions) === total && quality.reconciled === true;
     const statusLine = byId("reconciliation");
     statusLine.classList.toggle("mismatch", !equal);
     statusLine.textContent = equal
-      ? "Count check passed · " + fmt(total) + " sessions = " + fmt(quality.sourceSessions) + " source sessions = " +
-        fmt(quality.campaignSessions) + " campaign sessions = " + fmt(quality.deviceSessions) + " device sessions = " +
-        fmt(quality.dailySessions) + " daily sessions."
-      : "Count check failed: the session breakdowns do not reconcile. Do not use this report for decisions until the data is checked.";
+      ? "The daily, source, campaign, screen size and country totals each match the " + fmt(total) + " sessions shown."
+      : "The breakdowns do not match the session total. Refresh before using these figures.";
     setText("generated-at", "Generated " + new Date(data.generatedAt).toLocaleString("en-GH", { timeZone: "UTC" }) +
       " GMT. Last visitor activity: " + (data.lastActivityAt ? new Date(data.lastActivityAt).toLocaleString("en-GH", { timeZone: "UTC" }) + " GMT" : "none recorded"));
     status.textContent = "Showing the last " + data.windowDays + " days · " + data.minDate + " to " + data.maxDate + " · Ghana time (GMT)";
   }
-    async function load() {
-    status.textContent = "Loading real analytics…";
+  async function load() {
+    const request = ++loadId;
+    status.textContent = "Loading report…";
     try {
       const data = await api("GET", null, "?days=" + byId("period").value);
+      if (request !== loadId) return;
       visible(true);
       render(data);
     } catch (e) {
+      if (request !== loadId) return;
       if (e.status === 401) {
+        current = null;
+        figuresDirty = false;
         visible(false);
         error.textContent = "";
       } else {
-        status.textContent = e.message;
+        status.textContent = current ? e.message + " Showing the previously loaded report (" + current.windowDays + " days)." : e.message;
         if (workspace.hidden) error.textContent = e.message;
       }
     }
@@ -254,7 +300,6 @@ function render(data) {
     try {
       await api("POST", { password: byId("admin-password").value });
       byId("admin-password").value = "";
-      visible(true);
       await load();
     } catch (e) {
       error.textContent = e.message;
@@ -263,13 +308,18 @@ function render(data) {
   byId("period").addEventListener("change", load);
   byId("refresh").addEventListener("click", load);
   byId("logout").addEventListener("click", async () => {
+    ++loadId;
     try { await api("DELETE"); }
-    catch (_) {}
+    catch (error) { status.textContent = error.message; return; }
     current = null;
+    figuresDirty = false;
+    renderFigures(null);
+    byId("feedback-notes").replaceChildren();
     visible(false);
     error.textContent = "";
     byId("admin-password").focus();
   });
+  byId("figures-form").addEventListener("input", () => { figuresDirty = true; });
   byId("figures-form").addEventListener("submit", async event => {
     event.preventDefault();
     const save = byId("save-figures");
@@ -285,6 +335,7 @@ function render(data) {
     try {
       const response = await api("PUT", figures);
       if (current) current.figures = response.figures;
+      figuresDirty = false;
       renderFigures(response.figures);
       message.style.color = "#12572e";
       message.textContent = "Organiser totals saved.";
@@ -295,7 +346,7 @@ function render(data) {
   });
   function csvCell(value) {
     const raw = String(value ?? "");
-    const safe = /^[=+\-@\t\r]/.test(raw) ? "'" + raw : raw;
+    const safe = /^(?:\s*[=+\-@]|[\t\r\n])/.test(raw) ? "'" + raw : raw;
     return '"' + safe.replace(/"/g, '""') + '"';
   }
   byId("export").addEventListener("click", () => {
@@ -311,7 +362,10 @@ function render(data) {
     }
     for (const item of current.sources || []) rows.push(["Source sessions", item.name, item.value]);
     for (const item of current.campaigns || []) rows.push(["Campaign sessions", item.name, item.value]);
-    for (const item of current.devices || []) rows.push(["Device sessions", item.name, item.value]);
+    for (const item of current.devices || []) rows.push(["Screen size sessions", item.name, item.value]);
+    for (const item of current.countries || []) rows.push(["Country sessions", item.name, item.value]);
+    rows.push(["Quality", "Unreadable session records", current.coverage?.unreadable]);
+    rows.push(["Quality", "Duplicate session records", current.coverage?.duplicates]);
     rows.push(["Quality", "Session breakdowns reconcile", Boolean(current.quality?.reconciled)]);
     if (current.figures) for (const key of ["formResponses","paidTickets","grossCedis","updatedAt"]) rows.push(["Organiser reported", key, current.figures[key]]);
     const csv = rows.map(row => row.map(csvCell).join(",")).join("\r\n");

@@ -326,7 +326,10 @@
       : (trigger || document.activeElement);
     if (programmeDialog?.open) programmeDialog.close();
     prepareRegistrationForm();
-    if (!registrationDialog.open) registrationDialog.showModal();
+    if (!registrationDialog.open) {
+      registrationDialog.showModal();
+      document.dispatchEvent(new Event("myc:registration-desk-open"));
+    }
     registrationLockScroll();
     registrationCloser?.focus();
     return true;
