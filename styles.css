@@ -2257,3 +2257,11 @@ button:disabled{cursor:not-allowed}
 .measurement-actions #website-measurement-toggle{background:var(--paper);text-decoration:none;padding:.6rem .9rem;font-size:.75rem}
 .measurement-actions button:focus-visible,.measurement-settings:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 @media(max-width:1150px){body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:calc(max(1rem,env(safe-area-inset-bottom)) + 12rem)}}
+
+/* A dark ink button stays legible over the event's light, yellow and blue sections. */
+.menu-context{display:none}
+.menu-trigger-floating:not([hidden]){display:inline-flex;position:fixed;z-index:40;top:auto;right:1rem;bottom:max(1rem,env(safe-area-inset-bottom));background:var(--ink);color:var(--paper);border:2px solid var(--paper);box-shadow:0 0 0 2px var(--ink),4px 4px 0 var(--yellow);gap:.55rem}
+.menu-trigger-floating .menu-context{display:inline-block;max-width:8.5rem;overflow:hidden;text-overflow:ellipsis;border-left:1px solid rgba(255,255,255,.5);padding-left:.55rem;color:var(--yellow);font-size:.64rem}
+.site-menu-body nav a[aria-current="location"]{color:var(--blue)}
+.site-menu-body nav a[aria-current="location"] b{text-decoration:underline;text-underline-offset:.25em}
+body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:calc(max(1rem,env(safe-area-inset-bottom)) + 12rem)}

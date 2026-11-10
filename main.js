@@ -130,6 +130,41 @@
         menuTrigger.focus({ preventScroll: true });
       }
     });
+    // Show the current area without changing what the button does.
+    const menuContext = menuTrigger.querySelector(".menu-context");
+    const areas = [
+      ["top", "PITCH NIGHT"], ["about", "THE IDEA"],
+      ["lineup", "PROGRAMME"], ["host", "THE HOST"],
+      ["details", "TICKETS"], ["faq", "FAQ"],
+      ["last-call", "TICKETS"], ["website-feedback", "FEEDBACK"], ["site-footer", "OFF SCRIPT"]
+    ].map(([id, label]) => ({ element: document.getElementById(id) || document.querySelector("." + id), label }))
+     .filter(area => area.element);
+    let menuUpdatePending = false;
+    function updateMenuContext() {
+      menuUpdatePending = false;
+      const readingLine = window.innerHeight * 0.35;
+      let current = areas[0];
+      for (const area of areas) {
+        if (area.element.getBoundingClientRect().top <= readingLine) current = area;
+      }
+      if (menuContext && current && menuContext.textContent !== current.label) {
+        menuContext.textContent = current.label;
+      }
+      siteMenu.querySelectorAll("nav a[href^='#']").forEach(link => {
+        if (current && link.hash === "#" + current.element.id) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+    function scheduleMenuContext() {
+      if (!menuUpdatePending) {
+        menuUpdatePending = true;
+        requestAnimationFrame(updateMenuContext);
+      }
+    }
+    updateMenuContext();
+    window.addEventListener("scroll", scheduleMenuContext, { passive: true });
+    window.addEventListener("resize", scheduleMenuContext);
+
     // Keep the labelled menu within reach after the original header leaves view.
     const header = document.querySelector(".site-header");
     if (header && "IntersectionObserver" in window) {
