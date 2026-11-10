@@ -169,6 +169,24 @@
     window.addEventListener("scroll", scheduleMenuContext, { passive: true });
     window.addEventListener("resize", scheduleMenuContext);
 
+    // A small movement threshold avoids flicker from touch jitter and trackpads.
+    let directionAnchor = Math.max(0, window.scrollY);
+    window.addEventListener("scroll", () => {
+      const y = Math.max(0, window.scrollY);
+      if (!menuTrigger.classList.contains("menu-trigger-floating") || siteMenu.open) {
+        directionAnchor = y;
+        menuTrigger.classList.remove("menu-scroll-hidden");
+        return;
+      }
+      const delta = y - directionAnchor;
+      if (Math.abs(delta) < 24) return;
+      const atBottom = y + window.innerHeight >= document.documentElement.scrollHeight - 12;
+      const focused = document.activeElement === menuTrigger;
+      menuTrigger.classList.toggle("menu-scroll-hidden", delta > 0 && !atBottom && !focused);
+      directionAnchor = y;
+    }, { passive: true });
+    menuTrigger.addEventListener("focus", () => menuTrigger.classList.remove("menu-scroll-hidden"));
+
     // Keep the labelled menu within reach after the original header leaves view.
     const header = document.querySelector(".site-header");
     if (header && "IntersectionObserver" in window) {
@@ -176,7 +194,9 @@
       marker.setAttribute("aria-hidden", "true");
       header.after(marker);
       new IntersectionObserver(entries => {
-        menuTrigger.classList.toggle("menu-trigger-floating", !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0);
+        const floating = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
+        menuTrigger.classList.toggle("menu-trigger-floating", floating);
+        if (!floating) menuTrigger.classList.remove("menu-scroll-hidden");
       }).observe(marker);
     }
 

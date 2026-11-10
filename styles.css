@@ -2310,3 +2310,8 @@ body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden])
  .host-stage{width:min(67vw,270px);margin:.7rem auto 1.65rem}
  .host-summary{margin-bottom:1.25rem}
 }
+
+/* The floating menu moves away while reading and returns on upward scroll. */
+.menu-trigger-floating:not([hidden]){transition:transform .24s ease,opacity .24s ease}
+.menu-trigger-floating.menu-scroll-hidden:not(:focus-visible){transform:translateY(calc(100% + 2rem + env(safe-area-inset-bottom)));opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.menu-trigger-floating:not([hidden]){transition:none}}
