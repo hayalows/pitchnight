@@ -73,12 +73,34 @@
     <nav class="desktop-nav" aria-label="Main navigation">
       <a href="#about">THE IDEA</a>
       <a href="#lineup">THE PROGRAMME</a>
+      <a href="#host">THE HOST</a>
       <a href="#details">DETAILS</a>
+      <a href="#faq">FAQ</a>
     </nav>
+    <button class="menu-trigger" type="button" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false" hidden>MENU <span aria-hidden="true">☰</span></button>
     <a class="nav-ticket" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer" aria-label="Open Pitch Night registration ticket desk">
       GET A TICKET <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
     </a>
   </header>
+
+  <dialog class="site-menu" id="site-menu" aria-labelledby="site-menu-title">
+    <div class="site-menu-sheet">
+      <div class="site-menu-head"><span>OFF SCRIPT / PITCH NIGHT</span><button class="site-menu-close" type="button" aria-label="Close menu">×</button></div>
+      <div class="site-menu-body">
+        <p class="site-menu-kicker">YOUR GUIDE TO THE NIGHT ✳</p>
+        <h2 id="site-menu-title">WHERE TO?</h2>
+        <nav aria-label="Main navigation">
+          <a href="#about"><small>01</small><b>THE IDEA</b><span aria-hidden="true">↗</span></a>
+          <a href="#lineup"><small>02</small><b>THE PROGRAMME</b><span aria-hidden="true">↗</span></a>
+          <a href="#host"><small>03</small><b>MEET THE HOST</b><span aria-hidden="true">↗</span></a>
+          <a href="#details"><small>04</small><b>EVENT DETAILS</b><span aria-hidden="true">↗</span></a>
+          <a href="#faq"><small>05</small><b>FAQ</b><span aria-hidden="true">↗</span></a>
+        </nav>
+        <a class="site-menu-ticket" href="#details">GET A TICKET <span aria-hidden="true">↗</span></a>
+        <p class="site-menu-foot">FRIDAY 13 NOVEMBER · 6:30 PM</p>
+      </div>
+    </div>
+  </dialog>
 
   <main id="main">
     <section class="hero hero--v2" id="top" aria-labelledby="hero-title">

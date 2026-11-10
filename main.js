@@ -90,6 +90,38 @@
     if (event.target === hostDialog) closeHost();
   });
 
+  // The compact menu uses the same native dialog pattern as the event sheets.
+  const siteMenu = document.getElementById("site-menu");
+  const menuTrigger = document.querySelector(".menu-trigger");
+  const menuClose = document.querySelector(".site-menu-close");
+  if (siteMenu && menuTrigger && typeof siteMenu.showModal === "function") {
+    menuTrigger.hidden = false;
+    menuTrigger.addEventListener("click", () => {
+      document.getElementById("pitch-cursor")?.classList.remove("is-visible");
+      siteMenu.showModal();
+      document.body.classList.add("dialog-is-open");
+      menuTrigger.setAttribute("aria-expanded", "true");
+      menuClose?.focus();
+    });
+    menuClose?.addEventListener("click", () => siteMenu.close());
+    siteMenu.addEventListener("click", (event) => {
+      if (event.target === siteMenu) siteMenu.close();
+      const link = event.target.closest("a[href^='#']");
+      if (link) {
+        event.preventDefault();
+        const target = document.getElementById(link.hash.slice(1));
+        siteMenu.close();
+        target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+        history.replaceState(null, "", link.hash);
+      }
+    });
+    siteMenu.addEventListener("close", () => {
+      document.body.classList.remove("dialog-is-open");
+      menuTrigger.setAttribute("aria-expanded", "false");
+      menuTrigger.focus({ preventScroll: true });
+    });
+  }
+
   // Both displays derive from the same absolute Ghana event time.
   // Resync from Date.now() near each second boundary; never count ticks.
   const showtime = Date.parse("2026-11-13T18:30:00Z"); // Ghana: GMT.
