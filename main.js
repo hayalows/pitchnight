@@ -124,7 +124,7 @@
         requestAnimationFrame(() => {
           target.setAttribute("tabindex", "-1");
           target.focus({ preventScroll: true });
-          target.scrollIntoView({ block: "start", behavior: "instant" });
+          window.scrollTo({ top: Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY)), behavior: "instant" });
         });
       } else {
         menuTrigger.focus({ preventScroll: true });

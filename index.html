@@ -442,11 +442,12 @@
         <p id="website-feedback-status" role="status"></p>
       </form>
     </details>
-    <div class="website-measurement">
-      <p>We count visits and site actions by browser session. Reports use approximate country and referral source.</p>
-      <button type="button" id="website-measurement-toggle" hidden></button>
-    </div>
+    <button type="button" class="measurement-settings" id="measurement-settings" hidden>Analytics settings</button>
   </section>
+  <aside class="measurement-notice" id="measurement-notice" aria-label="Analytics settings" hidden>
+    <div><strong>ABOUT SITE ANALYTICS</strong><p>We count visits and site actions by browser session. Reports include approximate country and referral source.</p></div>
+    <div class="measurement-actions"><button type="button" id="website-measurement-toggle" hidden></button><button type="button" id="measurement-dismiss">Got it</button></div>
+  </aside>
   <footer class="site-footer">
     <div class="footer-signoff">
       <a class="footer-brand" href="#top" aria-label="Off Script, back to top">

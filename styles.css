@@ -2244,3 +2244,16 @@ button:disabled{cursor:not-allowed}
 #website-feedback-form button:disabled{opacity:.6;cursor:wait}
 .website-feedback summary:focus-visible,#website-feedback-form :focus-visible,#website-measurement-toggle:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.website-feedback summary .ui-icon{transition:none}}
+
+/* Compact thumb-reachable navigation and a dismissible analytics notice. */
+@media(max-width:1150px){.menu-trigger-floating:not([hidden]){top:auto;bottom:max(1rem,env(safe-area-inset-bottom));right:1rem}}
+.measurement-settings{background:none;color:var(--ink);padding:.6rem 0;font-size:.8rem;text-decoration:underline;cursor:pointer;min-height:44px}
+.measurement-notice[hidden]{display:none}
+.measurement-notice{position:fixed;z-index:35;left:1rem;bottom:max(1rem,env(safe-area-inset-bottom));width:min(23rem,calc(100vw - 2rem));padding:1rem;background:var(--paper);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);color:var(--ink)}
+.measurement-notice strong{font-size:.68rem;letter-spacing:.08em;color:var(--blue)}
+.measurement-notice p{font-size:.8rem;line-height:1.5;margin:.4rem 0 .8rem}
+.measurement-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.measurement-actions button{min-height:44px;padding:.6rem .9rem;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);font:800 .75rem var(--body);cursor:pointer}
+.measurement-actions #website-measurement-toggle{background:var(--paper);text-decoration:none;padding:.6rem .9rem;font-size:.75rem}
+.measurement-actions button:focus-visible,.measurement-settings:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media(max-width:1150px){body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:calc(max(1rem,env(safe-area-inset-bottom)) + 12rem)}}

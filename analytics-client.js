@@ -21,6 +21,24 @@
       if (!paused) track("page_view", true);
     });
   }
+  // A dismissible notice, with settings available again near the footer.
+  const notice = document.getElementById("measurement-notice");
+  const settings = document.getElementById("measurement-settings");
+  const dismiss = document.getElementById("measurement-dismiss");
+  if (notice && settings && dismiss) {
+    let seen = false;
+    try { seen = localStorage.getItem("myc-analytics-notice-seen") === "1"; } catch (_) {}
+    settings.hidden = false;
+    notice.hidden = seen;
+    dismiss.addEventListener("click", () => {
+      notice.hidden = true;
+      try { localStorage.setItem("myc-analytics-notice-seen", "1"); } catch (_) {}
+    });
+    settings.addEventListener("click", () => { notice.hidden = false; dismiss.focus(); });
+    if (navigator.globalPrivacyControl === true) {
+      notice.querySelector("p").textContent = "Analytics are paused because your browser sent a Global Privacy Control signal.";
+    }
+  }
   const ALLOWED = new Set([
     "page_view", "ticket_open", "form_acknowledged", "payment_link_click",
     "programme_open", "poster_open", "poster_download_click",
