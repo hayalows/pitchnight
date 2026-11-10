@@ -2265,3 +2265,6 @@ button:disabled{cursor:not-allowed}
 .site-menu-body nav a[aria-current="location"]{color:var(--blue)}
 .site-menu-body nav a[aria-current="location"] b{text-decoration:underline;text-underline-offset:.25em}
 body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:calc(max(1rem,env(safe-area-inset-bottom)) + 12rem)}
+
+/* At the footer, keep the menu action without a misleading section label. */
+.menu-trigger-floating.menu-no-context .menu-context{display:none}

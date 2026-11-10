@@ -137,7 +137,7 @@
       ["top", "PITCH NIGHT"], ["about", "THE IDEA"],
       ["lineup", "PROGRAMME"], ["host", "THE HOST"],
       ["details", "TICKETS"], ["faq", "FAQ"],
-      ["last-call", "TICKETS"], ["website-feedback", "FEEDBACK"], ["site-footer", "OFF SCRIPT"]
+      ["last-call", "THE FINALE"], ["website-feedback", "FEEDBACK"], ["site-footer", ""]
     ].map(([id, label]) => ({ element: document.getElementById(id) || document.querySelector("." + id), label }))
      .filter(area => area.element);
     let menuUpdatePending = false;
@@ -148,9 +148,12 @@
       for (const area of areas) {
         if (area.element.getBoundingClientRect().top <= readingLine) current = area;
       }
-      if (menuContext && current && menuContext.textContent !== current.label) {
-        menuContext.textContent = current.label;
-      }
+      // At the bottom the footer may be too short to reach the reading line.
+      // Keep the button useful there without mislabelling it as tickets.
+      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 8;
+      const label = atBottom ? "" : (current?.label || "");
+      if (menuContext && menuContext.textContent !== label) menuContext.textContent = label;
+      menuTrigger.classList.toggle("menu-no-context", !label);
       siteMenu.querySelectorAll("nav a[href^='#']").forEach(link => {
         if (current && link.hash === "#" + current.element.id) link.setAttribute("aria-current", "location");
         else link.removeAttribute("aria-current");
