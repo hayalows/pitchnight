@@ -2086,3 +2086,92 @@ button:disabled{cursor:not-allowed}
   .ticket-price{align-items:center}
   .ticket-price span{margin:0 .18rem 0 0;align-self:center;line-height:1}
 }
+
+
+/* Host reveal: the supplied portrait is shown without edits or cropping.
+   Light theatrical marks live around the photo, not on it. */
+.host-section{overflow:hidden}
+.host-section .host-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(2.2rem,7vw,7rem);align-items:center}
+.host-stage{position:relative;width:min(100%,410px);margin:1.1rem auto 1.2rem;isolation:isolate}
+.host-stage::before{content:"";position:absolute;inset:2% -7%;border:3px dashed var(--blue);border-radius:48%;transform:rotate(-9deg);z-index:-1;opacity:.9}
+.host-section .host-visual{width:100%;height:auto;max-width:none;aspect-ratio:854 / 1280;overflow:hidden;display:block;background:var(--paper);border:3px solid var(--ink);box-shadow:11px 12px 0 var(--ink)}
+.host-photo{display:block;width:100%;height:100%;object-fit:contain;aspect-ratio:854 / 1280}
+.host-stamp{position:absolute;right:-8%;top:12%;z-index:1;display:grid;place-items:center;text-align:center;transform:rotate(10deg);padding:.75rem .9rem;min-width:112px;min-height:85px;background:var(--yellow);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:var(--display);font-size:1.5rem;line-height:1.03;letter-spacing:.015em}
+.host-spark{position:absolute;left:-7%;bottom:9%;display:grid;place-items:center;width:72px;height:72px;background:var(--mint);color:var(--blue);border:3px solid var(--ink);border-radius:50%;transform:rotate(-16deg);box-shadow:4px 5px 0 var(--ink)}
+.host-spark .ui-icon{width:34px;height:34px}
+.host-section .host-copy{max-width:640px}
+.host-kicker{font-size:.72rem!important;line-height:1.45!important;font-weight:800;letter-spacing:.12em;margin:1.35rem 0 .5rem;color:var(--blue)}
+.host-name{font-family:var(--display);font-weight:400;font-size:clamp(2.65rem,5.6vw,5.5rem);line-height:1;letter-spacing:-.025em;margin:0 0 1.2rem;color:var(--ink)}
+.host-name span{display:block;color:var(--blue)}
+.host-summary{font-size:clamp(1rem,1.55vw,1.2rem)!important;line-height:1.66!important;max-width:490px;margin-bottom:1.55rem}
+.host-more{display:inline-flex;align-items:center;justify-content:space-between;gap:1.7rem;min-height:53px;max-width:100%;border:3px solid var(--ink);padding:.75rem 1rem .75rem 1.2rem;background:var(--blue);color:#fff;font-family:var(--body);font-size:.79rem;font-weight:800;letter-spacing:.035em;cursor:pointer;box-shadow:5px 5px 0 var(--ink);transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.host-more .ui-icon{width:21px;height:21px;flex:none}
+.host-more:hover{background:var(--red);transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.host-more:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.host-more:focus-visible,.host-dialog-close:focus-visible{outline:3px solid var(--blue);outline-offset:5px}
+@media (prefers-reduced-motion:no-preference){
+  .host-spark{animation:host-mark-float 6s ease-in-out infinite}
+  .host-stage::before{animation:host-halo-sway 14s ease-in-out infinite}
+}
+@keyframes host-mark-float{0%,100%{transform:translateY(0) rotate(-16deg)}50%{transform:translateY(-9px) rotate(-10deg)}}
+@keyframes host-halo-sway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(2deg)}}
+@media(max-width:850px){
+  .host-section .host-grid{grid-template-columns:1fr;gap:1.35rem}
+  .host-stage{width:min(70vw,310px);margin:1rem auto 1.3rem}
+  .host-section .host-copy{max-width:570px;margin-inline:auto;width:100%}
+}
+@media(max-width:620px){
+  .host-stage{width:min(67vw,270px);margin:.6rem auto 1.3rem}
+  .host-section .host-visual{box-shadow:7px 8px 0 var(--ink)}
+  .host-stamp{right:-10%;top:12%;min-width:83px;min-height:65px;padding:.5rem;font-size:1.1rem;box-shadow:3px 3px 0 var(--ink)}
+  .host-spark{left:-9%;width:56px;height:56px}
+  .host-spark .ui-icon{width:27px;height:27px}
+  .host-name{font-size:clamp(2.65rem,11vw,4.5rem)}
+  .host-summary{margin-bottom:1.2rem}
+  .host-more{width:100%;min-height:52px;gap:.75rem;font-size:.74rem}
+}
+@media(max-width:350px){
+  .host-stage{width:min(65vw,225px)}
+  .host-stamp{right:-11%;font-size:.95rem;min-width:74px;min-height:60px}
+  .host-name{font-size:2.45rem}
+}
+
+/* Scrollable host profile, with the same print-board language as the programme. */
+.host-dialog{width:min(94vw,810px);max-width:810px;max-height:92dvh;padding:0;border:0;color:var(--ink);background:transparent;overflow:visible}
+.host-dialog::backdrop{background:rgba(15,18,40,.82);backdrop-filter:blur(6px)}
+.host-dialog[open]{animation:pop .32s var(--ease)}
+.host-dialog-sheet{max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;border:4px solid var(--ink);background:var(--paper);box-shadow:11px 11px 0 var(--yellow)}
+.host-dialog-top{position:sticky;top:0;z-index:2;background:var(--paper);border-bottom:3px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 1.15rem;font-size:.7rem;font-weight:800;letter-spacing:.085em}
+.host-dialog-close{width:44px;height:44px;border:2px solid var(--ink);background:var(--red);color:#fff;display:grid;place-items:center;flex:none;cursor:pointer}
+.host-dialog-close:hover{background:var(--blue)}
+.host-dialog-main{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:clamp(1.3rem,4vw,2.6rem);padding:clamp(1.25rem,4vw,2.5rem)}
+.host-dialog-photo{position:relative;align-self:start}
+.host-dialog-photo img{display:block;width:100%;height:auto;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--blue)}
+.host-dialog-photo>span{display:block;margin-top:1rem;font-size:.62rem;font-weight:800;letter-spacing:.06em;line-height:1.5}
+.host-dialog-kicker{margin:0 0 .6rem;font-size:.74rem;letter-spacing:.12em;font-weight:800;color:var(--red)}
+.host-dialog-copy h2{margin:0;font-family:var(--display);font-weight:400;line-height:1;font-size:clamp(3.3rem,7vw,6.7rem);letter-spacing:-.02em;color:var(--blue);overflow-wrap:anywhere}
+.host-dialog-copy h2 span{color:var(--red)}
+.host-dialog-name{font-size:.83rem!important;font-weight:800!important;letter-spacing:.08em;margin:.55rem 0 1.5rem!important}
+.host-dialog-copy p:not(.host-dialog-kicker,.host-dialog-name){font-size:1rem;line-height:1.7;max-width:49ch;margin:0 0 1rem}
+.host-dialog-footer{display:flex;justify-content:space-between;gap:1.1rem;padding:1rem clamp(1.25rem,4vw,2.5rem);background:var(--yellow);border-top:3px solid var(--ink);font-size:.66rem;line-height:1.5;font-weight:800;letter-spacing:.04em}
+@media(max-width:600px){
+  .host-dialog{width:95vw;max-height:94dvh}
+  .host-dialog-sheet{max-height:89dvh;box-shadow:5px 6px 0 var(--yellow)}
+  .host-dialog-top{padding:.55rem .85rem;font-size:.62rem}
+  .host-dialog-main{grid-template-columns:1fr;padding:1.35rem;gap:1.2rem}
+  .host-dialog-photo{display:grid;grid-template-columns:120px minmax(0,1fr);gap:1rem;align-items:end}
+  .host-dialog-photo img{width:120px}
+  .host-dialog-photo>span{margin:0 0 .35rem;font-size:.65rem}
+  .host-dialog-copy h2{font-size:clamp(3.3rem,15vw,5.2rem)}
+  .host-dialog-footer{flex-wrap:wrap;gap:.3rem}
+}
+@media(max-width:365px){
+  .host-dialog-main{padding:1rem}
+  .host-dialog-photo{grid-template-columns:100px minmax(0,1fr)}
+  .host-dialog-photo img{width:100px}
+  .host-dialog-copy h2{font-size:3rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .host-dialog[open],.host-spark,.host-stage::before{animation:none!important}
+  .host-more{transition:none}
+}

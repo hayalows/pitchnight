@@ -270,21 +270,23 @@
     <section class="host-section section-pad" id="host" aria-labelledby="host-heading">
       <div class="section-topline"><span>03 / THE PERSON WITH THE MIC</span><span>THE HOST</span></div>
       <div class="host-grid">
-        <div class="host-visual">
-          <div class="host-halo"></div>
-          <svg viewBox="0 0 400 400" role="img" aria-label="Mystery host silhouette illustration">
-            <path d="M24 397c0-105 78-149 177-149s175 44 175 149" fill="#102FA9" stroke="#171717" stroke-width="8"/>
-            <circle cx="201" cy="148" r="100" fill="#171717"/>
-            <path d="M141 80q60-44 125 0" fill="none" stroke="#faf4e7" stroke-width="12" stroke-linecap="round" opacity=".15"/>
-            <text x="199" y="184" text-anchor="middle" font-size="135" font-family="Anton, Impact, sans-serif" fill="#faf4e7">?</text>
-          </svg>
-          <span class="host-bubble">WHO'S GOT<br/>THE MIC?</span>
+        <div class="host-stage">
+          <div class="host-visual">
+            <img class="host-photo" src="host.jpeg" alt="Portrait of Daniel Selase, also known as Khemikal" width="854" height="1280" loading="lazy" decoding="async" />
+          </div>
+          <span class="host-stamp" aria-hidden="true">THE MIC<br />IS HIS.</span>
+          <span class="host-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
         </div>
         <div class="host-copy">
           <p class="section-label">IN THE SPOTLIGHT</p>
-          <h2 class="section-heading" id="host-heading">MEET YOUR<br/><span>HOST.</span></h2>
-          <p>The voice behind the mic will be introduced here. A proper reveal deserves its own moment.</p>
-          <span class="reveal-badge"><span class="pulse-dot"></span> HOST REVEAL COMING SOON</span>
+          <h2 class="section-heading" id="host-heading">MEET YOUR<br /><span>HOST.</span></h2>
+          <p class="host-kicker">COMEDY / STORYTELLING / THE STAGE</p>
+          <h3 class="host-name">DANIEL SELASE<span>KHEMIKAL</span></h3>
+          <p class="host-summary">A Ghanaian stand-up comedian who brings humour, storytelling and a love for connecting with people to the stage.</p>
+          <button class="host-more" type="button" data-open-host aria-haspopup="dialog" aria-controls="host-dialog">
+            GET TO KNOW KHEMIKAL
+            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
+          </button>
         </div>
       </div>
     </section>
@@ -511,6 +513,32 @@
         </div>
         <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>Confirm GH₵70 before you pay.</p>
       </div>
+    </div>
+  </dialog>
+
+  <dialog class="host-dialog" id="host-dialog" aria-labelledby="host-dialog-title" aria-describedby="host-dialog-intro">
+    <div class="host-dialog-sheet">
+      <header class="host-dialog-top">
+        <span>OFF SCRIPT / MEET THE HOST</span>
+        <button type="button" class="host-dialog-close" data-close-host aria-label="Close host profile">
+          <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg>
+        </button>
+      </header>
+      <div class="host-dialog-main">
+        <div class="host-dialog-photo">
+          <img src="host.jpeg" alt="Daniel Selase, known as Khemikal" width="854" height="1280" loading="lazy" decoding="async" />
+          <span aria-hidden="true">THE MAN WITH THE MIC</span>
+        </div>
+        <div class="host-dialog-copy">
+          <p class="host-dialog-kicker">TONIGHT'S HOST</p>
+          <h2 id="host-dialog-title">KHEMIKAL<span>.</span></h2>
+          <p class="host-dialog-name">DANIEL SELASE</p>
+          <p id="host-dialog-intro">Daniel Selase, popularly known as Khemikal, is a Ghanaian stand-up comedian with a passion for comedy and entertainment. He uses humour, storytelling and effective communication to entertain, inspire and connect with people.</p>
+          <p>His strengths include creative thinking, observation and audience engagement. He communicates ideas in ways that feel relatable and memorable.</p>
+          <p>He joined Toastmasters to develop his public speaking and leadership skills, strengthen his communication and grow into a more confident and impactful voice, on and off the stage.</p>
+        </div>
+      </div>
+      <div class="host-dialog-footer"><span>ONE MIC. A WHOLE ROOM TO ENTERTAIN.</span><span>MAKE YOUR CASE / 2026</span></div>
     </div>
   </dialog>
 
