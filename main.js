@@ -116,8 +116,9 @@
       }
     });
     siteMenu.addEventListener("close", () => {
-      document.body.classList.remove("dialog-is-open");
       menuTrigger.setAttribute("aria-expanded", "false");
+      if (registrationDialog?.open) return;
+      document.body.classList.remove("dialog-is-open");
       if (menuDestination) {
         const target = menuDestination;
         menuDestination = null;
@@ -409,9 +410,11 @@
   function openRegistration(trigger) {
     if (!registrationDialog || typeof registrationDialog.showModal !== "function") return false;
     document.getElementById("pitch-cursor")?.classList.remove("is-visible");
-    registrationPreviousFocus = trigger?.closest?.("#programme-dialog")
+    const fromMenu = Boolean(trigger?.closest?.("#site-menu"));
+    registrationPreviousFocus = fromMenu ? menuTrigger : trigger?.closest?.("#programme-dialog")
       ? document.querySelector(".nav-ticket")
       : (trigger || document.activeElement);
+    if (siteMenu?.open) siteMenu.close();
     if (programmeDialog?.open) programmeDialog.close();
     prepareRegistrationForm();
     if (!registrationDialog.open) {
