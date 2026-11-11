@@ -47,13 +47,11 @@ a,button{-webkit-tap-highlight-color:transparent}
 .hero-index span{opacity:.6;margin-right:6px}
 .hero-foot{position:absolute;right:24px;bottom:20px;font-weight:700;letter-spacing:.14em;color:var(--ink);font-size:.68rem}
 .hero-stack{position:absolute;inset:0}
-.hero-card{position:absolute;width:64%;filter:drop-shadow(0 10px 0 rgba(0,0,0,.18))}
+.hero-card{position:absolute;width:64%}
 .hero-card svg{display:block;width:100%;height:auto}
-.hero-card:after{content:"";position:absolute;width:22%;height:9%;background:rgba(250,244,231,.78);top:6%;left:50%;transform:translateX(-50%) rotate(-4deg);box-shadow:0 1px 0 rgba(0,0,0,.06)}
 .hero-card-1{left:-7%;top:8%;transform:rotate(-11deg)}
-.hero-card-2{right:-12%;top:27%;width:58%;transform:rotate(9deg)}
+.hero-card-2{right:-5%;top:27%;width:58%;transform:rotate(9deg)}
 .hero-card-3{left:6%;top:53%;width:66%;transform:rotate(-4deg)}
-.hero-card-2:after{transform:translateX(-50%) rotate(5deg)}
 
 /* Studio */
 .prop-studio{border-top:2px solid var(--ink);padding:clamp(56px,7vw,104px) var(--gx)}
@@ -74,7 +72,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 .step-btn:active{background:var(--yellow)}
 .editor-stage{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1.5;padding:clamp(16px,3vw,36px);background-color:#efe6d2;background-image:linear-gradient(rgba(23,23,23,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.06) 1px,transparent 1px);background-size:24px 24px;overflow:hidden;touch-action:pan-y}
 .prop-preview{width:100%;max-width:640px}
-.prop-preview svg{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 14px rgba(23,23,23,.12))}
+.prop-preview svg{display:block;width:100%;height:auto}
 .prop-preview.is-swapping{animation:prop-swap .38s var(--ease)}
 @keyframes prop-swap{from{opacity:.25;transform:scale(.95) rotate(-1.5deg)}to{opacity:1;transform:none}}
 
