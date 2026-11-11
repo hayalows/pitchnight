@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#faf4e7">
+  <meta name="description" content="Pick a Pitch Night photo prop. Ten original Off Script cut-out designs, ready to share and print.">
+  <meta property="og:title" content="The Prop Studio | Off Script Pitch Night">
+  <meta property="og:description" content="Ten lines. One night. Pick yours.">
+  <title>The Prop Studio | Off Script Pitch Night</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="props.css?v=1">
+  <script src="props.js?v=1" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#choose">Skip to the props</a>
+<header class="prop-header">
+  <a class="prop-brand" href="/" aria-label="Off Script Pitch Night home"><img src="assets/offscript-logo.png" alt="Off Script" width="74" height="74" decoding="async"></a>
+  <span class="prop-header-name">PITCH NIGHT / THE PROP STUDIO</span>
+  <a class="prop-back" href="/">BACK TO THE EVENT <span aria-hidden="true">↗</span></a>
+</header>
+<main id="main">
+  <section class="prop-hero" aria-labelledby="page-heading">
+    <div class="prop-hero-copy">
+      <div class="prop-eyebrow"><span class="red-dot" aria-hidden="true"></span> OFF SCRIPT / PHOTO PROPS</div>
+      <h1 id="page-heading">THE PROP<br><span>STUDIO.</span></h1>
+      <p>Pick a line for the night. Save it for your socials or print it for the photo corner.</p>
+      <a class="prop-jump" href="#choose">PICK A PROP <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="prop-hero-art" aria-hidden="true">
+      <div class="hero-index">01 <span>/</span> 10</div>
+      <div id="hero-sticker" class="hero-sticker"></div>
+      <div class="hero-scribble"></div>
+      <div class="hero-foot">WORDS WORTH HOLDING.</div>
+    </div>
+  </section>
+
+  <section class="prop-studio" id="choose" aria-labelledby="choose-heading">
+    <div class="studio-heading">
+      <div><span class="section-index">01 / THE COLLECTION</span><h2 id="choose-heading">PICK YOUR LINE<span>.</span></h2></div>
+      <p>Ten pieces. Pick any one.</p>
+    </div>
+    <div class="studio-grid">
+      <div class="prop-gallery" id="prop-gallery" aria-label="Choose a photo prop"></div>
+      <section class="prop-editor" aria-label="Selected prop preview">
+        <div class="editor-top"><span>YOUR PICK <strong id="selected-count">01 / 10</strong></span><span class="editor-status"><span class="status-dot"></span> READY TO TAKE</span></div>
+        <div class="editor-stage" id="editor-stage">
+          <div id="prop-preview" class="prop-preview" role="img" aria-label="Selected photo prop"></div>
+        </div>
+        <div class="editor-detail">
+          <div class="editor-copy">
+            <span id="prop-kind">THE OPENING LINE</span>
+            <h3 id="prop-title">HEAR ME OUT.</h3>
+            <p id="prop-description">The line for someone who has a case to make.</p>
+          </div>
+          <div class="editor-controls">
+            <button class="prop-action prop-action-primary" id="save-png" type="button">SAVE IMAGE <span aria-hidden="true">↗</span></button>
+            <button class="prop-action prop-action-outline" id="download-svg" type="button">PRINT FILE <span aria-hidden="true">↓</span></button>
+            <button class="prop-share" id="share-prop" type="button">SHARE <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+        <p class="editor-note">Images are for sharing. The SVG print file stays sharp at larger sizes.</p>
+      </section>
+    </div>
+  </section>
+
+  <section class="prop-print" aria-labelledby="print-heading">
+    <div class="print-left">
+      <span class="section-index">02 / FOR THE ORGANISERS</span>
+      <h2 id="print-heading">THE WHOLE SET<span>.</span></h2>
+      <p>All ten props laid out on individual A4 landscape sheets, with a white cutting outline. Print, mount on board and attach handles.</p>
+    </div>
+    <div class="print-right">
+      <a class="print-all" href="props.html?print=1" target="_blank" rel="noopener">OPEN THE PRINT PACK <span aria-hidden="true">↗</span></a>
+      <span class="print-note">Opens a print-friendly view. Use your browser’s Print / Save as PDF option.</span>
+    </div>
+  </section>
+  <section class="prop-details" aria-label="Printing guidance">
+    <details>
+      <summary>PRINTING &amp; ASSEMBLY <span aria-hidden="true">+</span></summary>
+      <div class="details-inner">
+        <p>For each handheld sign, print at actual size on A4 landscape, then mount it on 3–5 mm foam board or lightweight PVC. Cut along the outside white edge and attach a flat wooden or sturdy card handle behind the lower centre. Have the print shop check colour and dimensions before cutting the whole set.</p>
+        <p>For a larger-than-A4 prop, give the printer the SVG rather than stretching a social PNG. The type is editable SVG text and may need converting to outlines in the print shop’s software to preserve the font.</p>
+      </div>
+    </details>
+  </section>
+</main>
+<footer class="prop-footer"><span>OFF SCRIPT <b>/</b> PITCH NIGHT 2026</span><a href="/">RETURN TO THE EVENT ↗</a></footer>
+<div id="prop-toast" class="prop-toast" role="status" aria-live="polite"></div>
+<div id="print-root" hidden></div>
+<noscript><p class="noscript-warning">JavaScript is needed to preview and export the photo props.</p></noscript>
+</body>
+</html>
