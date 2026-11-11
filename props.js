@@ -43,7 +43,6 @@
     var tr=o.rot?' transform="rotate('+o.rot+' '+x+' '+y+')"':'';
     return '<text x="'+x+'" y="'+y+'"'+tr+' fill="'+fill+'" font-family="'+GF+'" font-size="'+(o.size||13)+'" font-weight="700" letter-spacing="'+(o.ls==null?2.6:o.ls)+'" text-anchor="'+(o.anchor||"middle")+'"'+(o.op?' opacity="'+o.op+'"':'')+'>'+escapeXML(t)+'</text>';
   }
-  function num(i){return "№ "+pad(i+1)}
   /* The Off Script logo as a small stuck-on sticker; its white square joins the die-cut border. */
   function logo(x,y,s,rot){
     var h=s/2,g='translate('+x+' '+y+') rotate('+(rot||0)+')';
@@ -80,7 +79,7 @@
     var b=line({x:108,y:330,size:160,anchor:"start",skew:true,parts:[["OUT.",C.yellow]]});
     var art='<path d="'+d+'" fill="'+C.blue+'"/>'+a.svg+underline(110,110+b.w-10,346,C.red,10)+b.svg+
       '<g fill="none" stroke="'+C.yellow+'" stroke-width="8" stroke-linecap="round"><path d="M408 222 Q428 204 440 178"/><path d="M420 256 Q456 246 478 224"/><path d="M424 292 Q462 294 490 280"/></g>'+
-      micro(num(i),612,336,C.paper,{size:15,anchor:"end",ls:2.5})+micro(CREDIT,612,316,C.paper,{size:11,anchor:"end",ls:2,op:.82})+L.art;
+      micro(CREDIT,612,316,C.paper,{size:11,anchor:"end",ls:2,op:.82})+L.art;
     return {sil:['<path d="'+d+'"/>',L.sil],art:art};
   }
   /* 02: an admission ticket with concave corners, a perforated stub and a barcode. */
@@ -95,7 +94,7 @@
     var art='<defs><clipPath id="'+cp+'"><path d="'+d+'"/></clipPath></defs><path d="'+d+'" fill="'+C.yellow+'"/>'+
       '<rect x="'+px+'" y="'+y0+'" width="'+(x1-px)+'" height="'+(y1-y0)+'" fill="'+C.red+'" clip-path="url(#'+cp+')"/>'+
       '<line x1="'+px+'" y1="'+(y0+30)+'" x2="'+px+'" y2="'+(y1-30)+'" stroke="'+C.ink+'" stroke-width="5" stroke-linecap="round" stroke-dasharray=".1 13"/>'+
-      micro(num(i),591,140,C.paper,{size:18,ls:2})+bars+
+      bars+
       micro(CREDIT,289,386,C.ink,{size:12,ls:3})+
       a.svg+scribble(289,284,204,66,C.blue,7,-3)+b.svg;
     var L=logo(600,212,62,-6);
@@ -114,7 +113,7 @@
     var b=line({x:360,y:314,size:94,skew:true,parts:[["PITCHING ME?",C.yellow]]});
     var L=logo(150,112,62,-12);
     var art='<path d="'+d+'" fill="'+C.red+'" stroke="'+C.red+'" stroke-width="6" stroke-linejoin="round"/>'+a.svg+b.svg+
-      micro(CREDIT,360,356,C.paper,{size:12,ls:3,op:.9})+micro(num(i),360,384,C.yellow,{size:14,ls:2.5})+
+      micro(CREDIT,360,356,C.paper,{size:12,ls:3,op:.9})+
       sparkle(560,146,22,C.yellow)+sparkle(594,180,11,C.paper)+L.art;
     return {sil:['<path d="'+d+'"/>',L.sil],art:art};
   }
@@ -127,7 +126,7 @@
     var art='<path d="'+d+' '+hole+'" fill="'+C.ink+'" fill-rule="evenodd"/>'+
       '<circle cx="114" cy="240" r="26" fill="none" stroke="'+C.yellow+'" stroke-width="10"/>'+
       a.svg+b.svg+sparkle(632,212,18,C.yellow)+
-      micro(num(i),630,376,C.yellow,{size:13,anchor:"end",ls:2.5})+micro(CREDIT,192,376,C.paper,{size:11,anchor:"start",ls:2.6,op:.8});
+      micro(CREDIT,192,376,C.paper,{size:11,anchor:"start",ls:2.6,op:.8});
     var L=logo(640,88,62,8);
     return {sil:['<path d="'+d+' '+hole+'" fill-rule="evenodd"/>',L.sil],art:art+L.art};
   }
@@ -139,7 +138,7 @@
     var b=line({x:122,y:340,size:150,anchor:"start",skew:true,parts:[["FLAGS.",C.blue]]});
     var art='<path d="'+d+'" fill="'+C.mint+'"/><path d="'+pole+'" fill="'+C.ink+'"/><circle cx="78" cy="40" r="17" fill="'+C.yellow+'" stroke="'+C.ink+'" stroke-width="4"/>'+
       a.svg+b.svg+'<path d="M528 270 L552 298 L600 222" fill="none" stroke="'+C.red+'" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>'+
-      micro(CREDIT,78,412,C.paper,{size:10,ls:2,anchor:"start",rot:-90})+micro(num(i),560,110,C.ink,{size:15,anchor:"end",ls:2.5});
+      micro(CREDIT,78,412,C.paper,{size:10,ls:2,anchor:"start",rot:-90});
     var L=logo(626,84,62,9);
     return {sil:['<path d="'+pole+'"/>','<circle cx="78" cy="40" r="17"/>','<path d="'+d+'"/>',L.sil],art:art+L.art};
   }
@@ -157,7 +156,7 @@
     var rr=rnd(3),bars="",bx=270;
     while(bx<450){var bw=2+Math.round(rr()*4);bars+='<rect x="'+bx+'" y="388" width="'+bw+'" height="30" fill="'+C.ink+'"/>';bx+=bw+2+Math.round(rr()*3)}
     var art='<g transform="rotate(-3 360 240)"><path d="'+d+'" fill="'+C.paper+'"/>'+
-      micro(num(i),360,96,C.ink,{size:15,ls:3})+rule(116)+
+      rule(116)+
       '<path d="M176 258 C290 244 440 262 566 250 L562 318 C440 328 300 310 180 322 Z" fill="'+C.yellow+'"/>'+
       a.svg+b.svg+rule(352)+micro(CREDIT,360,376,C.ink,{size:11,ls:2.4})+bars+'</g>'+
       tape(360,42,150,36,-5,C.mint)+tape(566,420,96,30,-38,C.yellow);
@@ -183,7 +182,7 @@
       '<path d="'+el+'" fill="'+C.red+'"/><path d="'+er+'" fill="'+C.red+'"/><path d="M96 330 L110 336 L110 318 Z M624 330 L610 336 L610 318 Z" fill="'+C.ink+'" opacity=".45"/>'+
       '<path d="'+band+'" fill="'+C.red+'"/>'+
       '<text font-family="'+GF+'" font-size="11.5" font-weight="700" letter-spacing="2.6" fill="'+C.paper+'"><textPath href="#'+arc+'" xlink:href="#'+arc+'" startOffset="50%" text-anchor="middle">'+escapeXML(CREDIT)+'</textPath></text>'+
-      a.svg+b.svg+sparkle(256,176,12,C.yellow)+sparkle(464,176,12,C.yellow)+micro(num(i),360,358,C.yellow,{size:13,ls:2.5});
+      a.svg+b.svg+sparkle(256,176,12,C.yellow)+sparkle(464,176,12,C.yellow);
     var L=logo(522,70,60,10);
     return {sil:['<path d="'+tl+'"/>','<path d="'+tr+'"/>','<path d="'+d+'"/>','<path d="'+el+'"/>','<path d="'+er+'"/>','<path d="'+band+'"/>',L.sil],art:art+L.art};
   }
@@ -195,7 +194,7 @@
     var b=line({x:360,y:330,size:fit("IS STILL OUT.",480,100),skew:true,parts:[["IS STILL ",C.paper],["OUT.",C.yellow]]});
     var art='<defs><clipPath id="'+cp+'"><path d="'+d+'"/></clipPath></defs><path d="'+d+'" fill="'+C.blue+'"/>'+
       '<path d="M326 0 L329 234 L432 238 L404 480 L720 480 L720 0 Z" fill="'+C.red+'" clip-path="url(#'+cp+')"/>'+
-      a.svg+b.svg+micro(num(i),640,246,C.paper,{size:13,ls:2,rot:90})+micro(CREDIT,360,364,C.paper,{size:11,ls:2.6,op:.85});
+      a.svg+b.svg+micro(CREDIT,360,364,C.paper,{size:11,ls:2.6,op:.85});
     var L=logo(96,128,62,-10);
     return {sil:['<path d="'+d+'"/>',L.sil],art:art+L.art};
   }
@@ -215,7 +214,7 @@
     var a=line({x:146,y:250,size:104,anchor:"start",parts:[["I REST",C.paper]]});
     var bb=line({x:142,y:362,size:fit("MY CASE.",430,124),anchor:"start",skew:true,parts:[["MY CASE.",C.ink]]});
     var art='<path d="'+d+'" fill="'+C.paper+'"/><rect x="'+(x0+26)+'" y="'+(y0+26)+'" width="'+(x1-x0-52)+'" height="'+(y1-y0-52)+'" fill="'+C.red+'"/>'+
-      '<text x="146" y="134" font-family="'+AF+'" font-size="40" fill="'+C.paper+'">'+pad(i+1)+'</text>'+
+      
       a.svg+bb.svg+
       '<g fill="none" stroke="'+C.ink+'" stroke-width="3.5" opacity=".75"><circle cx="510" cy="150" r="56"/><circle cx="510" cy="150" r="46"/>'+
       '<path d="M570 128 q12 -9 24 0 t24 0 M570 150 q12 -9 24 0 t24 0 M570 172 q12 -9 24 0 t24 0"/></g>'+
@@ -235,7 +234,7 @@
     var art='<defs><path id="'+arc+'" d="M'+(cx-ra)+' '+cy+' A'+ra+' '+ra+' 0 0 1 '+(cx+ra)+' '+cy+'"/></defs>'+
       '<path d="'+d+'" fill="'+C.yellow+'"/><path d="'+d2+'" fill="none" stroke="'+C.ink+'" stroke-width="3"/>'+
       '<text font-family="'+GF+'" font-size="13" font-weight="700" letter-spacing="3.4" fill="'+C.ink+'"><textPath href="#'+arc+'" xlink:href="#'+arc+'" startOffset="50%" text-anchor="middle">'+escapeXML(CREDIT)+'</textPath></text>'+
-      micro(num(i),360,100,C.red,{size:14,ls:2.5})+sparkle(300,94,10,C.red)+sparkle(420,94,10,C.red)+
+      sparkle(300,94,10,C.red)+sparkle(420,94,10,C.red)+
       a.svg+underline(176,544,414,C.red,9)+b.svg+L.art;
     return {sil:['<path d="'+d+'"/>',L.sil],art:art};
   }
