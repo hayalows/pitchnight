@@ -83,3 +83,103 @@ html{scroll-padding-top:18px}
 
 /* Analytics notice stays above the dock, without stretching the floating menu. */
 @media(max-width:1150px){body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:auto;top:max(10px,env(safe-area-inset-top))}}
+
+/* Event-day refinement: clearer small-screen ticket, distinct navigation actions. */
+.desktop-nav a{position:relative;border-bottom-color:transparent!important}
+.desktop-nav a:hover{border-bottom-color:transparent!important}
+.desktop-nav .nav-inkline{position:absolute;bottom:-11px;left:-2%;width:104%;height:13px;overflow:visible;pointer-events:none}
+.desktop-nav .nav-inkline path{stroke-dasharray:190;stroke-dashoffset:190;transition:stroke-dashoffset .88s cubic-bezier(.25,.6,.16,1)}
+.desktop-nav a:is(:hover,:focus-visible) .nav-inkline path{stroke-dashoffset:0}
+.desktop-nav a:focus-visible{outline:2px solid var(--blue);outline-offset:6px}
+.attendee-strip-label-short{display:none}
+/* Desktop keeps directions in the header; the blue strip becomes a status-only notice. */
+@media(min-width:1151px){
+  .attendee-strip{padding-block:10px;min-height:54px}
+  .attendee-strip-copy{flex-direction:row;align-items:center;gap:20px}
+  .attendee-strip-copy strong{font-size:.88rem}
+  .attendee-strip-copy strong small{font-size:.72rem}
+  .attendee-strip-time{font-size:.64rem;white-space:nowrap}
+  .attendee-strip-actions>a{display:none}
+  .attendee-strip-status{display:inline-flex;font-size:.68rem;padding:7px 10px;border-color:rgba(250,244,231,.57)}
+}
+/* Tablet and mobile use menu in the header, directions from the blue strip. */
+@media(max-width:1150px){
+  .desktop-nav{display:none}
+  .site-header:has(.menu-trigger:not([hidden])) .nav-ticket.nav-directions{display:none}
+  .attendee-strip-actions>a{display:inline-flex}
+  .attendee-strip-status{display:none}
+}
+@media(max-width:720px){
+  #details .ticket-shell{grid-template-columns:minmax(0,1fr);min-width:0}
+  #details .ticket-main{border-right:0;border-bottom:3px dashed var(--ink)}
+  #details .ticket-stub{
+    display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;
+    gap:0;text-align:left;min-width:0;padding:clamp(16px,4.2vw,23px);
+  }
+  #details .stub-top{
+    display:block;grid-column:auto;margin:0 0 5px;text-align:left;
+    font-size:.69rem;line-height:1.4;letter-spacing:.1em;color:#46423c;
+  }
+  #details .ticket-registration-state{
+    grid-column:auto;width:100%;max-width:none;margin:0 0 17px;padding:6px 0 16px;
+    border-top:0;border-bottom:1.5px solid rgba(23,23,23,.3);
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+    gap:7px;text-align:left;color:var(--red);
+  }
+  #details .ticket-registration-state strong{
+    display:block;max-width:100%;font-size:clamp(2.1rem,9vw,3.2rem);
+    font-weight:400;letter-spacing:-.018em;line-height:1.08;
+    overflow-wrap:normal;white-space:normal;
+  }
+  #details .ticket-registration-state small{
+    width:100%;max-width:none;font-size:.8rem;line-height:1.45;color:#393530;
+  }
+  #details .countdown-block{grid-column:auto;width:100%;min-width:0;margin:0;padding:0 0 17px}
+  #details .countdown-block>small{display:block;font-size:.68rem;letter-spacing:.07em;font-weight:800;line-height:1.4}
+  #details .countdown{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:clamp(5px,1.4vw,10px);width:100%;margin-top:10px;
+  }
+  #details .countdown>div{
+    min-width:0;display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:5px;border:1.5px solid rgba(23,23,23,.2);
+    background:#eff1e9;padding:10px 3px 9px;text-align:center;
+  }
+  #details .countdown strong,#details .countdown-seconds strong{
+    display:block;min-width:0;font-family:var(--display);color:var(--blue);
+    font-size:clamp(1.65rem,7vw,2.65rem);font-weight:400;line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  #details .countdown span{
+    display:block;font-size:clamp(.56rem,1.6vw,.69rem);
+    line-height:1.2;font-weight:800;letter-spacing:.055em;
+  }
+  #details .countdown[hidden]{display:none!important}
+  #details #countdown-ended:not([hidden]){font-size:.96rem;color:var(--blue);font-weight:800;line-height:1.4}
+  #details .ticket-cta{
+    grid-column:auto;display:flex;align-items:center;justify-content:space-between;
+    width:100%;min-height:54px;margin:0;padding:12px 15px;
+    font-size:.77rem;letter-spacing:.03em;
+  }
+  #details .ticket-cta .ui-icon{width:1.2rem;height:1.2rem}
+  #details .ticket-actions{padding-top:1.05rem}
+}
+@media(max-width:425px){
+  .attendee-strip-label-full{display:none}
+  .attendee-strip-label-short{display:inline}
+  .attendee-strip-actions>a{font-size:.66rem;min-width:0}
+}
+@media(max-width:365px){
+  .attendee-strip-actions>a{font-size:.63rem;min-width:0}
+  #details .ticket-registration-state strong{font-size:clamp(2rem,9vw,2.5rem)}
+  #details .countdown strong,#details .countdown-seconds strong{font-size:clamp(1.5rem,7vw,1.95rem)}
+  #details .countdown>div{padding-inline:2px}
+}
+@media(max-width:390px){
+  #details .ticket-info{grid-template-columns:minmax(0,1fr);gap:.9rem}
+  #details .ticket-info>div{min-width:0}
+  #details .ticket-info strong{font-size:.91rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .desktop-nav .nav-inkline path{transition:none}
+}
