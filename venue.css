@@ -54,3 +54,13 @@
 .venue-map-open .ui-icon{width:1.15rem;height:1.15rem;display:block}
 .venue-map-tools a,.venue-map-tools button{gap:.45rem}
 .venue-map-tools .ui-icon{width:1rem;height:1rem;display:block}
+
+/* An optional venue preview, secondary to directions. */
+.venue-feature .venue-explore-link{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;min-height:60px;margin-top:16px;padding:10px 12px;background:#ffd63b;border:2px solid #171717;color:#171717;text-decoration:none;box-shadow:3px 4px 0 #171717;font-size:.77rem;font-weight:800;letter-spacing:.045em}
+.venue-feature .venue-explore-link:hover{background:#ffe88d}
+.venue-explore-link>span:nth-child(2){display:flex;flex-direction:column;gap:4px}
+.venue-feature .venue-explore-link small{font-size:.61rem;color:#4d4435;font-weight:700;letter-spacing:.06em}
+.venue-feature .venue-explore-link>.ui-icon{width:21px;height:21px}
+.venue-explore-mark{background:#171717;color:#ffd63b;width:36px;height:36px;display:grid;place-items:center}
+.venue-explore-mark .ui-icon{width:20px;height:20px}
+@media(max-width:500px){.venue-feature .venue-explore-link{min-height:59px;margin-top:12px;padding:9px;font-size:.75rem}}
