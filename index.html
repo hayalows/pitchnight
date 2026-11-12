@@ -19,8 +19,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="stylesheet" href="venue.css?v=1" />
   <script src="/analytics-client.js?v=6" defer></script>
   <script src="main.js?v=8" defer></script>
+  <script src="venue.js?v=1" defer></script>
   <script src="poster-studio.js" defer></script>
   <title>Pitch Night | Make Your Case</title>
 </head>
@@ -226,7 +228,7 @@
         <div class="v2-info-cell v2-info-yellow"><span class="v2-info-num">01</span><strong>PITCH <span aria-hidden="true">•</span> FUN <span aria-hidden="true">•</span> GAMES</strong></div>
         <div class="v2-info-cell v2-info-mint"><span class="v2-info-label">WHEN</span><strong>FRI 13 NOV, 2026</strong></div>
         <div class="v2-info-cell v2-info-blue"><span class="v2-info-label">TIME</span><strong>6:30 PM GMT</strong></div>
-        <div class="v2-info-cell v2-info-cream"><span class="v2-info-label">VENUE</span><strong>AFTER REGISTRATION</strong></div>
+        <div class="v2-info-cell v2-info-cream"><span class="v2-info-label">VENUE</span><strong><a class="venue-hero-link" href="#venue">DIGITAL 360 STUDIO <span aria-hidden="true">↗</span></a></strong></div>
       </div>
       <div class="v2-bottomline">
         <span>THE FLOOR IS OPEN. THE CASE IS YOURS.</span>
@@ -329,7 +331,7 @@
           <div class="ticket-chips"><span>PITCH</span><span>FUN</span><span>GAMES</span></div>
           <div class="ticket-info">
             <div><small>WHEN</small><strong>FRI, 13 NOV 2026</strong><span>6:30 PM GMT</span></div>
-            <div><small>WHERE</small><strong>VENUE SHARED</strong><span>After registration</span></div>
+            <div><small>WHERE</small><strong>DIGITAL 360 STUDIO</strong><span>Haatso, Accra</span></div>
           </div>
         </div>
         <div class="ticket-stub">
@@ -351,8 +353,57 @@
       </div>
       <div class="ticket-actions">
         <button type="button" class="text-action" id="share-button">SHARE WITH A FRIEND <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
-        <span>VENUE WILL BE COMMUNICATED AFTER REGISTRATION.</span>
+        <span>VENUE: DIGITAL 360 STUDIO · HAATSO, ACCRA.</span>
       </div>
+      
+      <!-- Venue reveal: public listing verified by its Google Maps place ID and Haatso plus code. -->
+      <section class="venue-feature" id="venue" aria-labelledby="venue-heading">
+        <div class="venue-feature-copy">
+          <div class="venue-feature-topline"><span class="venue-feature-dot" aria-hidden="true"></span><span>THE LOCATION</span><span>HAATSO / ACCRA</span></div>
+          <h3 id="venue-heading">FIND YOUR<br/><span>WAY HERE.</span></h3>
+          <div class="venue-feature-place">
+            <span class="venue-place-symbol" aria-hidden="true">↗</span>
+            <div><strong>DIGITAL 360 STUDIO</strong><span>Haatso, Accra, Ghana</span></div>
+          </div>
+          <div class="venue-feature-details">
+            <span>FRIDAY, 13 NOVEMBER</span>
+            <span>6:30 PM GMT</span>
+            <span>MQ6W+WRP</span>
+          </div>
+          <div class="venue-feature-actions">
+            <a class="venue-directions" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to Digital 360 Studio in Google Maps">
+              GET DIRECTIONS <span aria-hidden="true">↗</span>
+            </a>
+            <button class="venue-share" type="button" id="venue-share" aria-label="Share the Digital 360 Studio location">
+              SHARE LOCATION <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <p class="venue-feedback" id="venue-feedback" role="status" aria-live="polite"></p>
+        </div>
+        <div class="venue-feature-map" aria-label="Digital 360 Studio location">
+          <div class="venue-map-cover" id="venue-map-cover">
+            <div class="venue-map-upper"><span>OFF SCRIPT / DESTINATION</span><span>GH · ACCRA</span></div>
+            <div class="venue-map-pin" aria-hidden="true">
+              <svg viewBox="0 0 220 220" focusable="false" role="presentation">
+                <circle cx="110" cy="106" r="93" fill="none" stroke="#faf4e7" stroke-opacity=".38" stroke-width="2" stroke-dasharray="3 11"/>
+                <circle cx="110" cy="106" r="74" fill="#ffd63b" stroke="#171717" stroke-width="4"/>
+                <path d="M110 49c-29 0-52 22-52 51 0 39 52 92 52 92s52-53 52-92c0-29-23-51-52-51Z" fill="#f03d2f" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+                <circle cx="110" cy="99" r="20" fill="#faf4e7" stroke="#171717" stroke-width="4"/>
+              </svg>
+            </div>
+            <div class="venue-map-bottom">
+              <div><span>THE DESTINATION</span><strong>HAATSO.</strong></div>
+              <button type="button" class="venue-map-open" id="venue-map-open" aria-expanded="false" aria-controls="venue-map-frame">VIEW MAP <span aria-hidden="true">↗</span></button>
+            </div>
+          </div>
+          <iframe id="venue-map-frame" class="venue-map-frame" title="Google Maps location of Digital 360 Studio, Haatso, Accra" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
+          <div class="venue-map-tools" id="venue-map-tools" hidden>
+            <a href="https://www.google.com/maps/search/?api=1&query=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&query_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">OPEN IN GOOGLE MAPS ↗</a>
+            <button type="button" id="venue-map-close">CLOSE MAP ×</button>
+          </div>
+        </div>
+      </section>
+
       <div class="pass-promo">
         <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i>✳</i></div>
         <div class="pass-promo-copy">
@@ -380,7 +431,7 @@
           </details>
           <details>
             <summary>WHERE IS THE VENUE? <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></span></summary>
-            <p>The exact venue will be communicated after registration.</p>
+            <p>Digital 360 Studio in Haatso, Accra (plus code MQ6W+WRP). <a href="#venue">See the location and directions</a>.</p>
           </details>
           <details>
             <summary>WHEN DOES IT START? <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></span></summary>
@@ -426,7 +477,7 @@
       <div class="footer-event-meta">
         <strong>FRI, 13 NOVEMBER 2026</strong>
         <span>6:30 PM GMT</span>
-        <span class="footer-venue">Venue shared after registration</span>
+        <span class="footer-venue">Digital 360 Studio · Haatso, Accra</span>
       </div>
     </div>
     <a class="footer-feedback-link" href="/site-feedback.html">FEEDBACK &amp; SITE SETTINGS</a>
