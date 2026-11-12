@@ -32,7 +32,7 @@
 
   function restoreFocus() {
     // The ticket desk may already be opening after the programme closes.
-    if (registrationDialog?.open || hostDialog?.open) return;
+    if (hostDialog?.open) return;
     document.body.classList.remove("dialog-is-open");
     if (previousFocus && typeof previousFocus.focus === "function") {
       previousFocus.focus();
@@ -79,7 +79,7 @@
   }
 
   function restoreHostFocus() {
-    document.body.classList.toggle("dialog-is-open", Boolean(programmeDialog?.open || registrationDialog?.open));
+    document.body.classList.toggle("dialog-is-open", Boolean(programmeDialog?.open));
     hostPreviousFocus?.focus?.();
   }
 
@@ -117,7 +117,6 @@
     });
     siteMenu.addEventListener("close", () => {
       menuTrigger.setAttribute("aria-expanded", "false");
-      if (registrationDialog?.open) return;
       document.body.classList.remove("dialog-is-open");
       if (menuDestination) {
         const target = menuDestination;
@@ -134,9 +133,9 @@
     // Show the current area without changing what the button does.
     const menuContext = menuTrigger.querySelector(".menu-context");
     const areas = [
-      ["top", "PITCH NIGHT"], ["about", "THE IDEA"],
+      ["top", "PITCH NIGHT"], ["venue", "VENUE"], ["about", "THE IDEA"],
       ["lineup", "PROGRAMME"], ["host", "THE HOST"],
-      ["details", "TICKETS"], ["faq", "FAQ"],
+      ["details", "DETAILS"], ["faq", "FAQ"],
       ["last-call", "THE FINALE"], ["site-footer", ""]
     ].map(([id, label]) => ({ element: document.getElementById(id) || document.querySelector("." + id), label }))
      .filter(area => area.element);
@@ -364,139 +363,19 @@
   });
 
 
-  // Registration ticket desk: same-page Google Forms embed with explicit
-  // second-stage Paystack handoff. No attempt is made to inspect the contents
-  // of the cross-origin form or to infer payment success.
-  const registrationDialog = document.getElementById("registration-dialog");
-  const registrationOpeners = document.querySelectorAll("[data-registration-trigger]");
-  const registrationCloser = document.querySelector("[data-close-registration]");
-  const registrationSubmitted = document.getElementById("registration-submitted");
-  const registrationPay = document.getElementById("registration-pay");
-  let registrationPreviousFocus = null;
-  const registrationFrame = document.querySelector("#registration-dialog .registration-form");
-  const registrationFormWrap = document.getElementById("registration-form-wrap");
-  const registrationLoading = document.getElementById("registration-loading");
-  const registrationLoadingCopy = document.getElementById("registration-loading-copy");
-  let formLoadStarted = false;
-  let formLoadFinished = false;
-  let formSlowNoticeTimer;
-
-  function isNarrowFormScreen() {
-    return window.matchMedia?.("(max-width: 355px)")?.matches === true;
-  }
-
-  function prepareRegistrationForm() {
-    // The native Google Form becomes awkward below 356px; keep its direct-link fallback.
-    if (!registrationFrame || formLoadStarted || isNarrowFormScreen()) {
-      if (isNarrowFormScreen()) registrationFormWrap?.setAttribute("aria-busy", "false");
-      return;
-    }
-    formLoadStarted = true;
-    registrationFrame.addEventListener("load", () => {
-      formLoadFinished = true;
-      window.clearTimeout(formSlowNoticeTimer);
-      if (registrationLoading) registrationLoading.hidden = true;
-      registrationFormWrap?.setAttribute("aria-busy", "false");
-    }, { once: true });
-    registrationFrame.src = registrationFrame.dataset.src;
-    // An iframe load event cannot verify that Google's inner form is usable.
-    formSlowNoticeTimer = window.setTimeout(() => {
-      if (!formLoadFinished && registrationLoadingCopy) {
-        registrationLoadingCopy.textContent = "Google is taking longer than usual. You can also open the form directly.";
-      }
-    }, 8000);
-  }
-
-  // Warm up the iframe AFTER the homepage has painted, and only if data saving is off.
-  // The form is then often ready before someone taps a ticket button.
-  function scheduleFormWarmup() {
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (conn?.saveData || /(^|slow-)2g/i.test(conn?.effectiveType || "") || isNarrowFormScreen()) return;
-    window.setTimeout(() => {
-      if (document.visibilityState === "hidden" || formLoadStarted) return;
-      if (typeof window.requestIdleCallback === "function") {
-        window.requestIdleCallback(prepareRegistrationForm, { timeout: 4500 });
-      } else {
-        prepareRegistrationForm();
-      }
-    }, 1400);
-  }
-  if (document.readyState === "complete") scheduleFormWarmup();
-  else window.addEventListener("load", scheduleFormWarmup, { once: true });
-
-  function registrationLockScroll() {
-    document.body.classList.toggle(
-      "dialog-is-open",
-      Boolean(registrationDialog?.open || programmeDialog?.open || hostDialog?.open)
-    );
-  }
-  function openRegistration(trigger) {
-    if (!registrationDialog || typeof registrationDialog.showModal !== "function") return false;
-    document.getElementById("pitch-cursor")?.classList.remove("is-visible");
-    const fromMenu = Boolean(trigger?.closest?.("#site-menu"));
-    registrationPreviousFocus = fromMenu ? menuTrigger : trigger?.closest?.("#programme-dialog")
-      ? document.querySelector(".nav-ticket")
-      : (trigger || document.activeElement);
-    if (siteMenu?.open) siteMenu.close();
-    if (programmeDialog?.open) programmeDialog.close();
-    prepareRegistrationForm();
-    if (!registrationDialog.open) {
-      registrationDialog.showModal();
-      document.dispatchEvent(new Event("myc:registration-desk-open"));
-    }
-    registrationLockScroll();
-    registrationCloser?.focus();
-    return true;
-  }
-  function closeRegistration() {
-    if (registrationDialog?.open) registrationDialog.close();
-  }
-  registrationOpeners.forEach((link) => {
-    link.addEventListener("pointerenter", prepareRegistrationForm, { passive: true });
-    link.addEventListener("focus", prepareRegistrationForm, { passive: true });
-    link.addEventListener("pointerdown", prepareRegistrationForm, { passive: true });
-    link.addEventListener("click", (event) => {
-      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      if (!registrationDialog || typeof registrationDialog.showModal !== "function") return;
-      event.preventDefault();
-      openRegistration(link);
-    });
-  });
-  registrationCloser?.addEventListener("click", closeRegistration);
-  registrationDialog?.addEventListener("close", () => {
-    registrationLockScroll();
-    registrationPreviousFocus?.focus?.();
-  });
-  registrationDialog?.addEventListener("click", (event) => {
-    if (event.target === registrationDialog) closeRegistration();
-  });
-  const registrationAmountWarning = document.getElementById("registration-amount-warning");
-  const registrationStepOne = document.getElementById("registration-step-one");
-  const registrationStepTwo = document.getElementById("registration-step-two");
-
-  function syncRegistrationSteps() {
-    const submittedByVisitor = Boolean(registrationSubmitted?.checked);
-    if (registrationPay) {
-      registrationPay.setAttribute("aria-disabled", String(!submittedByVisitor));
-      registrationPay.tabIndex = submittedByVisitor ? 0 : -1;
-    }
-    if (registrationAmountWarning) registrationAmountWarning.hidden = !submittedByVisitor;
-    registrationStepOne?.classList.toggle("registration-step--complete", submittedByVisitor);
-    registrationStepOne?.classList.toggle("registration-step--current", !submittedByVisitor);
-    registrationStepTwo?.classList.toggle("registration-step--current", submittedByVisitor);
-    // A checked box means only that the visitor says they submitted the form.
-    // Neither Google Forms nor Paystack provides verified status to this site.
-  }
-  registrationSubmitted?.addEventListener("change", syncRegistrationSteps);
-  syncRegistrationSteps();
-  registrationPay?.addEventListener("click", (event) => {
-    if (!registrationSubmitted?.checked) event.preventDefault();
-    // This native Paystack link does not imply a verified payment.
-  });
-
-  // A shareable same-site URL can open the ticket desk without a new route.
+  // The website's registration and checkout are closed for this event.
+  // Old shared ?register=1 links now show the closed booking status in event details.
   if (new URLSearchParams(window.location.search).get("register") === "1") {
-    openRegistration(document.querySelector(".nav-ticket"));
+    const details = document.getElementById("details");
+    history.replaceState(null, "", window.location.pathname + "#details");
+    const showStatus = () => {
+      if (!details) return;
+      details.setAttribute("tabindex", "-1");
+      details.focus({ preventScroll: true });
+      details.scrollIntoView({ block: "start", behavior: "instant" });
+    };
+    if (document.readyState === "complete") showStatus();
+    else window.addEventListener("load", showStatus, { once: true });
   }
 
   const shareButton = document.getElementById("share-button");
@@ -514,8 +393,8 @@
   shareButton?.addEventListener("click", async () => {
     const shareData = {
       title: "Pitch Night: Make Your Case",
-      text: "Pitch Night is on Friday 13 November 2026 at 6:30 PM. Entry: GHC 70. Come through!",
-      url: window.location.href.split("#")[0],
+      text: "Pitch Night: Friday 13 November 2026, 6:30 PM at Digital 360 Studio, Haatso, Accra. Online registration is closed.",
+      url: window.location.origin + window.location.pathname + "#venue",
     };
     if (navigator.share) {
       try {

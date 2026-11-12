@@ -1,0 +1,85 @@
+/* Off Script / Pitch Night: attendee-first mode, 13 Nov 2026.
+   Venue and start time first. No payment or form links on the public page.
+   Built on original Off Script type, icons and colours. */
+:root{--attendee-blue:#1036af;--attendee-cream:#faf4e7}
+html{scroll-padding-top:18px}
+.desktop-nav .nav-venue{display:inline-flex;align-items:center;gap:.45rem;color:var(--blue);font-weight:900}
+.desktop-nav .nav-venue .ui-icon{width:1.05rem;height:1.05rem}
+.nav-ticket.nav-directions{display:inline-flex;align-items:center;gap:.65rem;background:var(--yellow);color:var(--ink);min-height:46px;padding:.75rem 1rem}
+.nav-ticket.nav-directions>span{margin:0}
+.nav-ticket.nav-directions .ui-icon{width:1.1rem;height:1.1rem}
+.site-menu-location{background:#e9f1fe;padding-left:.5rem!important;padding-right:.35rem!important}
+.site-menu-location b{color:var(--blue)}
+.site-menu-location .ui-icon{color:var(--blue)}
+.site-menu-ticket{gap:1rem}
+.site-menu-ticket:hover .ui-icon{color:#fff}
+.attendee-strip{position:relative;z-index:1;background:var(--blue);color:var(--paper);border-bottom:2px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:15px clamp(20px,5.5vw,100px)}
+.attendee-strip-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.attendee-strip-time{font-size:.68rem;line-height:1.2;letter-spacing:.12em;font-weight:800;color:#e0e9ff}
+.attendee-strip-time b{color:var(--yellow)}
+.attendee-strip-copy strong{display:flex;align-items:center;gap:7px;font-size:clamp(.9rem,1.4vw,1.18rem);letter-spacing:.015em;line-height:1.25}
+.attendee-strip-copy strong .ui-icon{width:18px;height:18px;flex:none;color:var(--yellow)}
+.attendee-strip-copy strong small{font-size:.69rem;color:#d5e3ff;letter-spacing:.07em;padding-left:5px;font-weight:700}
+.attendee-strip-actions{display:flex;align-items:center;gap:clamp(1rem,2vw,2rem)}
+.attendee-strip-status{border:1px solid rgba(255,255,255,.46);padding:5px 9px;font-size:.61rem;white-space:nowrap;letter-spacing:.08em;font-weight:800}
+.attendee-strip-actions>a{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--yellow);border:2px solid var(--ink);color:var(--ink);padding:10px 15px;min-height:47px;font-size:.73rem;font-weight:800;letter-spacing:.04em;text-decoration:none;white-space:nowrap;box-shadow:3px 3px 0 var(--ink)}
+.attendee-strip-actions>a:hover{background:#ffe96a}
+.attendee-strip-actions>a .ui-icon{width:1.05rem;height:1.05rem}
+.v2-actions .v2-ticket-button .v2-btn-icon .ui-icon{width:1.6rem;height:1.6rem}
+.event-venue-spotlight{background:#eaf0fa;padding:clamp(30px,5vw,80px) clamp(20px,5.5vw,100px);border-block:2px solid var(--ink)}
+.event-venue-spotlight .venue-feature{max-width:1320px;margin:0 auto}
+.event-venue-spotlight .venue-feature h3{margin-block:1.1rem 1.65rem}
+.event-venue-spotlight .venue-feature-map{min-height:400px}
+.event-venue-spotlight .venue-feature-topline>span:last-child{color:var(--blue)}
+.ticket-registration-state{display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;margin:0 auto 1rem;max-width:420px;padding:16px 8px 18px;border-block:2px solid var(--ink);color:var(--red);font-size:initial;letter-spacing:0;line-height:1.02}
+.ticket-registration-state strong{font-family:var(--display);font-size:clamp(2.1rem,3.3vw,3.65rem);font-weight:400;letter-spacing:-.02em;line-height:1.04}
+.ticket-registration-state small{font-family:var(--body);font-size:.74rem;font-weight:600;line-height:1.48;color:#54514d;max-width:230px}
+.ticket-stub .ticket-registration-state{flex-shrink:0}
+.ticket-stub .countdown-block{margin-top:0}
+.ticket-stub .ticket-cta{justify-content:space-between}
+.ticket-header>p{max-width:370px}
+.ticket-actions>span{max-width:320px}
+.event-day-dock{display:none}
+@media(max-width:1120px){.desktop-nav{gap:clamp(.6rem,1.2vw,1.1rem)}.nav-ticket.nav-directions{padding:.65rem .8rem;font-size:.69rem}.attendee-strip-status{display:none}}
+@media(max-width:850px){.attendee-strip-copy strong{flex-wrap:wrap}.attendee-strip-copy strong small{padding-left:0}}
+@media(max-width:720px){
+ .attendee-strip{gap:12px;padding:11px 20px}
+ .attendee-strip-time{font-size:.58rem;letter-spacing:.07em}
+ .attendee-strip-copy strong{font-size:.85rem;gap:5px}
+ .attendee-strip-copy strong small{width:100%;padding-left:24px;font-size:.62rem}
+ .attendee-strip-copy strong .ui-icon{width:17px;height:17px}
+ .attendee-strip-actions>a{min-height:44px;padding:8px 10px;gap:6px;font-size:.65rem}
+ .event-venue-spotlight{padding:25px 20px 38px}
+ .event-venue-spotlight .venue-feature{margin:0}
+ .ticket-stub .ticket-registration-state{padding:12px 4px;margin:0}
+ .ticket-registration-state strong{font-size:clamp(1.75rem,6vw,2.5rem)}
+ .ticket-registration-state small{font-size:.67rem}
+ .event-day-dock:not([hidden]){position:fixed;z-index:28;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:9px;min-height:55px;padding:9px 13px;text-decoration:none;background:var(--yellow);color:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-weight:800;line-height:1.15}
+ .event-day-dock>span{display:flex;align-items:center;gap:7px;min-width:0;font-size:.68rem}
+ .event-day-dock>span span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .event-day-dock .ui-icon{width:18px;height:18px;flex:none}
+ .event-day-dock strong{white-space:nowrap;display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--blue)}
+ body.dialog-is-open .event-day-dock{display:none!important}
+ body:has(.measurement-notice:not([hidden])) .event-day-dock{bottom:calc(94px + env(safe-area-inset-bottom))}
+}
+@media(max-width:450px){.attendee-strip{gap:8px}.attendee-strip-actions>a{padding:7px 8px;font-size:.61rem}.attendee-strip-copy strong{font-size:.79rem}.event-day-dock>span span{max-width:140px}}
+@media(max-width:365px){.attendee-strip-actions>a{font-size:0;min-width:45px}.attendee-strip-actions>a .ui-icon{width:19px;height:19px}.event-day-dock>span span{max-width:102px}}
+@media(prefers-reduced-motion:reduce){.event-day-dock{transition:none}}
+
+/* The pre-existing floating menu sat at the mobile bottom edge. Keep it at
+   the top during the event, away from the contextual directions dock.
+   It stays visible when users scroll either way. */
+@media(max-width:1150px){
+  .menu-trigger-floating:not([hidden]){
+    position:fixed;z-index:40;
+    top:max(10px,env(safe-area-inset-top));
+    bottom:auto;right:12px;
+    transform:none;opacity:1;pointer-events:auto;
+  }
+  .menu-trigger-floating.menu-scroll-hidden:not(:focus-visible){
+    transform:none;opacity:1;pointer-events:auto;
+  }
+}
+
+/* Analytics notice stays above the dock, without stretching the floating menu. */
+@media(max-width:1150px){body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden]){bottom:auto;top:max(10px,env(safe-area-inset-top))}}

@@ -4,24 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#faf4e7" />
-  <meta name="description" content="Pitch Night: Make Your Case. Why should another young single adult consider dating your friend? Friday 13 November 2026 at 6:30 PM. Presented by Off Script." />
+  <meta name="description" content="Pitch Night at Digital 360 Studio, Haatso, Accra. Friday 13 November 2026 at 6:30 PM. Get directions and event details. Online registration is closed." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Pitch Night | Make Your Case" />
-  <meta property="og:description" content="One friend. One pitch. A night of fun and games. Friday 13 November 2026 at 6:30 PM. Entry GHC 70." />
+  <meta property="og:description" content="Friday 13 November, 6:30 PM at Digital 360 Studio, Haatso, Accra. Directions and event information. Registration closed." />
   <meta name="color-scheme" content="light" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Resolve the Google Forms connection early, without downloading the full form on the critical path. -->
-  <link rel="preconnect" href="https://docs.google.com" />
-  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
-  <link rel="dns-prefetch" href="//docs.google.com" />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="styles.css?v=9" />
   <link rel="stylesheet" href="venue.css?v=2" />
+  <link rel="stylesheet" href="event-day.css?v=1" />
   <script src="/analytics-client.js?v=6" defer></script>
-  <script src="main.js?v=8" defer></script>
+  <script src="main.js?v=9" defer></script>
+  <script src="event-day.js?v=1" defer></script>
   <script src="venue.js?v=1" defer></script>
   <script src="poster-studio.js" defer></script>
   <title>Pitch Night | Make Your Case</title>
@@ -79,15 +77,15 @@
     </a>
     <span class="presented">presents</span>
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#about">THE IDEA</a>
-      <a href="#lineup">THE PROGRAMME</a>
+      <a class="nav-venue" href="#venue"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg> VENUE</a>
+      <a href="#lineup">PROGRAMME</a>
+      <a href="#details">EVENT DETAILS</a>
       <a href="#host">THE HOST</a>
-      <a href="#details">DETAILS</a>
       <a href="#faq">FAQ</a>
     </nav>
     <button class="menu-trigger" type="button" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false" hidden><span class="menu-label">MENU</span><span class="menu-context" aria-hidden="true"></span><svg class="ui-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button>
-    <a class="nav-ticket" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer" aria-label="Open Pitch Night registration ticket desk">
-      GET A TICKET <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
+    <a class="nav-ticket nav-directions" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to Digital 360 Studio on Google Maps">
+      DIRECTIONS <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></span>
     </a>
   </header>
 
@@ -98,18 +96,30 @@
         <p class="site-menu-kicker">YOUR GUIDE TO THE NIGHT <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></p>
         <h2 id="site-menu-title">WHERE TO?</h2>
         <nav aria-label="Main navigation">
-          <a href="#about"><small>01</small><b>THE IDEA</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a class="site-menu-location" href="#venue"><small>01</small><b>VENUE &amp; DIRECTIONS</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg></a>
           <a href="#lineup"><small>02</small><b>THE PROGRAMME</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
-          <a href="#host"><small>03</small><b>MEET THE HOST</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
-          <a href="#details"><small>04</small><b>EVENT DETAILS</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
-          <a href="#faq"><small>05</small><b>FAQ</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a href="#details"><small>03</small><b>EVENT DETAILS</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a href="#host"><small>04</small><b>MEET THE HOST</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a href="#about"><small>05</small><b>THE IDEA</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a href="#faq"><small>06</small><b>FAQ</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
         </nav>
-        <a class="site-menu-ticket" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">GET A TICKET <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+        <a class="site-menu-ticket" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">GET DIRECTIONS <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></a>
 
         <p class="site-menu-foot">FRIDAY 13 NOVEMBER · 6:30 PM</p>
       </div>
     </div>
   </dialog>
+
+  <div class="attendee-strip" id="arrival-guide" role="region" aria-label="Pitch Night venue and start time">
+    <div class="attendee-strip-copy">
+      <span class="attendee-strip-time">FRI 13 NOV 2026 <b>·</b> 6:30 PM GMT</span>
+      <strong><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg> DIGITAL 360 STUDIO <small>HAATSO, ACCRA</small></strong>
+    </div>
+    <div class="attendee-strip-actions">
+      <span class="attendee-strip-status">REGISTRATION CLOSED</span>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to Digital 360 Studio, Haatso">GET DIRECTIONS <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></a>
+    </div>
+  </div>
 
   <main id="main">
     <section class="hero hero--v2" id="top" aria-labelledby="hero-title">
@@ -151,10 +161,10 @@
           </div>
 
           <div class="v2-actions">
-            <a class="v2-ticket-button" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">
-              <span class="v2-btn-icon" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></span>
-              <span>GRAB YOUR TICKET <small>GHC 70 • REGISTER ONLINE</small></span>
-              <span class="v2-btn-arrow" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
+            <a class="v2-ticket-button" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to the Pitch Night venue">
+              <span class="v2-btn-icon" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg></span>
+              <span>GET DIRECTIONS <small>DIGITAL 360 STUDIO · HAATSO</small></span>
+              <span class="v2-btn-arrow" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></span>
             </a>
             <button class="v2-program-button" type="button" data-open-program>
               PEEK AT THE PROGRAMME <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
@@ -241,126 +251,7 @@
       </div>
     </section>
 
-        <div class="marquee" role="img" aria-label="Pitch, fun, games. Make your case.">
-      <div class="marquee-track" aria-hidden="true">
-        <span>PITCH <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> FUN <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> GAMES <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> MAKE YOUR CASE <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em></span>
-        <span>PITCH <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> FUN <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> GAMES <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> MAKE YOUR CASE <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em></span>
-      </div>
-    </div>
-
-    <section class="about section-pad" id="about" aria-labelledby="about-heading">
-      <div class="section-topline"><span>01 / WHAT'S THIS ABOUT?</span><span>THE IDEA</span></div>
-      <div class="about-grid">
-        <div class="about-heading-wrap">
-          <h2 class="section-heading" id="about-heading">YOUR FRIEND.<br/><span>YOUR PITCH.</span><br/>THEIR CALL.</h2>
-          <button class="about-brand-stamp" type="button" aria-label="Spin the Off Script stamp" title="Give the stamp a spin">
-            <span class="about-brand-stamp-kicker">PRESENTED BY</span>
-            <span class="about-brand-stamp-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" /></span>
-            <span class="about-brand-stamp-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
-          </button>
-        </div>
-        <div class="about-copy">
-          <p class="large-copy">You know that friend you'd recommend to anyone?</p>
-          <p>Here's your chance to make your case. Pitch Night brings young single adults together for memorable pitches, unexpected moments, games, and plenty to talk about afterwards.</p>
-          <p>It's meant to be light-hearted. If you're pitching a friend, make sure they're happy to be part of it.</p>
-          <button type="button" class="text-action" data-open-program>TAKE A PEEK AT THE NIGHT <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
-        </div>
-      </div>
-      <div class="sticker-row" role="group" aria-label="Three things to expect">
-        <button type="button" class="sticker sticker-yellow" data-open-program aria-label="See the pitches on the programme"><span class="sticker-symbol">01</span><b>THE PITCHES</b><small>Make your case.</small></button>
-        <button type="button" class="sticker sticker-mint" data-open-program aria-label="See the fun activities on the programme"><span class="sticker-symbol">02</span><b>THE FUN</b><small>Don't take it too seriously.</small></button>
-        <button type="button" class="sticker sticker-blue" data-open-program aria-label="See the games on the programme"><span class="sticker-symbol">03</span><b>THE GAMES</b><small>Get involved.</small></button>
-      </div>
-    </section>
-
-    <section class="lineup section-pad" id="lineup" aria-labelledby="lineup-heading">
-      <div class="section-topline"><span>02 / THE RUN OF SHOW</span><span>A FIRST LOOK</span></div>
-      <div class="lineup-grid">
-        <div class="lineup-lead">
-          <p class="section-label">DON'T JUST HEAR ABOUT IT.</p>
-          <h2 class="section-heading" id="lineup-heading">SEE WHAT'S<br/><span>COMING UP.</span></h2>
-          <p>We've got a whole night planned. Open the programme board for a taste of what's coming. The final running order will be shared closer to the event.</p>
-          <button class="button button-yellow" type="button" data-open-program>OPEN THE PROGRAMME <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
-        </div>
-        <button class="programme-teaser" type="button" data-open-program aria-label="Open the Pitch Night programme board">
-          <div class="teaser-pin"></div>
-          <span class="teaser-small">OFF SCRIPT PRESENTS</span>
-          <span class="teaser-big">THE NIGHT'S<br/>LINEUP!</span>
-          <div class="teaser-rows" aria-hidden="true">
-            <span><b>01</b> HELLOS &amp; WELCOME <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
-            <span><b>02</b> GAMES &amp; WARM-UP <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
-            <span><b>03</b> PITCH YOUR FRIEND <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
-            <span><b>04</b> THE GOOD PART <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
-          </div>
-          <span class="teaser-footnote">TAP TO OPEN THE BOARD <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></span>
-          <span class="board-shadow" aria-hidden="true"></span>
-        </button>
-      </div>
-    </section>
-
-    <section class="host-section section-pad" id="host" aria-labelledby="host-heading">
-      <div class="section-topline"><span>03 / THE PERSON WITH THE MIC</span><span>THE HOST</span></div>
-      <div class="host-grid">
-        <div class="host-intro">
-          <p class="section-label">MEET YOUR HOST</p>
-          <h2 class="host-title" id="host-heading">KHEMIKAL<span>.</span></h2>
-          <p class="host-real-name">DANIEL SELASE</p>
-        </div>
-        <div class="host-stage">
-          <div class="host-visual">
-            <img class="host-photo" src="host.jpeg" alt="Portrait of Daniel Selase, also known as Khemikal" width="854" height="1280" loading="eager" fetchpriority="low" decoding="async" />
-          </div>
-          <span class="host-stamp" aria-hidden="true">THE MIC<br />IS HIS.</span>
-          <span class="host-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
-        </div>
-        <div class="host-copy">
-          <p class="host-summary">A Ghanaian stand-up comedian who brings humour, storytelling and a love for connecting with people to the stage.</p>
-          <button class="host-more" type="button" data-open-host aria-haspopup="dialog" aria-controls="host-dialog">
-            GET TO KNOW KHEMIKAL
-            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="ticket-section section-pad" id="details" aria-labelledby="details-heading">
-      <div class="section-topline"><span>04 / SAVE YOUR SPOT</span><span>THE DETAILS</span></div>
-      <div class="ticket-header">
-        <h2 class="section-heading" id="details-heading">DON'T MISS<br/><span>THE NIGHT.</span></h2>
-        <p>One night. An open mic for your friend's best qualities. And all the fun in between.</p>
-      </div>
-      <div class="ticket-shell">
-        <div class="ticket-main">
-          <div class="ticket-overline"><span class="ticket-brandline"><span class="ticket-brand"><img src="assets/offscript-logo.png" alt="Off Script" width="688" height="688" loading="lazy" decoding="async" /></span><b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></b><span>PITCH NIGHT</span></span><span>ADMIT ONE</span></div>
-          <p class="ticket-title"><span class="ticket-title-first"><span>MAKE</span> <span>YOUR</span></span><span class="ticket-title-last">CASE.</span></p>
-          <div class="ticket-chips"><span>PITCH</span><span>FUN</span><span>GAMES</span></div>
-          <div class="ticket-info">
-            <div><small>WHEN</small><strong>FRI, 13 NOV 2026</strong><span>6:30 PM GMT</span></div>
-            <div><small>WHERE</small><strong>DIGITAL 360 STUDIO</strong><span>Haatso, Accra</span></div>
-          </div>
-        </div>
-        <div class="ticket-stub">
-          <div class="stub-top">YOUR ENTRY</div>
-          <div class="ticket-price"><span>GH₵</span>70</div>
-          <div class="countdown-block">
-            <small>COUNTDOWN TO SHOWTIME</small>
-            <div class="countdown" role="timer" aria-live="off" aria-label="Time remaining until Pitch Night">
-              <div><strong id="days">--</strong><span>DAYS</span></div>
-              <div><strong id="hours">--</strong><span>HRS</span></div>
-              <div><strong id="mins">--</strong><span>MINS</span></div>
-              <div class="countdown-seconds"><strong id="secs">--</strong><span>SEC</span></div>
-            </div>
-            <p id="countdown-ended" hidden>The date has arrived. See you there!</p>
-          </div>
-          <a class="button button-red ticket-cta" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">REGISTER NOW <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
-
-        </div>
-      </div>
-      <div class="ticket-actions">
-        <button type="button" class="text-action" id="share-button">SHARE WITH A FRIEND <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
-        <span>VENUE: DIGITAL 360 STUDIO · HAATSO, ACCRA.</span>
-      </div>
-      
+    <div class="event-venue-spotlight" aria-label="Event location and directions">
       <!-- Venue reveal: public listing verified by its Google Maps place ID and Haatso plus code. -->
       <section class="venue-feature" id="venue" aria-labelledby="venue-heading">
         <div class="venue-feature-copy">
@@ -408,6 +299,129 @@
           </div>
         </div>
       </section>
+    </div>
+
+        <div class="marquee" role="img" aria-label="Pitch, fun, games. Make your case.">
+      <div class="marquee-track" aria-hidden="true">
+        <span>PITCH <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> FUN <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> GAMES <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> MAKE YOUR CASE <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em></span>
+        <span>PITCH <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> FUN <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> GAMES <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em> MAKE YOUR CASE <em aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></em></span>
+      </div>
+    </div>
+
+    <section class="about section-pad" id="about" aria-labelledby="about-heading">
+      <div class="section-topline"><span>01 / WHAT'S THIS ABOUT?</span><span>THE IDEA</span></div>
+      <div class="about-grid">
+        <div class="about-heading-wrap">
+          <h2 class="section-heading" id="about-heading">YOUR FRIEND.<br/><span>YOUR PITCH.</span><br/>THEIR CALL.</h2>
+          <button class="about-brand-stamp" type="button" aria-label="Spin the Off Script stamp" title="Give the stamp a spin">
+            <span class="about-brand-stamp-kicker">PRESENTED BY</span>
+            <span class="about-brand-stamp-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" loading="lazy" decoding="async" /></span>
+            <span class="about-brand-stamp-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
+          </button>
+        </div>
+        <div class="about-copy">
+          <p class="large-copy">You know that friend you'd recommend to anyone?</p>
+          <p>Here's your chance to make your case. Pitch Night brings young single adults together for memorable pitches, unexpected moments, games, and plenty to talk about afterwards.</p>
+          <p>It's meant to be light-hearted. If you're pitching a friend, make sure they're happy to be part of it.</p>
+          <button type="button" class="text-action" data-open-program>TAKE A PEEK AT THE NIGHT <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
+        </div>
+      </div>
+      <div class="sticker-row" role="group" aria-label="Three things to expect">
+        <button type="button" class="sticker sticker-yellow" data-open-program aria-label="See the pitches on the programme"><span class="sticker-symbol">01</span><b>THE PITCHES</b><small>Make your case.</small></button>
+        <button type="button" class="sticker sticker-mint" data-open-program aria-label="See the fun activities on the programme"><span class="sticker-symbol">02</span><b>THE FUN</b><small>Don't take it too seriously.</small></button>
+        <button type="button" class="sticker sticker-blue" data-open-program aria-label="See the games on the programme"><span class="sticker-symbol">03</span><b>THE GAMES</b><small>Get involved.</small></button>
+      </div>
+    </section>
+
+    <section class="lineup section-pad" id="lineup" aria-labelledby="lineup-heading">
+      <div class="section-topline"><span>02 / THE RUN OF SHOW</span><span>A FIRST LOOK</span></div>
+      <div class="lineup-grid">
+        <div class="lineup-lead">
+          <p class="section-label">DON'T JUST HEAR ABOUT IT.</p>
+          <h2 class="section-heading" id="lineup-heading">SEE WHAT'S<br/><span>COMING UP.</span></h2>
+          <p>We've got a whole night planned. Open the programme board for a taste of what's coming. The final running order may change on the night.</p>
+          <button class="button button-yellow" type="button" data-open-program>OPEN THE PROGRAMME <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
+        </div>
+        <button class="programme-teaser" type="button" data-open-program aria-label="Open the Pitch Night programme board">
+          <div class="teaser-pin"></div>
+          <span class="teaser-small">OFF SCRIPT PRESENTS</span>
+          <span class="teaser-big">THE NIGHT'S<br/>LINEUP!</span>
+          <div class="teaser-rows" aria-hidden="true">
+            <span><b>01</b> HELLOS &amp; WELCOME <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
+            <span><b>02</b> GAMES &amp; WARM-UP <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
+            <span><b>03</b> PITCH YOUR FRIEND <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
+            <span><b>04</b> THE GOOD PART <b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></b></span>
+          </div>
+          <span class="teaser-footnote">TAP TO OPEN THE BOARD <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></span>
+          <span class="board-shadow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="host-section section-pad" id="host" aria-labelledby="host-heading">
+      <div class="section-topline"><span>03 / THE PERSON WITH THE MIC</span><span>THE HOST</span></div>
+      <div class="host-grid">
+        <div class="host-intro">
+          <p class="section-label">MEET YOUR HOST</p>
+          <h2 class="host-title" id="host-heading">KHEMIKAL<span>.</span></h2>
+          <p class="host-real-name">DANIEL SELASE</p>
+        </div>
+        <div class="host-stage">
+          <div class="host-visual">
+            <img class="host-photo" src="host.jpeg" alt="Portrait of Daniel Selase, also known as Khemikal" width="854" height="1280" loading="eager" fetchpriority="low" decoding="async" />
+          </div>
+          <span class="host-stamp" aria-hidden="true">THE MIC<br />IS HIS.</span>
+          <span class="host-spark" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></span>
+        </div>
+        <div class="host-copy">
+          <p class="host-summary">A Ghanaian stand-up comedian who brings humour, storytelling and a love for connecting with people to the stage.</p>
+          <button class="host-more" type="button" data-open-host aria-haspopup="dialog" aria-controls="host-dialog">
+            GET TO KNOW KHEMIKAL
+            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticket-section section-pad" id="details" aria-labelledby="details-heading">
+      <div class="section-topline"><span>04 / BEFORE YOU ARRIVE</span><span>THE DETAILS</span></div>
+      <div class="ticket-header">
+        <h2 class="section-heading" id="details-heading">ALL SET<br/><span>FOR THE NIGHT.</span></h2>
+        <p>Online registration is closed. Here are the details for those attending.</p>
+      </div>
+      <div class="ticket-shell">
+        <div class="ticket-main">
+          <div class="ticket-overline"><span class="ticket-brandline"><span class="ticket-brand"><img src="assets/offscript-logo.png" alt="Off Script" width="688" height="688" loading="lazy" decoding="async" /></span><b aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></b><span>PITCH NIGHT</span></span><span>EVENT GUIDE</span></div>
+          <p class="ticket-title"><span class="ticket-title-first"><span>MAKE</span> <span>YOUR</span></span><span class="ticket-title-last">CASE.</span></p>
+          <div class="ticket-chips"><span>PITCH</span><span>FUN</span><span>GAMES</span></div>
+          <div class="ticket-info">
+            <div><small>WHEN</small><strong>FRI, 13 NOV 2026</strong><span>6:30 PM GMT</span></div>
+            <div><small>WHERE</small><strong>DIGITAL 360 STUDIO</strong><span>Haatso, Accra</span></div>
+          </div>
+        </div>
+        <div class="ticket-stub">
+          <div class="stub-top">BOOKING STATUS</div>
+          <div class="ticket-price ticket-registration-state" role="status"><strong>REGISTRATION<br/>CLOSED</strong><small>Online registration and payment have ended.</small></div>
+          <div class="countdown-block">
+            <small>COUNTDOWN TO SHOWTIME</small>
+            <div class="countdown" role="timer" aria-live="off" aria-label="Time remaining until Pitch Night">
+              <div><strong id="days">--</strong><span>DAYS</span></div>
+              <div><strong id="hours">--</strong><span>HRS</span></div>
+              <div><strong id="mins">--</strong><span>MINS</span></div>
+              <div class="countdown-seconds"><strong id="secs">--</strong><span>SEC</span></div>
+            </div>
+            <p id="countdown-ended" hidden>The date has arrived. See you there!</p>
+          </div>
+          <a class="button button-red ticket-cta" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">GET DIRECTIONS <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></span></a>
+
+        </div>
+      </div>
+      <div class="ticket-actions">
+        <button type="button" class="text-action" id="share-button">SHARE WITH A FRIEND <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></button>
+        <span>ONLINE REGISTRATION AND PAYMENT ARE CLOSED.</span>
+      </div>
+      
+
 
       <div class="pass-promo">
         <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></i></div>
@@ -431,8 +445,8 @@
             <p>It's an event for young single adults where people make a case for why someone should consider getting to know their friend, alongside fun activities and games.</p>
           </details>
           <details>
-            <summary>HOW MUCH DOES IT COST? <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></span></summary>
-            <p>Entry is GHC 70, as shown on the official event flyer. Use the registration link on this page to sign up.</p>
+            <summary>CAN I STILL REGISTER OR PAY? <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></span></summary>
+            <p>Online registration and payment through this website are closed. If you registered earlier, you can use the <a href="#venue">venue section</a> to get directions.</p>
           </details>
           <details>
             <summary>WHERE IS THE VENUE? <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-plus"></use></svg></span></summary>
@@ -450,7 +464,7 @@
       </div>
     </section>
 
-    <section class="last-call" aria-label="Final registration invitation">
+    <section class="last-call" aria-label="Event location reminder">
       <div class="last-call-copy">
         <p><span class="last-call-dot" aria-hidden="true"></span> THE MIC IS WAITING.</p>
         <h2 id="last-call-title">MAKE YOUR<br/>CASE<span>.</span></h2>
@@ -465,7 +479,7 @@
           </svg>
           <span class="last-call-live">ON AIR <i aria-hidden="true"></i></span>
         </div>
-        <a class="button button-cream" href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">I'M COMING <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
+        <a class="button button-cream" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">FIND THE VENUE <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></span></a>
       </div>
     </section>
   </main>
@@ -527,82 +541,6 @@
     </div>
   </dialog>
 
-  <!-- Registration uses the existing Google Form and Paystack checkout.
-       We never claim submission/payment success because their state is cross-origin. -->
-  <dialog class="registration-dialog" id="registration-dialog" aria-labelledby="registration-title" aria-describedby="registration-summary">
-    <div class="registration-desk">
-      <div class="registration-heading">
-        <div class="registration-heading-left">
-          <span class="registration-logo"><img src="assets/offscript-logo.png" alt="" width="688" height="688" decoding="async" /></span>
-          <div class="registration-title-group">
-            <h2 id="registration-title">YOUR <span>SEAT.</span></h2>
-          </div>
-        </div>
-        <button type="button" class="registration-close" data-close-registration aria-label="Close registration">
-          <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg>
-        </button>
-      </div>
-      <div class="registration-steps" id="registration-summary" role="group" aria-label="Two steps: submit your form, then pay GHS 70">
-        <div class="registration-step registration-step--current" id="registration-step-one">
-          <span class="registration-step-num">01</span>
-          <span><strong>YOUR DETAILS</strong><small>Complete the form</small></span>
-        </div>
-        <span class="registration-step-arrow" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
-        <div class="registration-step" id="registration-step-two">
-          <span class="registration-step-num">02</span>
-          <span><strong>PAY GH₵70</strong><small>Secure checkout</small></span>
-        </div>
-      </div>
-      <div class="registration-form-wrap" id="registration-form-wrap" aria-busy="true">
-        <p class="registration-form-hint"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-down"></use></svg> SCROLL THE FORM TO COMPLETE IT</p>
-        <div class="registration-form-stage">
-          <div class="registration-loading" id="registration-loading" role="status" aria-live="polite">
-            <div class="registration-loading-icon" aria-hidden="true">
-              <svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg>
-            </div>
-            <strong>GETTING YOUR FORM READY.</strong>
-            <p id="registration-loading-copy">Connecting to Google Forms…</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
-              OPEN THE FORM DIRECTLY
-              <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
-            </a>
-          </div>
-          <iframe
-            class="registration-form"
-            title="Official Off Script Pitch Night registration form. Scroll inside to complete and submit."
-            data-src="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform?embedded=true"
-            loading="eager"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
-        </div>
-        <div class="registration-narrow-fallback">
-          <span class="registration-narrow-symbol" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
-          <h3>THE FORM NEEDS A LITTLE MORE ROOM.</h3>
-          <p>Open the official registration form, submit your details, then return here to pay.</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">OPEN THE FORM <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
-          <span class="registration-narrow-detail">13 NOV • 6:30 PM • GH₵70</span>
-        </div>
-      </div>
-      <div class="registration-actions">
-        <label class="registration-confirm">
-          <input type="checkbox" id="registration-submitted" />
-          <span>I've submitted my details in the form.</span>
-        </label>
-        <div class="registration-action-row">
-          <a class="registration-pay" id="registration-pay" href="https://paystack.shop/pay/pitchnight" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">
-            PAY GH₵70
-            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
-          </a>
-          <a class="registration-open-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeISQIPuQUJdY39OOy-cupp-UQroZf7H2zV5auRe0nt2OAYNA/viewform" target="_blank" rel="noopener noreferrer">
-            OPEN FORM DIRECTLY
-            <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg>
-          </a>
-        </div>
-        <p class="registration-amount-warning" id="registration-amount-warning" role="status" hidden>Confirm GH₵70 before you pay.</p>
-      </div>
-    </div>
-  </dialog>
-
   <dialog class="host-dialog" id="host-dialog" aria-labelledby="host-dialog-title" aria-describedby="host-dialog-intro">
     <div class="host-dialog-sheet">
       <header class="host-dialog-top">
@@ -644,9 +582,12 @@
         <li><span class="dialog-index">04</span><span><strong>THE ROOM REACTS</strong><small>Expect questions, laughs, and a few surprises.</small></span><span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></li>
         <li><span class="dialog-index">05</span><span><strong>THE HANGOUT</strong><small>Keep the conversations going.</small></span><span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></li>
       </ol>
-      <div class="dialog-footer"><span>FRI 13 NOV • 6:30 PM • ENTRY GHC70</span><a href="https://hqr.la/68d7f6f7" data-registration-trigger target="_blank" rel="noopener noreferrer">GET YOUR TICKET <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a></div>
+      <div class="dialog-footer"><span>FRI 13 NOV • 6:30 PM • HAATSO, ACCRA</span><a href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">GET DIRECTIONS <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></a></div>
     </div>
   </dialog>
+  <a class="event-day-dock" id="event-day-dock" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to Digital 360 Studio" hidden>
+    <span><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg> <span>DIGITAL 360 STUDIO</span></span><strong>GET DIRECTIONS <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></strong>
+  </a>
   <div class="toast" id="share-toast" role="status" aria-live="polite"></div>
 
   <div class="pitch-cursor" id="pitch-cursor" aria-hidden="true">
