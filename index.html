@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="styles.css?v=9" />
-  <link rel="stylesheet" href="venue.css?v=1" />
+  <link rel="stylesheet" href="venue.css?v=2" />
   <script src="/analytics-client.js?v=6" defer></script>
   <script src="main.js?v=8" defer></script>
   <script src="venue.js?v=1" defer></script>
@@ -62,6 +62,11 @@
 <path d="M5 12h14" />
   <path d="M12 5v14" />
 </symbol>
+
+<symbol id="ui-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="ui-navigation" viewBox="0 0 24 24"><path d="m3 11 19-9-9 19-2.8-8.2L3 11Z"/></symbol>
+<symbol id="ui-share-2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7 6.6 4.4"/></symbol>
+<symbol id="ui-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></symbol>
 <symbol id="ui-download" viewBox="0 0 24 24">
 <path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3" />
 </symbol>
@@ -228,7 +233,7 @@
         <div class="v2-info-cell v2-info-yellow"><span class="v2-info-num">01</span><strong>PITCH <span aria-hidden="true">•</span> FUN <span aria-hidden="true">•</span> GAMES</strong></div>
         <div class="v2-info-cell v2-info-mint"><span class="v2-info-label">WHEN</span><strong>FRI 13 NOV, 2026</strong></div>
         <div class="v2-info-cell v2-info-blue"><span class="v2-info-label">TIME</span><strong>6:30 PM GMT</strong></div>
-        <div class="v2-info-cell v2-info-cream"><span class="v2-info-label">VENUE</span><strong><a class="venue-hero-link" href="#venue">DIGITAL 360 STUDIO <span aria-hidden="true">↗</span></a></strong></div>
+        <div class="v2-info-cell v2-info-cream"><span class="v2-info-label">VENUE</span><strong><a class="venue-hero-link" href="#venue">DIGITAL 360 STUDIO <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a></strong></div>
       </div>
       <div class="v2-bottomline">
         <span>THE FLOOR IS OPEN. THE CASE IS YOURS.</span>
@@ -362,7 +367,7 @@
           <div class="venue-feature-topline"><span class="venue-feature-dot" aria-hidden="true"></span><span>THE LOCATION</span><span>HAATSO / ACCRA</span></div>
           <h3 id="venue-heading">FIND YOUR<br/><span>WAY HERE.</span></h3>
           <div class="venue-feature-place">
-            <span class="venue-place-symbol" aria-hidden="true">↗</span>
+            <span class="venue-place-symbol" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg></span>
             <div><strong>DIGITAL 360 STUDIO</strong><span>Haatso, Accra, Ghana</span></div>
           </div>
           <div class="venue-feature-details">
@@ -372,10 +377,10 @@
           </div>
           <div class="venue-feature-actions">
             <a class="venue-directions" href="https://www.google.com/maps/dir/?api=1&destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer" aria-label="Get directions to Digital 360 Studio in Google Maps">
-              GET DIRECTIONS <span aria-hidden="true">↗</span>
+              GET DIRECTIONS <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-navigation"></use></svg></span>
             </a>
             <button class="venue-share" type="button" id="venue-share" aria-label="Share the Digital 360 Studio location">
-              SHARE LOCATION <span aria-hidden="true">↗</span>
+              SHARE LOCATION <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-share-2"></use></svg></span>
             </button>
           </div>
           <p class="venue-feedback" id="venue-feedback" role="status" aria-live="polite"></p>
@@ -393,24 +398,24 @@
             </div>
             <div class="venue-map-bottom">
               <div><span>THE DESTINATION</span><strong>HAATSO.</strong></div>
-              <button type="button" class="venue-map-open" id="venue-map-open" aria-expanded="false" aria-controls="venue-map-frame">VIEW MAP <span aria-hidden="true">↗</span></button>
+              <button type="button" class="venue-map-open" id="venue-map-open" aria-expanded="false" aria-controls="venue-map-frame">VIEW MAP <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map"></use></svg></span></button>
             </div>
           </div>
           <iframe id="venue-map-frame" class="venue-map-frame" title="Google Maps location of Digital 360 Studio, Haatso, Accra" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
           <div class="venue-map-tools" id="venue-map-tools" hidden>
-            <a href="https://www.google.com/maps/search/?api=1&query=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&query_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">OPEN IN GOOGLE MAPS ↗</a>
-            <button type="button" id="venue-map-close">CLOSE MAP ×</button>
+            <a href="https://www.google.com/maps/search/?api=1&query=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&query_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer">OPEN IN GOOGLE MAPS <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+            <button type="button" id="venue-map-close">CLOSE MAP <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-x"></use></svg></button>
           </div>
         </div>
       </section>
 
       <div class="pass-promo">
-        <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i>✳</i></div>
+        <div class="pass-promo-stamp" aria-hidden="true"><img src="assets/offscript-logo.png" alt="" loading="lazy" width="688" height="688" /><i><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg></i></div>
         <div class="pass-promo-copy">
           <span class="pass-promo-kicker">YOUR FRIEND. THE SPOTLIGHT.</span>
           <h3>MAKE A CASE.<br/><em>MAKE IT PERSONAL.</em></h3>
           <p>Create a collectible Pitch Night share card with your friend's name. Pick an Instagram post or story format.</p>
-          <a class="pass-prop-link" href="props.html" aria-label="Explore the Off Script photo props">EXPLORE THE PHOTO PROPS <span aria-hidden="true">↗</span></a>
+          <a class="pass-prop-link" href="props.html" aria-label="Explore the Off Script photo props">EXPLORE THE PHOTO PROPS <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span></a>
         </div>
         <button type="button" class="pass-promo-button" data-open-pass>MAKE A FRIEND POSTER <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
       </div>

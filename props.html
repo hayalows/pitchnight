@@ -11,15 +11,23 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/anton-props.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/space-grotesk-props.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="props.css?v=3">
+  <link rel="stylesheet" href="props.css?v=4">
   <script src="props.js?v=4" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#choose">Skip to the props</a>
+<svg class="prop-icon-symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <symbol id="prop-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10M7 17 17 7"/></symbol>
+  <symbol id="prop-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14m-7-7 7 7 7-7"/></symbol>
+  <symbol id="prop-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M5 12h14"/></symbol>
+  <symbol id="prop-arrow-right" viewBox="0 0 24 24"><path d="m12 5 7 7-7 7M5 12h14"/></symbol>
+  <symbol id="prop-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3"/></symbol>
+  <symbol id="prop-share-2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7 6.6 4.4"/></symbol>
+</svg>
 <header class="prop-header">
   <a class="prop-brand" href="/" aria-label="Off Script Pitch Night home"><img src="assets/offscript-logo.png" alt="Off Script" width="74" height="74" decoding="async"></a>
   <span class="prop-header-name"><span class="hn-event">PITCH NIGHT <b>/</b> </span>THE PROP STUDIO</span>
-  <a class="prop-back" href="/">BACK TO THE EVENT <span aria-hidden="true">↗</span></a>
+  <a class="prop-back" href="/">BACK TO THE EVENT <span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-up-right"></use></svg></span></a>
 </header>
 <main id="main">
   <section class="prop-hero" aria-labelledby="page-heading">
@@ -27,7 +35,7 @@
       <div class="prop-eyebrow"><span class="red-dot" aria-hidden="true"></span> OFF SCRIPT / PHOTO PROPS</div>
       <h1 id="page-heading">THE PROP<br><span>STUDIO<i>.</i></span></h1>
       <p>Pick a line for the night. Save it for your socials or print it for the photo corner.</p>
-      <a class="prop-jump" href="#choose">PICK A PROP <span aria-hidden="true">↓</span></a>
+      <a class="prop-jump" href="#choose">PICK A PROP <span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-down"></use></svg></span></a>
     </div>
     <div class="prop-hero-art" aria-hidden="true">
       <div class="hero-index">10 <span>LINES.</span> 1 <span>NIGHT.</span></div>
@@ -47,9 +55,9 @@
           <div class="editor-top">
             <span class="editor-label">YOUR PICK</span>
             <div class="editor-stepper">
-              <button class="step-btn" id="prev-prop" type="button" aria-label="Previous prop"><span aria-hidden="true">←</span></button>
+              <button class="step-btn" id="prev-prop" type="button" aria-label="Previous prop"><span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-left"></use></svg></span></button>
               <strong id="selected-count" aria-live="polite">01 / 10</strong>
-              <button class="step-btn" id="next-prop" type="button" aria-label="Next prop"><span aria-hidden="true">→</span></button>
+              <button class="step-btn" id="next-prop" type="button" aria-label="Next prop"><span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-right"></use></svg></span></button>
             </div>
           </div>
           <div class="editor-stage" id="editor-stage">
@@ -64,20 +72,20 @@
           </div>
           <div class="editor-controls">
             <button class="prop-action prop-action-primary" id="save-png" type="button" data-export>
-              <span class="action-text">SAVE IMAGE <small>PNG for your socials</small></span><span class="action-icon" aria-hidden="true">↓</span>
+              <span class="action-text">SAVE IMAGE <small>PNG for your socials</small></span><span class="action-icon" aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-download"></use></svg></span>
             </button>
             <button class="prop-action prop-action-share" id="share-prop" type="button" data-export>
-              <span class="action-text">SHARE</span><span class="action-icon" aria-hidden="true">↗</span>
+              <span class="action-text">SHARE</span><span class="action-icon" aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-share-2"></use></svg></span>
             </button>
             <button class="prop-action prop-action-print" id="download-svg" type="button" data-export>
-              <span class="action-text">PRINT FILE <small>SVG</small></span><span class="action-icon" aria-hidden="true">↓</span>
+              <span class="action-text">PRINT FILE <small>SVG</small></span><span class="action-icon" aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-download"></use></svg></span>
             </button>
           </div>
           <p class="editor-note">Images are for sharing. The SVG print file stays sharp at larger sizes.</p>
         </div>
       </div>
       <div class="gallery-wrap">
-        <p class="gallery-hint" aria-hidden="true">SWIPE TO BROWSE <span>→</span></p>
+        <p class="gallery-hint" aria-hidden="true">SWIPE TO BROWSE <span><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-right"></use></svg></span></p>
         <div class="prop-gallery" id="prop-gallery" role="group" aria-label="Choose a photo prop"></div>
       </div>
     </div>
@@ -90,7 +98,7 @@
       <p>All ten props laid out on individual A4 landscape sheets, with a white cutting outline. Print, mount on board and attach handles.</p>
     </div>
     <div class="print-right">
-      <a class="print-all" href="props.html?print=1" target="_blank" rel="noopener">OPEN THE PRINT PACK <span aria-hidden="true">↗</span></a>
+      <a class="print-all" href="props.html?print=1" target="_blank" rel="noopener">OPEN THE PRINT PACK <span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-up-right"></use></svg></span></a>
       <span class="print-note">Opens a print-friendly view. Use your browser’s Print / Save as PDF option.</span>
     </div>
   </section>
@@ -104,10 +112,10 @@
     </details>
   </section>
 </main>
-<footer class="prop-footer"><span>OFF SCRIPT <b>/</b> PITCH NIGHT 2026</span><a href="/">RETURN TO THE EVENT ↗</a></footer>
+<footer class="prop-footer"><span>OFF SCRIPT <b>/</b> PITCH NIGHT 2026</span><a href="/">RETURN TO THE EVENT <svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-arrow-up-right"></use></svg></a></footer>
 <div class="prop-dock" id="prop-dock" aria-hidden="true">
-  <button class="dock-btn dock-save" id="dock-save" type="button" data-export tabindex="-1">SAVE IMAGE <span aria-hidden="true">↓</span></button>
-  <button class="dock-btn dock-share" id="dock-share" type="button" data-export tabindex="-1">SHARE <span aria-hidden="true">↗</span></button>
+  <button class="dock-btn dock-save" id="dock-save" type="button" data-export tabindex="-1">SAVE IMAGE <span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-download"></use></svg></span></button>
+  <button class="dock-btn dock-share" id="dock-share" type="button" data-export tabindex="-1">SHARE <span aria-hidden="true"><svg class="prop-icon" aria-hidden="true" focusable="false"><use href="#prop-share-2"></use></svg></span></button>
 </div>
 <div id="prop-toast" class="prop-toast" role="status" aria-live="polite"></div>
 <div id="print-root" hidden></div>

@@ -204,3 +204,9 @@ body.print-mode .skip-link,body.print-mode .prop-header,body.print-mode main,bod
 }
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{@page{size:A4 landscape;margin:12mm}html,body{width:100%;background:#fff!important;color:#000!important}body.print-mode .print-toolbar{display:none!important}#print-root{margin:0;max-width:none}.print-sheet{width:272mm;height:182mm;min-height:0;padding:0;gap:1mm;break-inside:avoid;page-break-inside:avoid}.print-sheet svg{width:252mm;height:168mm;max-height:none}.sheet-meta{font-size:9pt}}
+
+/* Fixed Lucide-style SVG icons, consistent across iOS, Android and desktop. */
+.prop-icon{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.15em;fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round;flex:none;pointer-events:none}
+.step-btn .prop-icon{width:1.2rem;height:1.2rem}
+.action-icon .prop-icon{width:1.2rem;height:1.2rem;display:block}
+.prop-footer a{gap:.5rem}

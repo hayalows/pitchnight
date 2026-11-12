@@ -46,3 +46,11 @@
 @media(max-width:720px){.venue-feature{grid-template-columns:1fr;margin:2rem 0 3rem;box-shadow:6px 7px 0 var(--ink)}.venue-feature-map{border-left:0;border-top:3px solid var(--ink);min-height:320px}.venue-feature h3{font-size:clamp(3.5rem,13vw,5.5rem);margin:1.35rem 0 1.55rem}.venue-feature-actions{grid-template-columns:1fr 1fr}.venue-feature-topline{font-size:.63rem}.venue-map-pin{min-height:160px}.venue-map-pin svg{width:min(45%,180px)}}
 @media(max-width:455px){.venue-feature-actions{grid-template-columns:1fr}.venue-feature-actions a,.venue-feature-actions button{min-height:50px}.venue-feature-place strong{font-size:1.1rem}.venue-feature-details{gap:.6rem 1.1rem}.venue-feature h3{font-size:clamp(3.2rem,13vw,4.3rem)}.venue-map-cover{padding:1rem}.venue-map-upper{font-size:.55rem}.venue-map-bottom>div strong{font-size:2.7rem}.venue-map-open{font-size:.65rem;padding:.7rem;min-height:46px}.venue-map-tools{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.venue-map-pin svg{transform:none}}
+
+/* Device-independent SVG icons: no Unicode symbols that may render as emoji. */
+.venue-hero-link .ui-icon{width:1rem;height:1rem;vertical-align:-.12em}
+.venue-place-symbol .ui-icon{width:25px;height:25px}
+.venue-feature-actions .ui-icon{width:1.2rem;height:1.2rem;display:block}
+.venue-map-open .ui-icon{width:1.15rem;height:1.15rem;display:block}
+.venue-map-tools a,.venue-map-tools button{gap:.45rem}
+.venue-map-tools .ui-icon{width:1rem;height:1rem;display:block}
