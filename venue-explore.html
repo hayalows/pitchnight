@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#171717">
+  <meta name="theme-color" content="#faf4e7">
+  <meta name="color-scheme" content="light">
   <meta name="description" content="Explore a concept seating layout for Off Script Pitch Night at Digital 360 Studio, Haatso, Accra. Seating is illustrative; no seat reservations.">
   <meta property="og:title" content="Explore the Venue | Off Script Pitch Night">
   <meta property="og:description" content="Explore an illustrative outdoor courtyard and try different views of the stage. Seats shown are not official assignments.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="venue-explore.css?v=1">
-  <script src="venue-explore.js?v=1" defer></script>
+  <link rel="stylesheet" href="venue-explore.css?v=2">
+  <script src="venue-explore.js?v=2" defer></script>
   <title>Explore the Venue | Off Script</title>
 </head>
 <body>
@@ -26,6 +27,7 @@
     <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.5 4.7-4.7 2.5 2.5-4.7z"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
   </svg>
   <header class="site-head">
     <a href="./#venue" class="head-home" aria-label="Back to Pitch Night venue information">
@@ -44,7 +46,8 @@
       <div class="hero-text">
         <div class="overline"><span class="live-dot" aria-hidden="true"></span> OFF SCRIPT / THE VENUE GUIDE <span class="overline-count">001</span></div>
         <h1>GET TO KNOW<br><em>THE ROOM.</em></h1>
-        <p>Before the mic goes on, take a look around. Explore the courtyard, find the central aisle and try a view of the stage.</p>
+        <p>Explore the stage, central walkway and sample seats inspired by an outdoor Pitch Night setup.</p>
+        <a href="#explorer" class="hero-start">EXPLORE THE SEATING PLAN <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a>
         <div class="when-where"><span><svg class="icon"><use href="#i-pin"></use></svg> DIGITAL 360 STUDIO, HAATSO</span><span>FRI 13 NOV · 6:30 PM</span></div>
       </div>
       <div class="hero-art" aria-hidden="true">
@@ -61,29 +64,34 @@
     <section class="explorer" id="explorer" aria-labelledby="explorer-title">
       <div class="explorer-title">
         <div><span class="eyebrow">01 / INTERACTIVE EXPERIENCE</span><h2 id="explorer-title">TAKE YOUR <span>VIEW.</span></h2></div>
-        <p>Tap a sample chair, look towards the stage, or move around the 3D scene.</p>
+        <p>Start with the seating plan. Pick a sample position, then preview its view of the stage.</p>
       </div>
       <div class="explorer-layout">
         <div class="explorer-main">
           <div class="toolbar">
             <div class="tabs" role="tablist" aria-label="Venue view">
               <button role="tab" aria-selected="true" tabindex="0" id="tab-plan" aria-controls="panel-plan" data-view="plan">SEATING PLAN</button>
-              <button role="tab" aria-selected="false" tabindex="-1" id="tab-3d" aria-controls="panel-3d" data-view="3d">3D VENUE</button>
+              <button role="tab" aria-selected="false" tabindex="-1" id="tab-3d" aria-controls="panel-3d" data-view="3d">3D PREVIEW</button>
             </div>
-            <button class="reset-selection" id="reset-seat" type="button">CLEAR SELECTION</button>
+            <button class="reset-selection" id="reset-seat" type="button" disabled>CLEAR SELECTION</button>
           </div>
           <div id="panel-plan" class="panel plan-panel" role="tabpanel" aria-labelledby="tab-plan">
             <div class="plan-board">
-              <div class="plan-label-row"><span>STAGE / FRONT</span><span>ILLUSTRATIVE SEATING</span></div>
+              <div class="plan-label-row"><span>STAGE / FRONT</span><span>ILLUSTRATIVE SEATS</span></div>
               <div class="stage" aria-label="Stage at the front"><div class="stage-flare"></div><strong>OFF SCRIPT</strong><span>PITCH NIGHT</span><small>THE STAGE</small></div>
               <div class="plan-geometry"><div class="bank-labels"><span>LEFT SECTION</span><span class="center-aisle-label">CENTRE AISLE</span><span>RIGHT SECTION</span></div><div id="seat-grid" class="seat-grid" role="group" aria-label="Illustrative chairs arranged in two banks with a central aisle"></div></div>
-              <div class="plan-entrance"><span>ENTRANCE / REAR</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></div>
+              <div class="plan-entrance"><span>ENTRANCE / REAR</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></div>
+              <div class="row-explorer" id="row-explorer">
+                <div class="row-explorer-heading"><strong>LOOK CLOSER AT A ROW</strong><span>Choose a row, then a sample chair</span></div>
+                <div class="row-chips" id="row-chips" role="group" aria-label="Choose an illustrative seating row"></div>
+                <div class="row-detail" id="row-detail" role="group" aria-label="Larger seat controls in the selected row"></div>
+              </div>
             </div>
-            <p class="map-caption">The stage is at the top. The walkway runs through the middle. All chairs are example positions only.</p>
+            <p class="map-caption">Stage at the top, entrance at the bottom. All positions are illustrative and not official assignments.</p>
           </div>
           <div id="panel-3d" class="panel three-panel" role="tabpanel" aria-labelledby="tab-3d" hidden>
             <div class="three-wrap">
-              <div class="three-status"><span class="three-dot"></span> INTERACTIVE COURTYARD <span id="3d-state">READY TO EXPLORE</span></div>
+              <div class="three-status"><span class="three-dot"></span> 3D COURTYARD CONCEPT <span id="3d-state">READY TO EXPLORE</span></div>
               <canvas id="venue-3d-canvas" aria-label="Interactive 3D illustration of a courtyard, stage and sample chairs. Choose a seat from the 2D plan for accessible seat selection." tabindex="0"></canvas>
               <div class="three-loader" id="three-loader"><strong>PREPARING THE COURTYARD</strong><span>Loading the optional 3D scene…</span></div>
               <div class="three-fallback" id="three-fallback" hidden><strong>3D IS UNAVAILABLE ON THIS DEVICE</strong><p>The seating plan still works. You can switch back without losing your selected position.</p><button id="fallback-plan" type="button">OPEN SEATING PLAN</button></div>
@@ -92,17 +100,17 @@
                 <button type="button" id="turn-right" aria-label="Rotate view right"><svg class="icon"><use href="#i-arrow"></use></svg></button>
                 <button type="button" id="zoom-out" aria-label="Zoom out"><svg class="icon"><use href="#i-minus"></use></svg></button>
                 <button type="button" id="zoom-in" aria-label="Zoom in"><svg class="icon"><use href="#i-plus"></use></svg></button>
-                <button type="button" id="reset-camera" class="wide" aria-label="Reset camera to overview"><svg class="icon"><use href="#i-rotate"></use></svg> RESET VIEW</button>
+                <button type="button" id="stage-camera" class="wide" aria-label="Look towards the stage"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"></use></svg> STAGE</button><button type="button" id="reset-camera" class="wide" aria-label="Reset camera to overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-rotate"></use></svg> OVERVIEW</button>
               </div>
             </div>
-            <p class="map-caption">Drag to rotate, use two fingers to zoom, or use the controls. Select seats in the plan or tap chairs in 3D. The scene is a concept, not an architectural scan.</p>
+            <p class="map-caption">Drag to rotate, pinch to zoom, or use the controls. Select an example position in either view. This scene is illustrative, not a venue scan.</p>
           </div>
         </div>
         <aside class="seat-aside" aria-labelledby="selection-title">
           <div class="aside-overline">YOUR VIEW / PREVIEW ONLY</div>
           <div id="seat-placeholder" class="seat-placeholder"><div class="placeholder-icon"><svg class="icon"><use href="#i-eye"></use></svg></div><h3 id="selection-title">PICK A SPOT.</h3><p>Choose any sample chair in the plan. We'll show how its position relates to the stage.</p></div>
           <div id="seat-selection" hidden>
-            <span class="selected-kicker">SAMPLE POSITION</span>
+            <span class="selected-kicker">EXAMPLE POSITION / NO RESERVATION</span>
             <h3 id="selection-name">LEFT / FRONT</h3>
             <p class="selected-id" id="selection-id">L1</p>
             <div class="selection-meta"><div><span>AREA</span><strong id="selection-area">FRONT</strong></div><div><span>ROW</span><strong id="selection-row">01</strong></div></div>
@@ -114,7 +122,7 @@
             <button type="button" id="seat-share" disabled><svg class="icon"><use href="#i-share"></use></svg> SHARE PREVIEW</button>
           </div>
           <p class="aside-feedback" id="aside-feedback" role="status" aria-live="polite"></p>
-          <div class="mini-guide"><strong>HOW IT WORKS</strong><p><span>01</span> Choose a sample position.<br><span>02</span> See the row and seating area.<br><span>03</span> Preview the stage or share the view.</p></div>
+          <div class="mini-guide"><strong>JUST LOOKING AROUND?</strong><p>Pick a row to preview your angle. Nothing on this page books a chair. The organisers will guide seating on arrival.</p></div>
         </aside>
       </div>
     </section>
@@ -123,6 +131,11 @@
       <div class="reality-links"><a class="primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Digital%20360%20Studio%2C%20Haatso%2C%20Ghana&amp;destination_place_id=ChIJFZs9TgCd3w8RrOHv201Asok" target="_blank" rel="noopener noreferrer"><svg class="icon"><use href="#i-compass"></use></svg> GET DIRECTIONS</a><a class="secondary" href="./#venue">BACK TO EVENT DETAILS <svg class="icon"><use href="#i-arrow"></use></svg></a></div>
     </section>
   </main>
+  <div class="quick-selection" id="quick-selection" hidden aria-label="Selected example seat, not a booking">
+    <div class="quick-selection-label"><span>EXAMPLE SEAT</span><strong id="quick-seat-id">L1-1</strong></div>
+    <button id="quick-view" class="quick-view" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"></use></svg> VIEW FROM HERE</button>
+    <button id="quick-clear" class="quick-clear" type="button" aria-label="Clear sample seat"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-x"></use></svg></button>
+  </div>
   <footer><span>OFF SCRIPT / PITCH NIGHT 001</span><span>CONCEPT SEATING GUIDE · NO BOOKINGS</span><a href="./">BACK TO THE EVENT <svg class="icon"><use href="#i-arrow"></use></svg></a></footer>
 </body>
 </html>

@@ -4,10 +4,10 @@
 export async function createVenueScene({ canvas, seats, onPick }) {
   const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color("#a7b6d5");
-  scene.fog = new THREE.Fog("#a7b6d5", 32, 76);
+  scene.background = new THREE.Color("#94aacf");
+  scene.fog = new THREE.Fog("#94aacf", 32, 76);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.38;
@@ -17,11 +17,11 @@ export async function createVenueScene({ canvas, seats, onPick }) {
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
   const mat = (color, roughness = .85) => new THREE.MeshStandardMaterial({ color, roughness, metalness: 0 });
   const cream = mat("#e9dac5"), wallMat = mat("#e7d5bd"), wallTrim = mat("#b58e5a");
-  const ink = mat("#272524"), black = mat("#131416"), orange = mat("#f4742c");
+  const ink = mat("#272524"), black = mat("#131416"), orange = mat("#f03d2f");
   const sand = mat("#c4ad8a"), aisleMat = mat("#d9c7a8"), green = mat("#39654a");
-  const gold = new THREE.MeshStandardMaterial({ color:"#ffe7ad", emissive:"#ffbe5a", emissiveIntensity:.85 });
+  const gold = new THREE.MeshStandardMaterial({ color:"#ffd63b", emissive:"#ffcb70", emissiveIntensity:.78 });
   const selectedGold = new THREE.Color("#ffd63b");
-  const normalSeat = new THREE.Color("#343a3d");
+  const normalSeat = new THREE.Color("#292b2f");
 
   function box(w,h,d,x,y,z,material,rotateY=0) {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);
@@ -74,11 +74,11 @@ export async function createVenueScene({ canvas, seats, onPick }) {
   poster.width=1024;poster.height=600;
   const pc=poster.getContext("2d");
   pc.fillStyle="#111214";pc.fillRect(0,0,1024,600);
-  pc.fillStyle="#f4742c";pc.fillRect(0,0,1024,14);
+  pc.fillStyle="#f03d2f";pc.fillRect(0,0,1024,14);
   pc.textAlign="center";
   pc.fillStyle="#faf4e7";pc.font="800 46px Arial";
   pc.fillText("OFF SCRIPT",512,122);
-  pc.fillStyle="#f4742c";pc.font="900 130px Arial";
+  pc.fillStyle="#f03d2f";pc.font="900 130px Arial";
   pc.fillText("PITCH",512,310);
   pc.fillText("NIGHT",512,433);
   pc.fillStyle="#faf4e7";pc.font="800 30px Arial";
@@ -164,7 +164,10 @@ export async function createVenueScene({ canvas, seats, onPick }) {
   function requestDraw(){
     if(renderQueued)return;
     renderQueued=true;
-    window.requestAnimationFrame(()=>{renderQueued=false;renderer.render(scene,camera)});
+    window.requestAnimationFrame(()=>{
+      renderQueued=false;
+      if(!document.hidden) renderer.render(scene,camera);
+    });
   }
   function applyCamera(){
     if(orbit.pov){requestDraw();return}
@@ -184,6 +187,13 @@ export async function createVenueScene({ canvas, seats, onPick }) {
     camera.fov=62;camera.updateProjectionMatrix();
     camera.position.set(seat.x,1.48,seat.z-.16);
     camera.lookAt(0,2.4,-12.2);
+    requestDraw();
+  }
+  function stageView() {
+    orbit.pov=true;
+    camera.fov=58;camera.updateProjectionMatrix();
+    camera.position.set(0,1.72,7.8);
+    camera.lookAt(0,2.55,-12.0);
     requestDraw();
   }
   function rotate(delta) {
@@ -258,9 +268,17 @@ export async function createVenueScene({ canvas, seats, onPick }) {
     camera.aspect=width/height;camera.updateProjectionMatrix();
     requestDraw();
   }
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden) requestDraw();});
+  canvas.addEventListener("webglcontextlost",event=>{
+    event.preventDefault();
+    const fallback=document.getElementById("three-fallback");
+    if(fallback) fallback.hidden=false;
+    const state=document.getElementById("3d-state");
+    if(state) state.textContent="3D UNAVAILABLE";
+  });
   reset();
   const ro=new ResizeObserver(resize);
   ro.observe(canvas);
   resize();
-  return {setSelected,viewFromSeat,reset,rotate,zoom,resize};
+  return {setSelected,viewFromSeat,stageView,reset,rotate,zoom,resize};
 }

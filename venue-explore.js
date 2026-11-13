@@ -29,13 +29,14 @@
     const b = document.createElement("button");
     b.type = "button";
     b.className = "seat";
-    b.textContent = seat.side + seat.col;
+    b.textContent = String(seat.col);
     b.dataset.seatId = seat.id;
     b.setAttribute("aria-pressed", "false");
     b.setAttribute("aria-label", "Illustrative seat " + seat.id + ", " + sideOf(seat.side).toLowerCase() + " section, row " + seat.row + ". Not reservable.");
     b.title = "Preview " + seat.id + ", not a reservation";
     b.addEventListener("click", () => selectSeat(seat));
-    buttons.set(seat.id, b);
+    if (!buttons.has(seat.id)) buttons.set(seat.id, []);
+    buttons.get(seat.id).push(b);
     return b;
   }
   for (let row = 1; row <= 7; row++) {
@@ -58,6 +59,46 @@
     grid.append(r);
   }
 
+  let focusRow = 1;
+  const rowTabButtons = new Map();
+  const rowChips = $("row-chips");
+  const rowDetail = $("row-detail");
+  function showRow(row) {
+    focusRow = row;
+    for (const [number, button] of rowTabButtons) button.setAttribute("aria-pressed", String(number === row));
+    // Remove stale DOM references when the detail row changes.
+    for (const [id, list] of buttons) buttons.set(id, list.filter(button => !button.classList.contains("seat-detail")));
+    rowDetail.replaceChildren();
+    for (const side of ["L", "R"]) {
+      const block = document.createElement("section");
+      block.className = "detail-bank";
+      const heading = document.createElement("h4");
+      heading.textContent = sideOf(side) + " SIDE / ROW " + String(row).padStart(2, "0");
+      const bank = document.createElement("div");
+      bank.className = "detail-bank-seats";
+      seats.filter(seat => seat.row === row && seat.side === side).forEach(seat => {
+        const button = buildSeatButton(seat);
+        button.classList.add("seat-detail");
+        button.textContent = side + seat.col;
+        button.setAttribute("aria-pressed", String(!!selected && selected.id === seat.id));
+        bank.append(button);
+      });
+      block.append(heading,bank);
+      rowDetail.append(block);
+    }
+  }
+  for (let row=1;row<=7;row++){
+    const tab=document.createElement("button");
+    tab.type="button";tab.className="row-chip";
+    tab.textContent=String(row).padStart(2,"0");
+    tab.setAttribute("aria-label","Explore illustrative row "+row);
+    tab.setAttribute("aria-pressed","false");
+    tab.addEventListener("click",()=>showRow(row));
+    rowChips.append(tab);
+    rowTabButtons.set(row,tab);
+  }
+  showRow(1);
+
   function setFeedback(message) {
     $("aside-feedback").textContent = message || "";
   }
@@ -69,7 +110,14 @@
   }
   function selectSeat(seat, skipUrl = false) {
     selected = seat || null;
-    for (const [id, b] of buttons) b.setAttribute("aria-pressed", String(!!selected && selected.id === id));
+    if (selected && focusRow !== selected.row) showRow(selected.row);
+    for (const [id, list] of buttons) {
+      for (const button of list) button.setAttribute("aria-pressed", String(!!selected && selected.id === id));
+    }
+    $("quick-selection").hidden = !selected || activeView !== "plan";
+    if (selected) $("quick-seat-id").textContent=selected.id;
+    document.body.classList.toggle("has-selected-seat",!!selected && activeView==="plan");
+    $("reset-seat").disabled = !selected;
     $("seat-placeholder").hidden = !!selected;
     $("seat-selection").hidden = !selected;
     $("seat-eye").disabled = !selected;
@@ -99,10 +147,26 @@
     });
     $("panel-plan").hidden = name !== "plan";
     $("panel-3d").hidden = name !== "3d";
+    $("quick-selection").hidden = !selected || name !== "plan";
+    document.body.classList.toggle("has-selected-seat",!!selected && name==="plan");
     if (name === "3d") {
       if (!enginePromise) {
         $("three-loader").hidden = false;
-        enginePromise = import("./venue-3d.js?v=1").then(module => {
+        // Check capability before downloading 3D assets. Slow or GPU-less phones
+        // retain the fully functional seating plan.
+        let webglSupported=false;
+        try {
+          const probe=document.createElement("canvas");
+          const gl=probe.getContext("webgl2")||probe.getContext("webgl");
+          webglSupported=!!gl;
+          gl?.getExtension("WEBGL_lose_context")?.loseContext();
+        } catch (_error) { webglSupported=false; }
+        if (!webglSupported) {
+          $("three-loader").hidden=true;
+          $("three-fallback").hidden=false;
+          $("3d-state").textContent="2D PLAN AVAILABLE";
+          enginePromise=Promise.resolve(null);
+        } else enginePromise = import("./venue-3d.js?v=2").then(module => {
           return module.createVenueScene({
             canvas: $("venue-3d-canvas"),
             seats,
@@ -140,6 +204,8 @@
     });
   });
   $("reset-seat").addEventListener("click", () => selectSeat(null));
+  $("quick-clear").addEventListener("click", () => selectSeat(null));
+  $("quick-view").addEventListener("click", () => $("seat-eye").click());
   $("seat-eye").addEventListener("click", async () => {
     if (!selected) return;
     const target = selected;
@@ -150,6 +216,9 @@
       if (window.matchMedia("(max-width:790px)").matches) {
         $("panel-3d").scrollIntoView({ behavior: "smooth", block: "start" });
       }
+    } else {
+      $("panel-3d").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth", block: "start" });
+      setFeedback("Your sample seat remains selected. 3D is unavailable on this device; the plan still works.");
     }
   });
   $("seat-share").addEventListener("click", async () => {
@@ -176,6 +245,7 @@
   for (const [id, method, arg] of [
     ["turn-left", "rotate", -.18], ["turn-right", "rotate", .18],
     ["zoom-out", "zoom", 1.16], ["zoom-in", "zoom", .86],
+    ["stage-camera", "stageView", null],
     ["reset-camera", "reset", null],
   ]) {
     $(id).addEventListener("click", () => {
