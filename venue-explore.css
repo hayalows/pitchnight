@@ -176,3 +176,7 @@ footer{border-top:2px solid var(--red)}
  .seat:hover,.hero-start:hover{transform:none}
  html{scroll-behavior:auto}
 }
+
+/* Mobile quick-clear lives in the selection dock. Hide the redundant empty toolbar row. */
+.reset-selection:disabled{display:none}
+@media(max-width:570px){.reset-selection{display:none!important}}
