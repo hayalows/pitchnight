@@ -133,10 +133,10 @@
     // Show the current area without changing what the button does.
     const menuContext = menuTrigger.querySelector(".menu-context");
     const areas = [
-      ["top", "PITCH NIGHT"], ["venue", "VENUE"], ["about", "THE IDEA"],
+      ["top", "EDITION 001"], ["thank-you", "OUR NOTE"], ["about", "THE IDEA"],
       ["lineup", "PROGRAMME"], ["host", "THE HOST"],
-      ["details", "DETAILS"], ["faq", "FAQ"],
-      ["last-call", "THE FINALE"], ["site-footer", ""]
+      ["details", "EDITION 001"], ["venue", "THE VENUE"],
+      ["memories", "MEMORIES"], ["faq", "FAQ"], ["site-footer", ""]
     ].map(([id, label]) => ({ element: document.getElementById(id) || document.querySelector("." + id), label }))
      .filter(area => area.element);
     let menuUpdatePending = false;
@@ -201,69 +201,6 @@
 
   }
 
-  // Both displays derive from the same absolute Ghana event time.
-  // Resync from Date.now() near each second boundary; never count ticks.
-  const showtime = Date.parse("2026-11-13T18:30:00Z"); // Ghana: GMT.
-  const dayEl = document.getElementById("days");
-  const hourEl = document.getElementById("hours");
-  const minEl = document.getElementById("mins");
-  const secEl = document.getElementById("secs");
-  const heroDayEl = document.getElementById("hero-days");
-  const heroHourEl = document.getElementById("hero-hours");
-  const heroMinEl = document.getElementById("hero-mins");
-  const heroSecEl = document.getElementById("hero-secs");
-  const heroTimerEl = document.getElementById("hero-countdown");
-  const countdownEl = document.querySelector(".countdown");
-  const endedEl = document.getElementById("countdown-ended");
-  const pad = n => String(n).padStart(2, "0");
-  let countdownTimeout = null;
-
-  function updateCountdown() {
-    const totalSeconds = Math.max(0, Math.ceil((showtime - Date.now()) / 1000));
-    if (totalSeconds === 0) {
-      if (countdownEl) countdownEl.hidden = true;
-      if (endedEl) endedEl.hidden = false;
-      if (heroTimerEl) {
-        heroTimerEl.textContent = "THE NIGHT IS HERE";
-        heroTimerEl.setAttribute("aria-label", "Pitch Night has arrived");
-      }
-      return false;
-    }
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    const values = [
-      [dayEl, days], [hourEl, hours], [minEl, minutes], [secEl, seconds],
-      [heroDayEl, days], [heroHourEl, hours], [heroMinEl, minutes], [heroSecEl, seconds]
-    ];
-    for (const [element, value] of values) {
-      if (element) element.textContent = pad(value);
-    }
-    // Screen readers can query the complete value without hearing every tick.
-    const description = days + " days, " + hours + " hours, " +
-      minutes + " minutes and " + seconds + " seconds until Pitch Night";
-    if (heroTimerEl) heroTimerEl.setAttribute("aria-label", description);
-    if (countdownEl) countdownEl.setAttribute("aria-label", description);
-    return true;
-  }
-
-  function scheduleCountdown() {
-    if (countdownTimeout !== null) window.clearTimeout(countdownTimeout);
-    countdownTimeout = null;
-    if (!updateCountdown() || document.hidden) return;
-    countdownTimeout = window.setTimeout(scheduleCountdown, 1015 - (Date.now() % 1000));
-  }
-  scheduleCountdown();
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (countdownTimeout !== null) window.clearTimeout(countdownTimeout);
-      countdownTimeout = null;
-    } else {
-      scheduleCountdown();
-    }
-  });
-
   // Animate the single Off Script brand seal only when it becomes visible.
   const brandSeal = document.querySelector(".about-brand-stamp");
   if (brandSeal) {
@@ -327,8 +264,8 @@
     const entranceTargets = document.querySelectorAll(
       "#about .section-heading, #about .about-copy, #about .sticker, " +
       "#lineup .section-heading, #lineup .programme-teaser, " +
-      "#host .host-copy, " +
-      "#details .ticket-shell, #faq .faq-list, .last-call-copy, .last-call-action"
+      "#host .host-copy, #details .post-edition-grid, " +
+      "#memories .post-memory-card, #faq .faq-list"
     );
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -363,8 +300,7 @@
   });
 
 
-  // The website's registration and checkout are closed for this event.
-  // Old shared ?register=1 links now show the closed booking status in event details.
+  // Legacy ?register=1 bookmarks now lead to the Edition 001 archive, not a booking flow.
   if (new URLSearchParams(window.location.search).get("register") === "1") {
     const details = document.getElementById("details");
     history.replaceState(null, "", window.location.pathname + "#details");
@@ -378,49 +314,7 @@
     else window.addEventListener("load", showStatus, { once: true });
   }
 
-  const shareButton = document.getElementById("share-button");
-  const shareToast = document.getElementById("share-toast");
-  let toastTimer = 0;
-
-  function toast(message) {
-    if (!shareToast) return;
-    window.clearTimeout(toastTimer);
-    shareToast.textContent = message;
-    shareToast.classList.add("visible");
-    toastTimer = window.setTimeout(() => shareToast.classList.remove("visible"), 3200);
-  }
-
-  shareButton?.addEventListener("click", async () => {
-    const shareData = {
-      title: "Pitch Night: Make Your Case",
-      text: "Pitch Night: Friday 13 November 2026, 6:30 PM at Digital 360 Studio, Haatso, Accra. Online registration is closed.",
-      url: window.location.origin + window.location.pathname + "#venue",
-    };
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        return;
-      } catch (error) {
-        if (error && error.name === "AbortError") return;
-      }
-    }
-    if (navigator.clipboard && window.isSecureContext) {
-      try {
-        await navigator.clipboard.writeText(shareData.text + " " + shareData.url);
-        toast("LINK COPIED. SEND IT TO YOUR PEOPLE!");
-        return;
-      } catch (_) {
-        // Manual share fallback below.
-      }
-    }
-    const link = document.createElement("a");
-    link.href = "https://wa.me/?text=" + encodeURIComponent(shareData.text + " " + shareData.url);
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  });
+  // No event-day share ticket or checkout handler remains after the event.
 
   // Lightweight cursor accent: native pointer remains visible. Never track
   // on touch, over forms, in dialogs, or for people requesting reduced motion.
