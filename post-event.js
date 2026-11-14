@@ -13,6 +13,7 @@
   let previousFocus = null;
   let automaticOpen = false;
   let closedOnce = false;
+  let navigateToFullNote = false;
 
   function hasSeen() {
     try { return window.localStorage.getItem(storageKey) === "yes"; }
@@ -40,7 +41,18 @@
   function closeThanks() {
     if (thanks?.open) thanks.close();
   }
-  thanksOpeners.forEach(button => button.addEventListener("click", () => openThanks()));
+  const siteMenu = document.getElementById("site-menu");
+  thanksOpeners.forEach(button => button.addEventListener("click", () => {
+    // The mobile menu is a native dialog. Close it before opening another.
+    if (siteMenu?.open) {
+      siteMenu.addEventListener("close", () => {
+        window.requestAnimationFrame(() => openThanks(false));
+      }, { once: true });
+      siteMenu.close();
+    } else {
+      openThanks(false);
+    }
+  }));
   thanksClosers.forEach(button => button.addEventListener("click", closeThanks));
   thanks?.addEventListener("click", event => {
     // Native dialog: only a click on the backdrop surface closes it.
@@ -49,21 +61,31 @@
   thanks?.addEventListener("close", () => {
     markSeen();
     document.body.classList.toggle("dialog-is-open", !!document.querySelector("dialog[open]"));
-    if (!automaticOpen && previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+    const goToFullNote = navigateToFullNote;
+    navigateToFullNote = false;
+    if (goToFullNote && note) {
+      // Native close() can restore focus. Move it after that restoration so
+      // keyboard/screen-reader visitors land on the actual note.
+      window.requestAnimationFrame(() => {
+        note.setAttribute("tabindex", "-1");
+        note.focus({ preventScroll: true });
+        note.scrollIntoView({
+          block: "start",
+          behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? "auto" : "smooth"
+        });
+      });
+    } else if (!automaticOpen && previousFocus?.isConnected) {
+      previousFocus.focus({ preventScroll: true });
+    }
     previousFocus = null;
     automaticOpen = false;
   });
   readFull?.addEventListener("click", event => {
     event.preventDefault();
     if (!note) return;
-    closeThanks();
+    navigateToFullNote = true;
     history.replaceState(null, "", "#thank-you");
-    note.setAttribute("tabindex", "-1");
-    note.focus({ preventScroll: true });
-    note.scrollIntoView({
-      block: "start",
-      behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? "auto" : "smooth"
-    });
+    closeThanks();
   });
   function maybeShowWelcome() {
     if (!thanks || hasSeen() || window.location.hash || window.location.search) return;
