@@ -99,12 +99,11 @@
     else window.addEventListener("load", () => window.setTimeout(maybeShowWelcome, 650), { once: true });
   }
 
-  // Future Connection Board integration: set this to a real published Google
-  // Forms viewform URL after the team provides one. Until then there is no
-  // visible feedback action, iframe request or invented completion state.
-  const FEEDBACK_FORM_URL = "";
+  // The team-supplied public Google Form is opened in an iframe on demand.
+  // Its short link remains an ordinary, accessible external-link fallback.
+  // No Google request occurs until visitors choose to open the Connection Board.
+  const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfELz5R4U2M3oAgBrB2YeeW9jjnyBiV5WQn1IZBV4-_3CA0zg/viewform";
   const trigger = document.getElementById("open-event-feedback");
-  const soon = document.getElementById("event-feedback-soon");
   const dialog = document.getElementById("event-feedback-dialog");
   const close = document.getElementById("close-event-feedback");
   const iframe = document.getElementById("event-feedback-frame");
@@ -121,14 +120,21 @@
     }
   } catch (_) { /* Never expose an invalid or unapproved link. */ }
   if (formUrl && trigger && dialog && iframe) {
-    trigger.hidden = false;
-    if (soon) soon.hidden = true;
-    trigger.addEventListener("click", () => {
-      if (document.querySelector("dialog[open]")) return;
+    trigger.addEventListener("click", event => {
+      // Preserve ordinary open-in-new-tab behavior for modifier keys, older
+      // browsers, and cases where a native dialog can't be opened.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+          typeof dialog.showModal !== "function") return;
+      if (document.querySelector("dialog[open]")) {
+        event.preventDefault();
+        return;
+      }
+      try { dialog.showModal(); }
+      catch (_) { return; } // Let the original external link work instead.
+      event.preventDefault();
       status.textContent = "Loading the Connection Board…";
       iframe.src = formUrl;
       iframe.hidden = false;
-      dialog.showModal();
       document.body.classList.add("dialog-is-open");
       close?.focus();
     });

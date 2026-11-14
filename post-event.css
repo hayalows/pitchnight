@@ -221,3 +221,40 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--post-blue);outline-
  .measurement-notice:not([hidden]) .measurement-actions button{flex:1}
 }
 @media(prefers-reduced-motion:reduce){.site-menu-note{transition:none}}
+
+/* Edition 001 Connection Board / live, accessible Google Forms integration. */
+.post-live-status{display:inline-flex;align-items:center;gap:9px;margin-top:auto;padding:7px 0;
+  font-size:.66rem;letter-spacing:.085em;font-weight:800}
+.post-live-status::before{content:"";width:8px;height:8px;border-radius:50%;
+  background:var(--post-blue);box-shadow:0 0 0 3px #1036af18}
+.post-memory-feedback .post-feedback-open{margin-top:13px;color:#fff;text-decoration:none;line-height:1.4}
+.post-memory-feedback .post-feedback-open:hover{background:var(--post-ink)}
+.post-memory-feedback .post-feedback-open:focus-visible{outline-color:var(--post-ink);outline-offset:4px}
+.post-letter a[href="#memories"]{color:var(--post-blue);font-weight:800;text-underline-offset:4px}
+.post-feedback-sheet .post-feedback-options{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:8px 17px 10px;margin:0;border-top:1px solid #17171733;
+  border-bottom:1px solid #17171733;background:#f5f0e6
+}
+.post-feedback-options>span{font-size:.61rem;letter-spacing:.085em;font-weight:800;color:#4d4a43}
+.post-feedback-options a{display:inline-flex;align-items:center;gap:8px;min-height:40px;
+  color:var(--post-blue);font-size:.69rem;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.post-feedback-options a .ui-icon{width:17px;height:17px}
+.post-feedback-options a:hover{color:var(--post-ink)}
+.post-feedback-sheet iframe:not([hidden]){display:block;width:100%;flex:1;min-height:225px;overflow:auto}
+.post-feedback-sheet #event-feedback-status{margin:0;min-height:0;font-size:.72rem}
+.post-feedback-sheet #event-feedback-status:not(:empty){padding:7px 15px}
+@media(max-width:720px){
+  .post-feedback-sheet .post-feedback-options{padding:6px 12px;gap:4px}
+  .post-feedback-options>span{font-size:.53rem}
+  .post-feedback-options a{font-size:.62rem}
+  .post-feedback-sheet>p{font-size:.76rem;line-height:1.35;margin:4px 13px 9px}
+  .post-feedback-sheet h2{font-size:2.08rem;line-height:1}
+  .post-memory-feedback .post-feedback-open{width:100%;justify-content:space-between}
+}
+@media(max-width:375px){
+  .post-feedback-options>span{display:none}
+  .post-feedback-options a{margin-left:auto}
+  .post-feedback-sheet header{font-size:.58rem}
+  .post-feedback-sheet h2{font-size:1.87rem}
+}
