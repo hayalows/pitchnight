@@ -44,7 +44,7 @@ function star(x,y,outer,inner,count,color,angle=0){
  ctx.closePath();ctx.fill();ctx.restore();
 }
 function render(){
- const story=state.format==="story",H=story?1920:1350,W=1080,hero=story?1267:856;
+ const story=state.format==="story",H=story?1920:1350,W=1080,hero=story?1267:785;
  canvas.width=W;canvas.height=H;
  rect(0,0,W,H,c.ink);rect(16,16,W-32,H-32,c.paper);
  rect(16,16,W-32,hero-16,c.blue);rect(16,16,W-32,155,c.yellow);
@@ -52,10 +52,10 @@ function render(){
  if(hasLogo)ctx.drawImage(logo,46,28,133,133);
  else fit("OFFSCRIPT",54,111,62,410,c.ink);
  fit("PITCH NIGHT / EDITION 001",520,107,37,498,c.ink,"Space Grotesk","700");
- drawText("A NOTE FROM THE OFFSCRIPT TEAM",65,story?266:245,30,c.paper,"Space Grotesk","700");
- fit("THANK",61,story?615:497,story?340:314,953,c.paper);
- fit("YOU.",61,story?974:766,story?352:317,930,c.yellow);
- ctx.strokeStyle=c.red;ctx.lineWidth=16;ctx.lineCap="round";ctx.beginPath();let y=story?997:787;
+ drawText("A NOTE FROM THE OFFSCRIPT TEAM",65,story?266:214,30,c.paper,"Space Grotesk","700");
+ fit("THANK",61,story?615:480,story?340:314,953,c.paper);
+ fit("YOU.",61,story?974:733,story?352:317,930,c.yellow);
+ ctx.strokeStyle=c.red;ctx.lineWidth=16;ctx.lineCap="round";ctx.beginPath();let y=story?997:755;
  ctx.moveTo(72,y);ctx.bezierCurveTo(256,y-27,520,y+31,785,y-10);ctx.stroke();
  let stickerY=story?hero-200:hero-120;
  ctx.save();ctx.translate(816,stickerY);ctx.rotate(.13);

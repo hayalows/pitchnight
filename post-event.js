@@ -177,7 +177,7 @@
           event.preventDefault();
           siteMenu.addEventListener("close", () => {
             window.requestAnimationFrame(() => {
-              if (!openBoard(link)) window.open(link.href, "_blank", "noopener,noreferrer");
+              if (!openBoard(link)) window.location.assign(link.href);
             });
           }, { once: true });
           siteMenu.close();
