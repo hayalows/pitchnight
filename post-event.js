@@ -99,54 +99,117 @@
     else window.addEventListener("load", () => window.setTimeout(maybeShowWelcome, 650), { once: true });
   }
 
-  // The team-supplied public Google Form is opened in an iframe on demand.
-  // Its short link remains an ordinary, accessible external-link fallback.
-  // No Google request occurs until visitors choose to open the Connection Board.
+  // The OffScript Google Form is loaded on a visitor's intent (hover, focus,
+  // touch or click). It stays mounted after closing so partial answers survive.
+  // Native form submission is still handled by Google's own page.
   const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfELz5R4U2M3oAgBrB2YeeW9jjnyBiV5WQn1IZBV4-_3CA0zg/viewform";
-  const trigger = document.getElementById("open-event-feedback");
+  const boardTriggers = [...document.querySelectorAll("[data-open-board]")];
   const dialog = document.getElementById("event-feedback-dialog");
   const close = document.getElementById("close-event-feedback");
   const iframe = document.getElementById("event-feedback-frame");
   const status = document.getElementById("event-feedback-status");
+  const loading = document.getElementById("event-feedback-loading");
   let formUrl = null;
   try {
-    if (FEEDBACK_FORM_URL) {
-      const parsed = new URL(FEEDBACK_FORM_URL);
-      if (parsed.protocol === "https:" && parsed.hostname === "docs.google.com" &&
-          /^\/forms\/d\/(?:e\/)?[^/]+\/viewform\/?$/.test(parsed.pathname)) {
-        parsed.searchParams.set("embedded", "true");
-        formUrl = parsed.href;
-      }
+    const parsed = new URL(FEEDBACK_FORM_URL);
+    if (parsed.protocol === "https:" && parsed.hostname === "docs.google.com" &&
+        /^\/forms\/d\/(?:e\/)?[^/]+\/viewform\/?$/.test(parsed.pathname)) {
+      parsed.searchParams.set("embedded", "true");
+      formUrl = parsed.href;
     }
-  } catch (_) { /* Never expose an invalid or unapproved link. */ }
-  if (formUrl && trigger && dialog && iframe) {
-    trigger.addEventListener("click", event => {
-      // Preserve ordinary open-in-new-tab behavior for modifier keys, older
-      // browsers, and cases where a native dialog can't be opened.
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
-          typeof dialog.showModal !== "function") return;
-      if (document.querySelector("dialog[open]")) {
-        event.preventDefault();
-        return;
-      }
-      try { dialog.showModal(); }
-      catch (_) { return; } // Let the original external link work instead.
-      event.preventDefault();
-      status.textContent = "Loading the Connection Board…";
-      iframe.src = formUrl;
+  } catch (_) { /* Keep original external form links working. */ }
+
+  if (formUrl && iframe && dialog && boardTriggers.length) {
+    let requested = false;
+    let ready = false;
+    let lastTrigger = null;
+    let slowMessage = 0;
+
+    function setLoading(show) {
+      if (loading) loading.hidden = !show;
+      if (show && status) status.textContent = "Preparing your Connection Board…";
+      else if (status) status.textContent = "";
+    }
+
+    function prepareForm() {
+      if (requested) return;
+      requested = true;
+      ready = false;
+      // Eager is important: the iframe can be inside a not-yet-open <dialog>.
+      // A 'lazy' iframe may wait until after the user opens the dialog.
+      iframe.loading = "eager";
       iframe.hidden = false;
+      setLoading(true);
+      iframe.src = formUrl;
+      slowMessage = window.setTimeout(() => {
+        if (!ready && status) status.textContent =
+          "Still loading? Use Open Full Screen to fill in the form on Google.";
+      }, 11000);
+    }
+
+    function openBoard(trigger) {
+      if (dialog.open) return true;
+      if (document.querySelector("dialog[open]")) return false;
+      try {
+        dialog.showModal();
+      } catch (_) {
+        return false;
+      }
+      lastTrigger = trigger;
       document.body.classList.add("dialog-is-open");
-      close?.focus();
+      // Show the dialog immediately, without waiting for the iframe network.
+      setLoading(!ready);
+      prepareForm();
+      close?.focus({ preventScroll: true });
+      return true;
+    }
+
+    // Start loading only once visitors express interest, without requiring the
+    // whole third-party form to load with the main page.
+    for (const link of boardTriggers) {
+      link.addEventListener("pointerenter", prepareForm, { passive: true });
+      link.addEventListener("focus", prepareForm);
+      link.addEventListener("pointerdown", prepareForm, { passive: true });
+      link.addEventListener("click", event => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey ||
+            event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (siteMenu?.open) {
+          event.preventDefault();
+          siteMenu.addEventListener("close", () => {
+            window.requestAnimationFrame(() => {
+              if (!openBoard(link)) window.open(link.href, "_blank", "noopener,noreferrer");
+            });
+          }, { once: true });
+          siteMenu.close();
+          return;
+        }
+        if (openBoard(link)) event.preventDefault();
+        // If native dialogs are unavailable, the original external link works.
+      });
+    }
+
+    iframe.addEventListener("load", () => {
+      ready = true;
+      if (slowMessage) window.clearTimeout(slowMessage);
+      setLoading(false);
     });
-    iframe.addEventListener("load", () => { if (dialog.open) status.textContent = ""; });
+    iframe.addEventListener("error", () => {
+      if (status) status.textContent = "Couldn't load here. Open the form full screen instead.";
+      if (loading) loading.hidden = true;
+    });
     close?.addEventListener("click", () => dialog.close());
-    dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener("click", event => {
+      if (event.target === dialog) dialog.close();
+    });
     dialog.addEventListener("close", () => {
-      iframe.removeAttribute("src");
-      iframe.hidden = true;
-      status.textContent = "";
+      // Do not clear iframe.src: that previously erased partially typed answers
+      // and caused a full network reload every time the dialog was reopened.
       document.body.classList.toggle("dialog-is-open", !!document.querySelector("dialog[open]"));
-      trigger.focus({ preventScroll: true });
+      if (lastTrigger?.isConnected && lastTrigger.getClientRects().length) {
+        lastTrigger.focus({ preventScroll: true });
+      } else {
+        boardTriggers.find(link => link.getClientRects().length)?.focus({ preventScroll: true });
+      }
     });
   }
 })();
