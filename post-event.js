@@ -84,6 +84,8 @@
     event.preventDefault();
     if (!note) return;
     navigateToFullNote = true;
+    const fullLetter = document.getElementById("team-letter-details");
+    if (fullLetter) fullLetter.open = true;
     history.replaceState(null, "", "#thank-you");
     closeThanks();
   });
@@ -98,6 +100,46 @@
     if (document.readyState === "complete") window.setTimeout(maybeShowWelcome, 650);
     else window.addEventListener("load", () => window.setTimeout(maybeShowWelcome, 650), { once: true });
   }
+
+  // One-tap share for the paper thank-you card. No download, name,
+  // profile, or server-side rendering. The entire card remains HTML.
+  const noteShare = document.getElementById("share-thank-you-note");
+  const noteShareStatus = document.getElementById("thank-you-share-status");
+  noteShare?.addEventListener("click", async () => {
+    const shareUrl = new URL("./#thank-you-card", window.location.href).href;
+    const payload = {
+      title: "A little note from OffScript",
+      text: "Thank you for being part of Pitch Night Edition 001. Beyond the usual. Into connection.",
+      url: shareUrl
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(payload);
+        if (noteShareStatus) noteShareStatus.textContent = "Thanks for sharing the note.";
+        return;
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shareUrl);
+        if (noteShareStatus) noteShareStatus.textContent = "Link copied. Share it with someone.";
+        return;
+      }
+      const helper = document.createElement("textarea");
+      helper.value = shareUrl;
+      helper.setAttribute("readonly", "");
+      helper.style.position = "fixed";
+      helper.style.opacity = "0";
+      document.body.append(helper);
+      helper.select();
+      const copied = document.execCommand?.("copy");
+      helper.remove();
+      if (noteShareStatus) noteShareStatus.textContent =
+        copied ? "Link copied. Share it with someone." : "Use your browser's Share option to send this note.";
+    } catch (error) {
+      if (error?.name !== "AbortError" && noteShareStatus) {
+        noteShareStatus.textContent = "Use your browser's Share option to send this note.";
+      }
+    }
+  });
 
   // The OffScript Google Form is loaded on a visitor's intent (hover, focus,
   // touch or click). It stays mounted after closing so partial answers survive.

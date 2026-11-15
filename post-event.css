@@ -419,3 +419,161 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--post-blue);outline-
   .post-share-strip-text strong{font-size:1.62rem}
 }
 @media(prefers-reduced-motion:reduce){.post-share-strip-link{transition:none}}
+
+/* EDITION 001 / THE PAPER LETTER
+   A real HTML letter with layered CSS stationery; no image generator or editor.
+   Inspiration: scalloped stationery, paper stacks, pin-up notes; brand remains
+   OffScript cobalt, soft cream, mint, yellow, red and dark ink. */
+.post-thank-you--paper{grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);
+  align-items:stretch; background:var(--post-blue); color:var(--post-paper)}
+.post-thank-you--paper .paper-intro{min-height:0;padding:clamp(30px,5vw,74px);
+  justify-content:flex-start;position:relative}
+.paper-intro h2{font:400 clamp(4.2rem,7vw,9.1rem)/.95 Anton,Impact,sans-serif;
+  margin:clamp(40px,6vw,85px) 0 20px;letter-spacing:-.024em}
+.paper-intro h2 span{color:var(--post-yellow)}
+.paper-intro>p{max-width:370px;font-size:clamp(.95rem,1.15vw,1.15rem);line-height:1.6}
+.paper-intro .post-note-seal{margin-top:auto;transform:none;padding-top:19px}
+.paper-intro .post-note-seal .ui-icon{color:var(--post-yellow)}
+.paper-full-letter{margin:30px 0 38px;width:100%;max-width:480px}
+.paper-full-letter summary{list-style:none;display:flex;align-items:center;justify-content:space-between;
+  gap:15px;min-height:53px;padding:13px 15px;background:var(--post-yellow);
+  color:var(--post-ink);border:2px solid var(--post-ink);
+  font-weight:800;font-size:.73rem;letter-spacing:.05em;cursor:pointer;
+  box-shadow:4px 4px 0 var(--post-ink)}
+.paper-full-letter summary::-webkit-details-marker{display:none}
+.paper-full-letter summary .ui-icon{width:18px;height:18px;transition:transform .22s}
+.paper-full-letter[open] summary .ui-icon{transform:rotate(90deg)}
+.paper-full-letter summary:focus-visible{outline:3px solid var(--post-yellow);outline-offset:5px}
+.paper-full-letter-body{background:var(--post-paper);color:var(--post-ink);
+  border:2px solid var(--post-ink);padding:clamp(17px,2.6vw,28px);
+  margin-top:7px;max-height:min(64vh,700px);overflow-y:auto;overscroll-behavior:contain;
+  font-size:.89rem;line-height:1.65;box-shadow:4px 5px 0 var(--post-ink)}
+.paper-full-letter-body p{margin:0 0 15px}
+.paper-full-letter-body p:last-child{margin-bottom:0}
+.paper-full-letter-body .paper-full-letter-hello{font-weight:800;letter-spacing:.1em}
+.paper-full-letter-body .post-closer{color:var(--post-blue);font-weight:800}
+.paper-full-letter-body .post-signature{padding-top:13px;border-top:1px solid #1717174f}
+.paper-full-letter-body a{color:var(--post-blue);font-weight:800;text-underline-offset:3px}
+.paper-scene{background:var(--post-mint);color:var(--post-ink);padding:clamp(40px,6vw,83px)
+ clamp(25px,6vw,90px) 34px;position:relative;isolation:isolate;min-width:0;
+ display:flex;flex-direction:column;justify-content:center;align-items:center;
+ border-left:3px solid var(--post-ink);overflow:hidden}
+.paper-scene:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;
+ background-image:repeating-linear-gradient(0deg,transparent 0 27px,rgba(23,23,23,.15) 28px);
+ background-size:100% 29px;z-index:-1}
+.paper-stage{width:min(100%,550px);position:relative;padding:23px 16px 21px}
+.paper-back{position:absolute;inset:6% 4% 5%;border:2px solid var(--post-ink);
+  pointer-events:none;box-shadow:5px 8px 0 rgba(23,23,23,.17)}
+.paper-back-blue{background:var(--post-blue);transform:rotate(-8deg) translate(-6px,4px)}
+.paper-back-yellow{background:var(--post-yellow);transform:rotate(7deg) translate(6px,-6px)}
+.paper-card{background:#fffdf2;position:relative;z-index:1;padding:clamp(24px,3.3vw,47px)
+ clamp(26px,4vw,52px) clamp(19px,2.8vw,33px);
+ color:var(--post-ink);box-shadow:8px 12px 0 rgba(23,23,23,.24);
+ clip-path:polygon(0 1%,4% 0,8% 1%,12% 0,16% 1%,20% 0,24% 1%,28% 0,32% 1%,
+  36% 0,40% 1%,44% 0,48% 1%,52% 0,56% 1%,60% 0,64% 1%,68% 0,72% 1%,76% 0,
+  80% 1%,84% 0,88% 1%,92% 0,96% 1%,100% 0,99% 5%,100% 10%,99% 15%,100% 20%,
+  99% 25%,100% 30%,99% 35%,100% 40%,99% 45%,100% 50%,99% 55%,100% 60%,
+  99% 65%,100% 70%,99% 75%,100% 80%,99% 85%,100% 90%,99% 95%,100% 100%,
+  96% 99%,92% 100%,88% 99%,84% 100%,80% 99%,76% 100%,72% 99%,68% 100%,64% 99%,
+  60% 100%,56% 99%,52% 100%,48% 99%,44% 100%,40% 99%,36% 100%,32% 99%,
+  28% 100%,24% 99%,20% 100%,16% 99%,12% 100%,8% 99%,4% 100%,0 99%,1% 94%,
+  0 89%,1% 84%,0 79%,1% 74%,0 69%,1% 64%,0 59%,1% 54%,0 49%,1% 44%,
+  0 39%,1% 34%,0 29%,1% 24%,0 19%,1% 14%,0 9%)}
+.paper-card:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;pointer-events:none;
+ background:repeating-linear-gradient(95deg,transparent 0,transparent 9px,
+  rgba(28,23,16,.025) 10px,transparent 11px)}
+.paper-card-topline{font-weight:800;font-size:.61rem;letter-spacing:.1em;
+  border-bottom:1.5px solid rgba(23,23,23,.6);padding-bottom:16px;
+  display:flex;align-items:center;gap:8px;white-space:nowrap}
+.paper-card-topline .ui-icon{width:14px;height:14px;color:var(--post-red)}
+.paper-heart{display:block;width:53px;height:53px;color:var(--post-blue);
+ margin:17px 0 -4px;transform:rotate(-16deg)}
+.paper-card h3{font:400 clamp(4.5rem,8vw,8.7rem)/.92 Anton,Impact,sans-serif;
+ margin:11px 0 27px;letter-spacing:-.028em;color:var(--post-blue)}
+.paper-card h3 span{color:var(--post-red)}
+.paper-card p{font-size:clamp(.88rem,1.1vw,1.03rem);line-height:1.57;margin:0 0 14px}
+.paper-card strong{font-weight:800}
+.paper-card p.paper-salutation{font-weight:800;color:var(--post-blue);
+ font-size:clamp(1.02rem,1.36vw,1.2rem);margin-bottom:11px}
+.paper-signature{border-top:1.5px solid rgba(23,23,23,.5);
+ margin-top:23px;padding:16px 0 17px;display:flex;align-items:center;gap:16px}
+.paper-signature span{font-size:.7rem;letter-spacing:.045em;line-height:1.65}
+.paper-signature strong{color:var(--post-blue);font-size:.92rem;letter-spacing:0}
+.paper-spark{width:40px;height:40px;color:var(--post-blue);flex:none}
+.paper-card p.paper-card-footer{font-size:.63rem;font-weight:800;letter-spacing:.06em;
+ color:var(--post-blue);margin:0;line-height:1.45}
+.paper-pin{position:absolute;z-index:2;top:6px;left:50%;width:30px;height:30px;
+ transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 29% 25%,#ffb4a3, #f03d2f 62%,#a3201c);
+ border:2px solid #8e2119;box-shadow:2px 5px 0 rgba(23,23,23,.35);pointer-events:none}
+.paper-pin:before{content:"";position:absolute;top:22px;left:13px;width:3px;height:17px;
+ background:var(--post-ink);transform:rotate(8deg);z-index:-1}
+.paper-card-actions{display:flex;justify-content:space-between;align-items:center;gap:14px;
+ width:min(100%,550px);padding:18px 3px 0}
+.paper-card-actions>span{font-size:.67rem;font-weight:800;letter-spacing:.07em}
+.paper-share-button{min-height:51px;background:var(--post-blue);color:#fff;
+ border:2px solid var(--post-ink);padding:12px 16px;display:inline-flex;align-items:center;
+ justify-content:space-between;gap:16px;cursor:pointer;font-size:.74rem;font-weight:800;
+ letter-spacing:.04em;box-shadow:3px 4px 0 var(--post-ink)}
+.paper-share-button .ui-icon{width:19px;height:19px}
+.paper-share-button:hover{background:var(--post-ink)}
+.paper-share-button:focus-visible{outline:3px solid var(--post-blue);outline-offset:5px}
+.paper-share-feedback{font-size:.75rem;min-height:1.25em;color:var(--post-blue);
+ font-weight:800;text-align:center;margin:9px 0 0}
+@media(max-width:1080px){
+ .post-thank-you--paper{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+ .post-thank-you--paper .paper-intro{padding:35px 27px}
+ .paper-intro h2{font-size:clamp(4rem,6.8vw,7rem)}
+ .paper-scene{padding:45px 30px 33px}
+ .paper-card{padding:26px 31px 25px}
+ .paper-card h3{font-size:clamp(4.4rem,8vw,6.8rem)}
+}
+@media(max-width:950px){
+ .post-thank-you--paper{display:grid;grid-template-columns:1fr}
+ .post-thank-you--paper .paper-intro{padding:27px 25px 20px}
+ .paper-intro h2{font-size:clamp(4.1rem,12vw,7rem);margin:24px 0 15px}
+ .paper-intro>p{max-width:610px}
+ .paper-intro .post-note-seal{display:none}
+ .paper-full-letter{margin:22px 0 4px;max-width:600px}
+ .paper-scene{border-left:0;border-top:3px solid var(--post-ink);padding:45px 27px 30px}
+ .paper-card{padding:29px 40px 28px}
+ .paper-card h3{font-size:clamp(5.2rem,12vw,8rem)}
+}
+@media(max-width:540px){
+ .post-thank-you--paper .paper-intro{padding:24px 19px 20px}
+ .paper-intro h2{font-size:clamp(4.5rem,18vw,6rem);margin:24px 0 13px}
+ .paper-intro>p{font-size:.91rem;line-height:1.5}
+ .paper-full-letter{margin:18px 0 0}
+ .paper-full-letter summary{font-size:.7rem;min-height:49px}
+ .paper-full-letter-body{max-height:60dvh;font-size:.87rem}
+ .paper-scene{padding:31px 15px 24px}
+ .paper-stage{width:min(100%,440px);padding:17px 10px 19px}
+ .paper-back{inset:5% 3% 4%}
+ .paper-card{padding:24px 26px 25px}
+ .paper-card-topline{font-size:.52rem;letter-spacing:.055em;padding-bottom:10px}
+ .paper-card-topline .ui-icon{width:11px;height:11px}
+ .paper-heart{width:38px;height:38px;margin:10px 0 -3px}
+ .paper-card h3{font-size:clamp(4.3rem,17vw,6.6rem);margin:8px 0 20px}
+ .paper-card p{font-size:.86rem;line-height:1.47;margin-bottom:11px}
+ .paper-card p.paper-salutation{font-size:1rem;margin-bottom:9px}
+ .paper-signature{margin-top:15px;padding:13px 0}
+ .paper-spark{width:32px;height:32px}
+ .paper-signature span{font-size:.61rem}
+ .paper-signature strong{font-size:.83rem}
+ .paper-card p.paper-card-footer{font-size:.55rem;letter-spacing:.02em}
+ .paper-pin{top:0;width:24px;height:24px}
+ .paper-pin:before{top:18px;left:10px}
+ .paper-card-actions{padding-top:17px;flex-wrap:wrap;gap:12px}
+ .paper-card-actions>span{font-size:.62rem}
+ .paper-share-button{font-size:.72rem;min-height:48px;min-width:154px}
+}
+@media(max-width:350px){
+ .paper-card{padding:23px 21px}
+ .paper-card-topline{font-size:.47rem}
+ .paper-card h3{font-size:4.1rem}
+ .paper-card p{font-size:.8rem}
+ .paper-card-actions>span{width:100%}
+ .paper-share-button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .paper-full-letter summary .ui-icon{transition:none}
+}

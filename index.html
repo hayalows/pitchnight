@@ -18,10 +18,10 @@
   <link rel="preconnect" href="https://docs.google.com" crossorigin />
   <link rel="stylesheet" href="styles.css?v=9" />
   <link rel="stylesheet" href="venue.css?v=3" />
-  <link rel="stylesheet" href="post-event.css?v=5" />
+  <link rel="stylesheet" href="post-event.css?v=6" />
   <script src="/analytics-client.js?v=6" defer></script>
   <script src="main.js?v=10" defer></script>
-  <script src="post-event.js?v=5" defer></script>
+  <script src="post-event.js?v=6" defer></script>
   <script src="venue.js?v=1" defer></script>
   <script src="poster-studio.js" defer></script>
   <title>Pitch Night | Make Your Case</title>
@@ -98,7 +98,7 @@
           <button type="button" class="site-menu-note" data-open-thanks aria-haspopup="dialog" aria-controls="thank-you-dialog"><small>01</small><b>OUR THANK-YOU NOTE</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
           <a href="#details"><small>02</small><b>EDITION 001</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
           <a href="https://forms.gle/j4zaUwHZ6PaLsRh88" data-open-board target="_blank" rel="noopener noreferrer" aria-haspopup="dialog" aria-controls="event-feedback-dialog"><small>03</small><b>CONNECTION BOARD</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-message-square"></use></svg></a>
-          <a href="thank-you-card.html"><small>04</small><b>SHARE A THANK-YOU</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
+          <a href="#thank-you-card"><small>04</small><b>THE THANK-YOU CARD</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
           <a href="#lineup"><small>05</small><b>THE PROGRAMME</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
           <a href="#host"><small>06</small><b>THE HOST</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
           <a href="#venue"><small>07</small><b>THE VENUE</b><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-map-pin"></use></svg></a>
@@ -154,8 +154,8 @@
               <span>OPEN CONNECTION BOARD <small>SHARE YOUR THOUGHTS OR A CONNECTION</small></span>
               <span class="v2-btn-arrow" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
             </a>
-            <a class="v2-program-button" href="thank-you-card.html">
-              MAKE A THANK-YOU CARD <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
+            <a class="v2-program-button" href="#thank-you-card">
+              VIEW OUR THANK-YOU CARD <span aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></span>
             </a>
           </div>
         </div>
@@ -249,18 +249,55 @@
       </div>
     </section>
 
-    <section class="post-thank-you" id="thank-you" aria-labelledby="post-thank-heading">
-      <div class="post-note-heading"><span class="post-kicker"><span class="post-dot" aria-hidden="true"></span> OFFSCRIPT / A NOTE FROM THE TEAM</span><h2 id="post-thank-heading">WHAT<br/>A <span>NIGHT.</span></h2><p>To everyone who joined us, helped us or cheered us on, this one is for you.</p><div class="post-note-seal" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg> <span>EDITION 001<br/>13 NOV 2026</span></div></div>
-      <div class="post-letter">
-        <span class="post-letter-topline">HI FRIEND! <span>01 / THANK YOU</span></span>
-        <p class="post-letter-intro">First things first, <strong>thank you for showing up</strong> for OffScript: Pitch Night, Edition 001.</p>
-        <p>Whether you came ready to pitch, cheer on a friend, meet new people or simply enjoy the evening, we're grateful you spent part of your Friday with us. Your presence, energy and participation made our first edition memorable.</p>
-        <p>To the volunteers, organisers, host and everyone who helped behind the scenes, thank you for bringing the idea to life.</p>
-        <p>We also owe you an apology for starting later than planned and finishing late. We appreciate your patience. We've taken note, and we'll do better next time.</p>
-        <p>The event photos will be shared here when they're ready. Our <a href="#memories">Connection Board</a> is now open, so you can tell us what you enjoyed, what we can improve for Edition 002, or if a particular pitch caught your attention.</p>
-        <p>If you couldn't make it this time, we'd be glad to have you at a future gathering.</p>
-        <p>Thank you again for believing in this idea and helping us bring it to life. <strong>Edition 001 was the beginning.</strong></p>
-        <p class="post-closer">Beyond the usual. Into connection.</p><p class="post-signature">With gratitude,<br/><strong>The OffScript Team</strong></p>
+    <section class="post-thank-you post-thank-you--paper" id="thank-you" aria-labelledby="post-thank-heading">
+      <div class="post-note-heading paper-intro">
+        <span class="post-kicker"><span class="post-dot" aria-hidden="true"></span> OFFSCRIPT / A NOTE FROM US</span>
+        <h2 id="post-thank-heading">THIS ONE'S<br/><span>FOR YOU.</span></h2>
+        <p>To everyone who came, helped make it happen, or cheered us on from afar, here's a little note from the OffScript team.</p>
+        <details class="paper-full-letter" id="team-letter-details">
+          <summary>READ THE FULL NOTE <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></summary>
+          <div class="paper-full-letter-body">
+            <p class="paper-full-letter-hello">HI FRIEND!</p>
+            <p class="post-letter-intro">First things first, <strong>thank you for showing up</strong> for OffScript: Pitch Night, Edition 001.</p>
+<p>Whether you came ready to pitch, cheer on a friend, meet new people or simply enjoy the evening, we're grateful you spent part of your Friday with us. Your presence, energy and participation made our first edition memorable.</p>
+<p>To the volunteers, organisers, host and everyone who helped behind the scenes, thank you for bringing the idea to life.</p>
+<p>We also owe you an apology for starting later than planned and finishing late. We appreciate your patience. We've taken note, and we'll do better next time.</p>
+<p>The event photos will be shared here when they're ready. Our <a href="#memories">Connection Board</a> is now open, so you can tell us what you enjoyed, what we can improve for Edition 002, or if a particular pitch caught your attention.</p>
+<p>If you couldn't make it this time, we'd be glad to have you at a future gathering.</p>
+<p>Thank you again for believing in this idea and helping us bring it to life. <strong>Edition 001 was the beginning.</strong></p>
+<p class="post-closer">Beyond the usual. Into connection.</p>
+<p class="post-signature">With gratitude,<br/><strong>The OffScript Team</strong></p>
+          </div>
+        </details>
+        <div class="post-note-seal" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg> <span>EDITION 001<br/>BEYOND THE USUAL.</span></div>
+      </div>
+
+      <div class="paper-scene" id="thank-you-card" tabindex="-1" aria-labelledby="paper-card-title">
+        <div class="paper-stage">
+          <div class="paper-back paper-back-blue" aria-hidden="true"></div>
+          <div class="paper-back paper-back-yellow" aria-hidden="true"></div>
+          <article class="paper-card" aria-label="A letter of thanks from the OffScript team">
+            <span class="paper-card-topline">OFFSCRIPT <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-asterisk"></use></svg> PITCH NIGHT 001</span>
+            <svg class="paper-heart" viewBox="0 0 64 62" aria-hidden="true" focusable="false">
+              <path d="M33 52C20 40 8 33 8 21c0-8 5-12 11-12 8 0 12 6 14 12 3-9 7-12 15-12 7 0 11 5 11 12 0 13-14 24-26 31Z" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+            <h3 id="paper-card-title">THANK<br/><span>YOU.</span></h3>
+            <p class="paper-salutation">Hi friend,</p>
+            <p>To everyone who showed up, pitched, cheered on a friend, volunteered, or helped behind the scenes, <strong>thank you.</strong> You made our first Pitch Night a night worth remembering.</p>
+            <p>If you couldn't make it, we're glad you're here. We hope to see you next time.</p>
+            <div class="paper-signature">
+              <svg class="paper-spark" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M22 3c0 11 4 15 18 19-14 3-18 8-18 19C19 30 15 25 4 22c12-3 16-8 18-19Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+              <span>WITH GRATITUDE,<br/><strong>THE OFFSCRIPT TEAM</strong></span>
+            </div>
+            <p class="paper-card-footer">BEYOND THE USUAL. INTO CONNECTION.</p>
+          </article>
+          <span class="paper-pin" aria-hidden="true"></span>
+        </div>
+        <div class="paper-card-actions">
+          <span>ONE NOTE. FOR EVERYONE.</span>
+          <button type="button" class="paper-share-button" id="share-thank-you-note">SHARE THIS NOTE <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></button>
+        </div>
+        <p class="paper-share-feedback" role="status" aria-live="polite" id="thank-you-share-status"></p>
       </div>
     </section>
 
@@ -435,11 +472,6 @@
           <strong class="post-live-status">OPEN FOR RESPONSES</strong>
           <a class="post-feedback-open" id="open-event-feedback" href="https://forms.gle/j4zaUwHZ6PaLsRh88" target="_blank" rel="noopener noreferrer" data-open-board aria-haspopup="dialog" aria-controls="event-feedback-dialog">OPEN CONNECTION BOARD <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
         </article>
-      </div>
-      <div class="post-share-strip">
-        <div class="post-share-strip-art" aria-hidden="true"><svg class="ui-icon" focusable="false"><use href="#ui-asterisk"></use></svg></div>
-        <div class="post-share-strip-text"><span>FROM THE OFFSCRIPT TEAM</span><strong>PASS THE THANKS ALONG.</strong><p>Make a little note for someone who showed up, volunteered or supported Edition 001.</p></div>
-        <a href="thank-you-card.html" class="post-share-strip-link">MAKE A CARD <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#ui-arrow-up-right"></use></svg></a>
       </div>
     </section>
 
