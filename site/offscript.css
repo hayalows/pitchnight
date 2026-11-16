@@ -255,3 +255,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 
 @media(min-width:1080px){.hero h1{font-size:clamp(7.4rem,9vw,9.7rem);line-height:.94}.hero .wrap{gap:clamp(35px,6.2vw,92px)}.hero .into{margin-top:14px}.hero .lede{max-width:480px;line-height:1.6}}
 @media(max-width:1000px){.hero .wrap,.about .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* Narrow-screen headings must fit before and after custom fonts load. */
+@media(max-width:420px){.page-title{font-size:clamp(3.1rem,14vw,4.9rem)}.cta-band h2{font-size:clamp(2.2rem,9.5vw,3.6rem)}}
+.page-section p{overflow-wrap:anywhere}
