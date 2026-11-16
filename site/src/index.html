@@ -188,6 +188,11 @@ a,button{-webkit-tap-highlight-color:transparent}
   .stickybar.is-visible{transform:none}
   .stickybar span{font:italic 400 1.3rem/1.1 var(--serif)}
 }
+@media (max-width:360px){
+  /* Keep the headline inside narrow screens, even before custom fonts load. */
+  .hero h1{font-size:min(18vw,3.7rem)}
+  .next-card .sticker{right:0}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .ticker-track{animation:none}
