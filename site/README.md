@@ -1,65 +1,50 @@
-# offscriptgh.com homepage
+# OffScript Ghana parent website
 
-The Offscript parent-brand homepage, built from the approved Figma redesign
-("Board 10 / offscriptgh.com" in the Pitch Night Figma file).
+The public website is https://offscriptgh.com/. Pitch Night Edition 001 is the archive at /events/pitch-night-001/.
 
-## Files
+## Structure
 
-| Path | What it is |
-| --- | --- |
-| `site/src/index.html` | Source. Edit this. |
-| `site/src/logo-paths.json` | Logo paths traced from the original Offscript mark. The flipped f keeps its exact angle. Do not redraw. |
-| `site/fonts/instrument-serif-italic-subset.woff2` | Instrument Serif Italic, Latin subset (SIL OFL, see licence file). Inlined at build time. |
-| `site/build.mjs` | Build: `node site/build.mjs` |
-| `site/index.html` | Built page. One self-contained file. |
-| `cloudflare/offscriptgh-site-worker.js` | The Worker. The build rewrites only its `HOME` constant with the built page. Routing is unchanged. |
-| `tests/offscript_home_e2e.py` | 12 end-to-end journeys in a real browser. |
+- \`site/src/index.html\`: home page and "Get on the list" form.
+- \`site/src/about.html\`, \`events.html\`, \`join.html\`, \`privacy.html\`: separate editorial pages.
+- \`site/src/pages.css\`: shared design-system styles, built into the home page and served at \`/offscript.css\`.
+- \`site/src/logo-paths.json\`: original OffScript vector marks from approved brand work.
+- \`site/build.mjs\`: \`node site/build.mjs\`. Writes built HTML, CSS and the full Cloudflare Worker.
+- \`cloudflare/subscriptions.js\`: double-opt-in API, confirmation and unsubscribe logic.
+- \`cloudflare/offscriptgh-site-worker.js\`: **ES module** Worker, serving home and editorial pages, while the existing Pitch Night event origin and analytics stay proxied from Vercel.
+- \`tests/offscript_home_e2e.py\`: actual browser journeys for home page; network responses are stubbed to test UI states.
 
-Anton and Space Grotesk still load from `/assets/fonts/`, which the Worker serves from the event origin.
+## Subscriber backend
 
-## Deploy (two routes, pick one)
+The form calls \`POST /api/subscribe\` from the same origin with
+\`{"email":"name@example.com","source":"offscriptgh-home","consent":true,"company":""}\`.
+The server checks origin, content type, size, email and explicit consent. It has an untrusted-input honeypot, a rate limit keyed by a hashed requester identifier and a D1 record keyed by normalised email.
 
-1. **Worker only (simplest).** Run the build, then deploy `cloudflare/offscriptgh-site-worker.js` to the `offscriptgh-site` Worker, the same way it was deployed before. The new page is inside `HOME`.
-2. **Serve the file from elsewhere.** Host `site/index.html` and point the Worker's `/` route at it. Keep the `/events/`, `/api/`, `/admin/` and `/assets/` routes as they are.
+The flow:
 
-After deploying, check: `/` shows "Edition 002 is on the way", `/events/pitch-night-001/` still opens the archive, and the Notify me form shows the expected message.
+1. Store the consent and a two-day confirmation token hash in **Cloudflare D1**. Do not activate the address yet.
+2. Send a confirmation request from the verified \`OffScript <hello@offscriptgh.com>\` Resend sender.
+3. \`GET /confirm?token=…\` checks the hash and expiry, marks the subscriber active, then sends a short welcome email.
+4. The welcome email includes a signed \`/unsubscribe\` link. GET opens a confirmation page; POST makes the change, preventing mail scanners from unsubscribing someone by opening the link.
+5. If an active email is submitted again, return a generic message instead of leaking list membership or resending the welcome.
 
-## Back end to build: the sign-up endpoint
+No message about an announced date or open recruitment is sent or implied. Real subscriber records are stored privately in the D1 database, not in a public Git repository. Subscriber records are not in the separate Vercel analytics database.
 
-The form sends:
+## Production configuration
 
-```
-POST /api/subscribe
-Content-Type: application/json
-{"email": "name@example.com", "source": "offscriptgh-home"}
-```
+Cloudflare account: Hayalows Ventures. Worker: \`offscriptgh-site\`. D1 database: \`offscript-subscribers\` (binding \`OFFSCRIPT_DB\`).
 
-What the page shows for each response:
+Worker secrets:
+- \`SUBSCRIBE_SIGNING_SECRET\` is generated and stored in Cloudflare.
+- \`RESEND_API_KEY\` must be a **sending-access** Resend key restricted to the verified offscriptgh.com domain. It cannot be placed in source control or shared in chat. Configure this in Cloudflare → Workers & Pages → offscriptgh-site → Settings → Variables and Secrets.
 
-| Response | Message |
-| --- | --- |
-| any 2xx | "You are on the list. We will email you when Edition 002 is set." The field hides. |
-| 404, 405, 501 | "The list is not open just yet. Please check back soon." (This is what visitors see until the endpoint exists.) |
-| other errors | "We could not save that. Please try again in a moment." |
-| network failure | "You seem to be offline. Check your connection and try again." |
+Both bindings and the secret must exist before signup works. If a secret is absent, the endpoint returns HTTP 503 and a truthful error. Keep this known limitation visible if the key has not been entered. Do not claim real email delivery from a mocked test.
 
-Notes for the endpoint:
-- Today the Worker forwards `/api/*` to the Vercel origin with an Origin check. Either add `api/subscribe.js` there, or handle `POST /api/subscribe` inside the Worker before the forward.
-- Validate the email on the server, rate-limit by IP, and de-duplicate.
-- The form has a hidden `company` field as a spam trap. The browser never submits when it is filled. Reject it on the server too if you add it to the payload.
-- Store consent: the page promises "One email when the next night is set. No spam."
+Deploy as a **module Worker** using a multipart script upload with \`main_module: worker.mjs\`, D1 binding and the correct compatibility date. Confirm the Worker still lists its secret bindings after code updates. Deployment from GitHub is **not** automatically connected to Cloudflare at this point: a Git commit alone does not publish.
 
-To use a different URL, change `signupEndpoint` in the `OFFSCRIPT_CONFIG` block near the end of `site/src/index.html`.
+Run \`node site/build.mjs\` after source edits, review generated changes, and deploy only after validating the main pages, event archive, private analytics access, mobile navigation, consent state, confirmation, welcome and unsubscribe.
 
-## Social and contact links
+## Privacy, audience and delivery
 
-None are published, so none are invented. Fill `links` in `OFFSCRIPT_CONFIG` (`instagram`, `tiktok`, `whatsapp`, `email`) and rebuild. Each one appears in the footer only when it is set.
+The site collects only an email address, explicit permission and subscription status, plus a hashed rate-limit identifier. Email is delivered through Resend. The privacy page includes contact and removal instructions. Never expose subscriber records publicly. Use the confirmation flow before sending later announcements, and honour unsubscribes.
 
-## Tests
-
-```
-python3 -m http.server 8099 &
-python3 tests/offscript_home_e2e.py        # add CHROME=/path/to/chrome to use an installed Chrome
-```
-
-Covers: desktop layout and script errors, phone menu (open, Escape, link), list links landing in the field, validation, success payload, 404, 500, offline, spam trap, phone sticky bar timing, keyboard order and focus, reduced motion.
+Real event details remain as recorded for Edition 001. Edition 002 has no announced date or format. The Join Us page is informational, not an active recruitment form.
