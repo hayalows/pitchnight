@@ -1,0 +1,34 @@
+/* OffScript family layer for event pages served through offscriptgh.com.
+   Namespaced (osx-) so it never collides with an event's own styles. */
+@font-face{font-family:Anton;src:url('/assets/fonts/anton-props.woff2') format('woff2');font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url('/assets/fonts/space-grotesk-props.woff2') format('woff2');font-weight:300 700;font-display:swap}
+@font-face{font-family:"Instrument Serif";font-style:italic;src:url("/offscript-serif.woff2") format("woff2");font-display:swap}
+.osx-bar,.osx-foot{--osx-ink:#141414;--osx-paper:#faf4e7;--osx-yellow:#ffd63b;--osx-red:#e8382b;--osx-blue:#1036af;--osx-gutter:max(20px,5.5vw,calc((100vw - 1560px)/2));box-sizing:border-box;font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.osx-bar *,.osx-foot *{box-sizing:border-box}
+.osx-bar{position:relative;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:46px;padding:6px var(--osx-gutter);background:var(--osx-ink);color:var(--osx-paper);font-size:.72rem;font-weight:700;line-height:1.2;letter-spacing:.1em;text-transform:uppercase}
+.osx-bar a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:9px;min-height:34px}
+.osx-bar a:hover{text-decoration:underline;text-underline-offset:4px}
+.osx-bar a:focus-visible,.osx-foot a:focus-visible{outline:3px solid var(--osx-yellow);outline-offset:2px}
+.osx-crumb{display:flex;align-items:center;gap:10px;min-width:0}
+.osx-home{flex:none}
+.osx-mark{width:26px;height:26px;flex:none}
+.osx-sep{opacity:.45}
+.osx-here{color:#c9c2b6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.osx-right{display:flex;align-items:center;gap:20px;flex:none}
+.osx-cta{background:var(--osx-yellow);color:var(--osx-ink)!important;padding:0 12px;border:2px solid var(--osx-yellow)}
+.osx-cta:hover{background:var(--osx-paper);border-color:var(--osx-paper);text-decoration:none!important}
+@media(max-width:760px){.osx-bar{font-size:.66rem;gap:10px;padding-top:4px;padding-bottom:4px}.osx-cta,.osx-sep-events,.osx-events{display:none!important}.osx-crumb{gap:8px}}
+@media(max-width:380px){.osx-here{max-width:116px}}
+
+.osx-foot{background:var(--osx-ink);color:var(--osx-paper);padding:clamp(48px,6vw,72px) var(--osx-gutter) 28px;border-top:3px solid var(--osx-ink)}
+.osx-foot-grid{display:grid;grid-template-columns:1.3fr repeat(3,minmax(0,.7fr));gap:32px;margin:0 auto}
+.osx-foot-brand svg{height:58px;width:auto;color:var(--osx-paper)}
+.osx-foot-brand p{margin:16px 0 0;font:italic 400 1.5rem/1.15 "Instrument Serif",Georgia,"Times New Roman",serif}
+.osx-foot h2{margin:0 0 14px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--osx-yellow)}
+.osx-foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.osx-foot ul a{color:var(--osx-paper);text-decoration:none;display:inline-block;padding:4px 0;font-size:1rem}
+.osx-foot ul a:hover{text-decoration:underline;text-underline-offset:4px}
+.osx-foot-btn{display:inline-flex;align-items:center;gap:10px;margin-top:22px;min-height:44px;padding:10px 16px;background:var(--osx-yellow);color:var(--osx-ink);border:2px solid var(--osx-paper);box-shadow:4px 4px 0 var(--osx-red);font-weight:700;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.osx-legal{margin:36px auto 0;padding-top:20px;border-top:1px solid #3a3733;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;color:#bdb6aa;font-size:.85rem}
+@media(max-width:1000px){.osx-foot-grid{grid-template-columns:1fr 1fr}.osx-foot-brand{grid-column:1/-1}}
+@media(max-width:560px){.osx-foot-grid{grid-template-columns:1fr}}

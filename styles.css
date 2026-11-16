@@ -1,3 +1,5 @@
+@font-face{font-family:"Anton";src:url("assets/fonts/anton-props.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/space-grotesk-props.woff2") format("woff2");font-weight:300 700;font-display:swap}
 /* Pitch Night — Make Your Case
    Original poster-inspired visual system: warm paper, cobalt ink, marker red, playful panels.
    No framework or build step required.

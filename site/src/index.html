@@ -15,9 +15,12 @@
 <meta name="twitter:card" content="summary"/>
 <link rel="icon" type="image/svg+xml" href="{{FAVICON}}"/>
 <link rel="preload" href="/assets/fonts/anton-props.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="preload" href="/assets/fonts/space-grotesk-props.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <style>
 @font-face{font-family:Anton;src:url('/assets/fonts/anton-props.woff2') format('woff2');font-display:swap}
 @font-face{font-family:Space;src:url('/assets/fonts/space-grotesk-props.woff2') format('woff2');font-weight:300 700;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url('/assets/fonts/space-grotesk-props.woff2') format('woff2');font-weight:300 700;font-display:swap}
 @font-face{font-family:"Instrument Serif";font-style:italic;src:url(data:font/woff2;base64,{{FONT_IS}}) format('woff2');font-display:swap}
 :root{
   color-scheme:light;
@@ -26,8 +29,8 @@
   --display:Anton,Impact,"Arial Narrow",sans-serif;
   --body:Space,"Helvetica Neue",Arial,sans-serif;
   --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
-  --gutter:clamp(20px,5.2vw,80px);
-  --max:1320px;
+  --gutter:clamp(20px,5.5vw,100px);
+  --max:calc(1560px + 2 * var(--gutter));
   --line:2px solid var(--ink);
   --shadow:5px 5px 0 var(--ink);
 }
@@ -54,22 +57,6 @@ a,button{-webkit-tap-highlight-color:transparent}
 .btn--ink{background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--red)}
 .btn--ink:hover{box-shadow:7px 7px 0 var(--red)}
 .btn--sm{min-height:42px;padding:9px 14px;font-size:.72rem}
-
-/* Header */
-.site-header{border-bottom:3px solid var(--ink);background:var(--paper);position:relative;z-index:20}
-.site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:12px;padding-bottom:12px}
-.brand{display:inline-flex;text-decoration:none;color:var(--ink)}
-.brand svg{height:58px;width:auto}
-.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,36px)}
-.nav a:not(.btn){font:700 .76rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:8px 0;border-bottom:2px solid transparent}
-.nav a:not(.btn):hover{border-bottom-color:var(--ink)}
-.header-actions{display:none;align-items:center;gap:10px}
-.menu-btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 12px;background:var(--paper);border:var(--line);font:700 .72rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);cursor:pointer}
-.menu-btn .bars{display:grid;gap:4px}
-.menu-btn .bars i{display:block;width:18px;height:2px;background:var(--ink);transition:transform .2s ease,opacity .2s ease}
-.menu-btn[aria-expanded="true"] .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.menu-btn[aria-expanded="true"] .bars i:nth-child(2){opacity:0}
-.menu-btn[aria-expanded="true"] .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
 /* Hero */
 .hero{border-bottom:3px solid var(--ink)}
@@ -123,9 +110,6 @@ a,button{-webkit-tap-highlight-color:transparent}
 .events{border-top:3px solid var(--ink)}
 .events-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.42fr);gap:28px;margin-top:40px}
 .event{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);background:var(--chalk);border:var(--line);box-shadow:9px 9px 0 var(--ink)}
-.poster{background:var(--yellow);border-right:var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px 20px;overflow:hidden;min-height:300px}
-.poster p{margin:0;font:400 clamp(3.4rem,5.4vw,5.6rem)/.88 var(--display);color:var(--blue);text-align:center;text-transform:uppercase;transform:rotate(-7deg);text-shadow:3px 4px 0 var(--ink)}
-.poster span{background:var(--paper);border:var(--line);padding:7px 10px;transform:rotate(4deg)}
 .event-copy{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .event-copy .label{color:var(--blue)}
 .event-copy h3{font:italic 400 clamp(2.1rem,3vw,2.9rem)/1.02 var(--serif);margin:0}
@@ -168,12 +152,6 @@ a,button{-webkit-tap-highlight-color:transparent}
 /* Phone */
 @media (max-width:720px){
   .hero .wrap>*,.about .wrap>*{min-width:0}
-  .brand svg{height:46px}
-  .header-actions{display:flex}
-  .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--paper);border-bottom:3px solid var(--ink);padding:8px var(--gutter) 20px}
-  .nav.is-open{display:flex}
-  .nav a:not(.btn){padding:16px 0;border-bottom:1px solid var(--rule);font-size:.86rem}
-  .nav .btn{display:none}
   .hero .wrap{padding-top:40px;padding-bottom:52px;gap:44px}
   .hero h1{font-size:clamp(4.4rem,21vw,6.6rem);margin-top:18px}
   .hero .into{font-size:clamp(2.4rem,11vw,3.2rem);margin-bottom:20px}
@@ -182,7 +160,6 @@ a,button{-webkit-tap-highlight-color:transparent}
   .field{flex-direction:column;border-color:var(--paper)}
   .field button{border-left:0;border-top:var(--line);justify-content:center;min-height:50px}
   .event{grid-template-columns:1fr}
-  .poster{border-right:0;border-bottom:var(--line);min-height:220px}
   .site-footer .wrap{grid-template-columns:1fr}
   body{padding-bottom:76px}
   .stickybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter) calc(12px + env(safe-area-inset-bottom));background:var(--ink);color:var(--paper);border-top:3px solid var(--ink);transform:translateY(110%);transition:transform .25s ease}
@@ -203,93 +180,129 @@ a,button{-webkit-tap-highlight-color:transparent}
 }
 </style>
 </head>
-<body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
-  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
-</svg>
-<a class="skip" href="#main">Skip to content</a>
-
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="/" aria-label="OffScript home">
-      <svg viewBox="28.6 47.4 202.2 185.4" role="img" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="{{LOGO_STACKED}}"/></svg>
-    </a>
-    <div class="header-actions">
-      <a class="btn btn--sm" href="#list" data-focus-signup>The list</a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="visually-hidden">Open menu</span></button>
-    </div>
-    <nav class="nav" id="site-nav" aria-label="Main">
-      <a href="/about/">About</a>
-      <a href="/events/">Events</a>
-      <a href="/join/">Join us</a>
-      <a href="/events/pitch-night-001/#memories">Connection Board</a>
-      <a class="btn btn--sm" href="#list" data-focus-signup>Get on the list <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-    </nav>
-  </div>
-</header>
+<body data-page="home">
+{{HEADER}}
 
 <main id="main">
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
-      <div>
-        <span class="label kicker">Hello from OffScript / Ghana</span>
-        <h1 id="hero-title">Beyond<br/>the <span class="blue">usual.</span></h1>
-        <p class="into">into connection.</p>
-        <p class="lede">Events in Ghana for shared ideas, good company and the moments that happen when people come together.</p>
-        <div class="hero-actions">
+      <div class="hero-copy">
+        <span class="label kicker" data-hero-step>Hello from OffScript / Ghana</span>
+        <h1 id="hero-title" class="hero-title">
+          <span class="line"><span class="word">Beyond</span></span>
+          <span class="line"><span class="word">the</span> <span class="word usual blue">usual.<svg class="pen-ring" viewBox="0 0 300 120" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path pathLength="1" d="M24 64C30 30 104 12 168 13s124 20 120 52c-4 32-82 46-150 44C66 107 12 94 16 62 20 36 70 24 112 20"/></svg></span></span>
+        </h1>
+        <p class="into" data-hero-step><span class="into-text">into connection.</span></p>
+        <p class="lede" data-hero-step>Events in Ghana for shared ideas, good company and the moments that happen when people come together.</p>
+        <div class="hero-actions" data-hero-step>
           <a class="btn" href="#list" data-focus-signup>Get on the list <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-          <a class="btn btn--ghost" href="/events/pitch-night-001/">See Pitch Night 001</a>
+          <a class="btn btn--ghost" href="#story">See how a night goes <svg class="icon" aria-hidden="true"><use href="#i-down"/></svg></a>
         </div>
       </div>
 
-      <aside class="next-card" id="list" aria-labelledby="next-title">
-        <svg class="sticker" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#e8382b" stroke="#141414" stroke-width="3"/><g transform="translate(60 60) scale(0.78) translate(-193.8 -108.4)"><path fill="#faf4e7" d="{{LOGO_FLIP}}"/></g></svg>
-        <span class="label">What’s next</span>
-        <h2 id="next-title">Edition 002<br/>is on the way.</h2>
-        <p class="sub">Be first to hear the date, the venue and the format.</p>
-        <form class="signup" id="signup" novalidate>
-          <label class="label" for="email">Your email</label>
-          <div class="field">
-            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="signup-msg signup-privacy"/>
-            <button type="submit">Notify me <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-          </div>
-          <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"/></div>
-          <p class="form-msg" id="signup-msg" role="status" aria-live="polite"></p>
-          <label class="form-consent"><input type="checkbox" id="consent" name="consent" required><span>Yes, email me about future OffScript events. I can leave the list at any time.</span></label><p class="privacy" id="signup-privacy">We'll write when we have event news. <a href="/privacy/">How we use your email</a>.</p>
-        </form>
-      </aside>
+      <div class="hero-stage" data-parallax>
+        <a class="hero-prop hero-prop--arch" href="/events/pitch-night-001/" data-depth="14" aria-label="Pitch Night 001: Make Your Case">{{PROP_10}}</a>
+        <a class="hero-prop hero-prop--bubble" href="/events/pitch-night-001/props.html?prop=1" data-depth="-10" aria-label="Open the Prop Studio">{{PROP_01}}</a>
+        <aside class="next-card" id="list" tabindex="-1" aria-labelledby="next-title">
+          <svg class="sticker" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#e8382b" stroke="#141414" stroke-width="3"/><g transform="translate(60 60) scale(0.78) translate(-193.8 -108.4)"><path fill="#faf4e7" d="{{LOGO_FLIP}}"/></g></svg>
+          <span class="label">What’s next</span>
+          <h2 id="next-title">Edition 002<br/>is on the way.</h2>
+          <p class="sub">Be first to hear the date, the venue and the format.</p>
+          <form class="signup" id="signup" novalidate>
+            <label class="label" for="email">Your email</label>
+            <div class="field">
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="signup-msg signup-privacy"/>
+              <button type="submit">Notify me <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+            <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"/></div>
+            <p class="form-msg" id="signup-msg" role="status" aria-live="polite"></p>
+            <label class="form-consent"><input type="checkbox" id="consent" name="consent" required><span>Yes, email me about future OffScript events. I can leave the list at any time.</span></label>
+            <p class="privacy" id="signup-privacy">We'll write when we have event news. <a href="/privacy/">How we use your email</a>.</p>
+          </form>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
+  <div class="ticker">
+    <div class="ticker-track" aria-hidden="true">
       <ul><li>There’s room for everyone</li><li>Speak up for a friend</li><li>Meet someone new</li><li>Beyond the usual</li></ul>
       <ul><li>There’s room for everyone</li><li>Speak up for a friend</li><li>Meet someone new</li><li>Beyond the usual</li></ul>
     </div>
+    <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg><span class="visually-hidden">Pause moving text</span></button>
   </div>
 
   <section class="section about" id="about" aria-labelledby="about-title">
     <div class="wrap">
-      <div>
+      <div data-reveal>
         <span class="label">001 / Who we are</span>
         <h2 class="big" id="about-title">There’s<br/>room for<br/>everyone.</h2>
       </div>
-      <div>
+      <div data-reveal>
         <p>OffScript brings people together through events that make space for conversation, creativity and real connections.</p>
         <p>We began with Pitch Night: Make Your Case, an evening in Accra where people came to speak up for their friends, share a laugh and meet someone new.</p>
-        <span class="label tag">We’re only getting started.</span><p style="margin-top:28px"><a class="btn btn--sm" href="/about/">MORE ABOUT OFFSCRIPT ↗</a></p>
+        <div class="about-actions"><span class="label tag">We’re only getting started.</span><a class="text-cta" href="/about/">More about OffScript <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section story" id="story" aria-labelledby="story-title">
+    <div class="wrap">
+      <header class="story-head" data-reveal>
+        <span class="label">002 / How a night goes</span>
+        <h2 class="big" id="story-title">One night.<br/><span class="blue">Four parts.</span></h2>
+        <p>This is how Pitch Night 001 ran. The props are the real ones from the night.</p>
+      </header>
+      <div class="story-grid">
+        <div class="story-stage" aria-hidden="true">
+          <div class="story-frame">
+            <div class="story-prop is-active" data-story-prop="0">{{PROP_03}}</div>
+            <div class="story-prop" data-story-prop="1">{{PROP_05}}</div>
+            <div class="story-prop" data-story-prop="2">{{PROP_01}}</div>
+            <div class="story-prop" data-story-prop="3">{{PROP_07}}</div>
+          </div>
+          <div class="story-meter"><b data-story-count>01</b><span>/ 04</span><i><em data-story-bar></em></i></div>
+        </div>
+        <ol class="story-steps">
+          <li class="story-step is-active" data-story-step="0">
+            <span class="step-no">01</span>
+            <h3>Hellos &amp; welcome.</h3>
+            <p>Walk in, find a seat and meet the room. Nobody needs to know anyone yet. That is the point.</p>
+            <div class="step-prop" aria-hidden="true">{{PROP_03}}</div>
+          </li>
+          <li class="story-step" data-story-step="1">
+            <span class="step-no">02</span>
+            <h3>Games &amp; warm-up.</h3>
+            <p>A few quick games loosen everyone up. Strangers start laughing at the same things.</p>
+            <div class="step-prop" aria-hidden="true">{{PROP_05}}</div>
+          </li>
+          <li class="story-step" data-story-step="2">
+            <span class="step-no">03</span>
+            <h3>Pitch your friend.</h3>
+            <p>Friends take the mic and make the case for someone they love. The room listens, cheers and asks the hard questions.</p>
+            <div class="step-prop" aria-hidden="true">{{PROP_01}}</div>
+          </li>
+          <li class="story-step" data-story-step="3">
+            <span class="step-no">04</span>
+            <h3>The good part.</h3>
+            <p>The pitches end and the real conversations begin. Some of the best moments happen after the mic goes down.</p>
+            <div class="step-prop" aria-hidden="true">{{PROP_07}}</div>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
 
   <section class="section events" id="events" aria-labelledby="events-title">
     <div class="wrap">
-      <span class="label">002 / The events</span>
-      <h2 class="big" id="events-title">What we’ve<br/>been up to.</h2>
+      <div class="events-top" data-reveal>
+        <div><span class="label">003 / The events</span>
+        <h2 class="big" id="events-title">What we’ve<br/>been up to.</h2></div>
+        <a class="text-cta" href="/events/">See all events <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
       <div class="events-grid">
-        <article class="event" aria-labelledby="ev1-title">
-          <div class="poster" aria-hidden="true"><p>Make<br/>your<br/>case.</p><span class="label">OffScript / Pitch Night 001</span></div>
+        <article class="event" aria-labelledby="ev1-title" data-reveal>
+          <a class="poster" href="/events/pitch-night-001/" tabindex="-1" aria-hidden="true"><span class="poster-prop">{{PROP_10}}</span><span class="label poster-tag">Edition 001 · Completed</span></a>
           <div class="event-copy">
             <span class="label">Past event / Edition 001</span>
             <h3 id="ev1-title">Pitch Night:<br/>Make Your Case</h3>
@@ -298,57 +311,54 @@ a,button{-webkit-tap-highlight-color:transparent}
             <a class="btn btn--sm" href="/events/pitch-night-001/">Explore Edition 001 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
-        <div class="soon">
+        <div class="soon" data-reveal>
           <span class="label">Coming soon / Edition 002</span>
           <h3>Your seat<br/>is waiting.</h3>
           <p>Date and format to be announced. Join the list and we will tell you first.</p>
           <a class="btn btn--sm" href="#list" data-focus-signup>Tell me first <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <div class="home-next-links"><a href="/events/">SEE ALL EVENTS ↗</a></div>
       </div>
+    </div>
+  </section>
+
+  <section class="propwall" aria-labelledby="propwall-title">
+    <div class="wrap propwall-head" data-reveal>
+      <div>
+        <span class="label">From the night / The Prop Studio</span>
+        <h2 id="propwall-title">Lines worth <span class="red">holding.</span></h2>
+      </div>
+      <div class="propwall-actions">
+        <a class="btn btn--sm" href="/events/pitch-night-001/props.html">Open the Prop Studio <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <button class="motion-toggle motion-toggle--light" type="button" data-motion-toggle aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg><span class="visually-hidden">Pause moving text</span></button>
+      </div>
+    </div>
+    <div class="propwall-rail">
+      <ul class="propwall-track" data-loop>
+        {{PROP_TILES}}
+      </ul>
     </div>
   </section>
 
   <section class="section room" id="connect" aria-labelledby="room-title">
     <div class="wrap">
-      <div>
-        <span class="label">003 / The conversation continues</span>
+      <div data-reveal>
+        <span class="label">004 / The conversation continues</span>
         <h2 class="big" id="room-title">Stay <span class="y">in</span><br/>the room.</h2>
         <p>Were you at Pitch Night? The Connection Board is still open. Tell us what you thought, and help shape what comes next.</p>
       </div>
-      <a class="btn" href="/events/pitch-night-001/#memories">Go to the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn" href="/events/pitch-night-001/#memories" data-reveal>Go to the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </section>
-<section class="home-join"><div class="wrap"><div><span class="label">004 / GET INVOLVED</span><h2>GOOD NIGHTS NEED GOOD PEOPLE.</h2><p>There may be ways to help shape future events, from welcoming guests to working behind the scenes. We're not advertising roles yet, but we'd like to stay in touch with people who care about what we're building.</p></div><a class="btn" href="/join/">JOIN THE CONVERSATION ↗</a></div></section>
+
+  <section class="home-join" aria-labelledby="join-title">
+    <div class="wrap" data-reveal>
+      <div><span class="label">005 / Get involved</span><h2 id="join-title">Good nights need good people.</h2><p>There may be ways to help shape future events, from welcoming guests to working behind the scenes. We're not advertising roles yet, but we'd like to stay in touch with people who care about what we're building.</p></div>
+      <a class="btn" href="/join/">Join the conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="brandcol">
-      <svg class="off" viewBox="29.8 47.4 188.8 108.8" role="img" aria-label="OffScript"><path fill="currentColor" fill-rule="evenodd" d="{{LOGO_OFF}}"/></svg>
-      <p class="tagline">Beyond the usual.<br/>Into connection.</p>
-    </div>
-    <div>
-      <h2 class="label">Events</h2>
-      <ul>
-        <li><a href="/events/pitch-night-001/">Pitch Night 001</a></li>
-        <li><a href="/events/pitch-night-001/#memories">Connection Board</a></li>
-        <li><a href="/events/pitch-night-001/#thank-you">Our thank-you note</a></li>
-      </ul>
-    </div>
-    <div>
-      <h2 class="label">OffScript</h2>
-      <ul id="footer-links">
-        <li><a href="/about/">About us</a></li>
-        <li><a href="/events/">All events</a></li>
-        <li><a href="/join/">Join us</a></li>
-        <li><a href="#list" data-focus-signup>Get on the list</a></li>
-      </ul>
-    </div>
-    <div><h2 class="label">Get in touch</h2><ul><li><a href="/privacy/">Privacy</a></li><li><a href="mailto:offscript.beyondtheusual@gmail.com">Email us</a></li></ul></div>
-    <div class="legal"><span>© 2026 OffScript · Ghana</span><span>Beyond the usual. Into connection.</span></div>
-  </div>
-</footer>
+{{FOOTER}}
 
 <div class="stickybar" id="stickybar" aria-hidden="true">
   <span>Next night soon</span>
@@ -381,31 +391,7 @@ window.OFFSCRIPT_CONFIG = {
     li.appendChild(a); list.appendChild(li);
   });
 
-  /* Mobile menu */
-  var btn = document.querySelector(".menu-btn"), nav = document.getElementById("site-nav");
-  function setMenu(open) {
-    btn.setAttribute("aria-expanded", String(open));
-    btn.querySelector(".visually-hidden").textContent = open ? "Close menu" : "Open menu";
-    nav.classList.toggle("is-open", open);
-  }
-  btn.addEventListener("click", function () { setMenu(btn.getAttribute("aria-expanded") !== "true"); });
-  nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && btn.getAttribute("aria-expanded") === "true") { setMenu(false); btn.focus(); }
-  });
-
-  /* Every "list" link lands on the form with the cursor in the field. */
   var email = document.getElementById("email");
-  document.querySelectorAll("[data-focus-signup]").forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      e.preventDefault();
-      var card = document.getElementById("list");
-      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      card.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
-      setTimeout(function () { email.focus({ preventScroll: true }); }, reduce ? 0 : 450);
-      history.replaceState(null, "", "#list");
-    });
-  });
 
   /* Sign-up form */
   var form = document.getElementById("signup"), msg = document.getElementById("signup-msg");
@@ -413,10 +399,15 @@ window.OFFSCRIPT_CONFIG = {
   // Only accept signups when the server has a working delivery configuration.
   fetch("/api/list-status", { cache:"no-store" }).then(function(r){return r.ok?r.json():{open:false}}).then(function(data){
     if(data.open) return;
+    closed();
+  }).catch(closed);
+  // A calm, honest state while delivery is not configured: not an error the visitor caused.
+  function closed(){
     email.disabled = true; submit.disabled = true;
     var checkbox=document.getElementById("consent"); if(checkbox)checkbox.disabled=true;
-    say("The list isn't open just yet. Please check back soon.", "error");
-  }).catch(function(){email.disabled=true;submit.disabled=true;say("The list isn't open just yet. Please check back soon.", "error")});
+    form.classList.add("is-closed");
+    say("The list isn't open just yet. Please check back soon.", "note");
+  }
   function say(text, kind) { msg.textContent = text; msg.className = "form-msg" + (kind ? " is-" + kind : ""); }
   email.addEventListener("input", function () { if (email.getAttribute("aria-invalid")) { email.removeAttribute("aria-invalid"); say(""); } });
   form.addEventListener("submit", function (e) {
@@ -473,6 +464,37 @@ window.OFFSCRIPT_CONFIG = {
     new IntersectionObserver(function (en) { footVisible = en[0].isIntersecting; update(); }).observe(foot);
   }
 })();
+
+/* Story: the stage follows the step being read. Phones show each prop inline instead. */
+(function () {
+  var steps = [].slice.call(document.querySelectorAll("[data-story-step]"));
+  var props = [].slice.call(document.querySelectorAll("[data-story-prop]"));
+  var count = document.querySelector("[data-story-count]"), bar = document.querySelector("[data-story-bar]");
+  if (!steps.length || !("IntersectionObserver" in window)) return;
+  function activate(i) {
+    steps.forEach(function (s, j) { s.classList.toggle("is-active", j === i); });
+    props.forEach(function (p, j) { p.classList.toggle("is-active", j === i); p.classList.toggle("is-past", j < i); });
+    if (count) count.textContent = "0" + (i + 1);
+    if (bar) bar.style.transform = "scaleX(" + (i + 1) / steps.length + ")";
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) activate(steps.indexOf(en.target)); });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  steps.forEach(function (s) { io.observe(s); });
+})();
+
+/* Hero props drift a little with the pointer on large screens. */
+(function () {
+  var stage = document.querySelector("[data-parallax]");
+  if (!stage || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  var items = stage.querySelectorAll("[data-depth]"), raf = 0, x = 0, y = 0;
+  function paint() { raf = 0; items.forEach(function (el) { var d = +el.getAttribute("data-depth"); el.style.translate = (x * d).toFixed(1) + "px " + (y * d).toFixed(1) + "px"; }); }
+  document.querySelector(".hero").addEventListener("pointermove", function (e) {
+    x = e.clientX / window.innerWidth - 0.5; y = e.clientY / window.innerHeight - 0.5;
+    if (!raf) raf = requestAnimationFrame(paint);
+  });
+})();
 </script>
+<script>{{SITE_JS}}</script>
 </body>
 </html>

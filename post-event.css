@@ -577,3 +577,25 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--post-blue);outline-
 @media(prefers-reduced-motion:reduce){
  .paper-full-letter summary .ui-icon{transition:none}
 }
+
+/* Thank-you section: keep the full-width colour fields, but align the content to the
+   same 1560px page frame as every other section, so nothing drifts or bleeds at the
+   edges on large monitors, and keep the stacked paper inside the screen on phones. */
+@media(min-width:951px){
+ .post-thank-you--paper .paper-intro{padding-left:max(5.5vw,calc((100vw - 1560px)/2));padding-right:clamp(30px,4vw,64px)}
+ .post-thank-you--paper .paper-scene{padding-left:clamp(30px,4vw,64px);padding-right:max(5.5vw,calc((100vw - 1560px)/2))}
+ .paper-intro>p,.paper-full-letter{max-width:440px}
+}
+@media(min-width:1600px){
+ .post-thank-you--paper{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(max-width:950px){
+ .post-thank-you--paper .paper-intro{padding-left:clamp(20px,5.5vw,100px);padding-right:clamp(20px,5.5vw,100px)}
+ .paper-scene{padding-left:clamp(20px,5.5vw,100px);padding-right:clamp(20px,5.5vw,100px)}
+}
+@media(max-width:540px){
+ .paper-stage{width:100%;padding:20px 14px 18px}
+ .paper-back{inset:7% 6% 6%}
+ .paper-back-blue{transform:rotate(-4deg) translate(-3px,3px)}
+ .paper-back-yellow{transform:rotate(3.5deg) translate(3px,-4px)}
+}

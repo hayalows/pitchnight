@@ -380,7 +380,10 @@
     if(print){document.body.classList.add("print-mode");renderPrint()}
     else{
       renderHero();
-      refreshGallery();choose(0,false);
+      refreshGallery();
+      // ?prop=3 opens the Studio on that prop (used by links on offscriptgh.com).
+      var asked=parseInt(new URLSearchParams(location.search).get("prop"),10);
+      choose(asked>=1&&asked<=P.length?asked-1:0,false);
       $("download-svg").addEventListener("click",downloadSVG);
       $("save-png").addEventListener("click",savePNG);
       $("share-prop").addEventListener("click",shareProp);

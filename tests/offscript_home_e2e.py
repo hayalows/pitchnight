@@ -53,8 +53,9 @@ with sync_playwright() as p:
     def desktop_basics():
         pg, errors = page_at(b, 1440, 900)
         assert pg.evaluate("document.documentElement.scrollWidth") <= 1440
-        expect(pg.locator("#site-nav")).to_be_visible()
+        expect(pg.locator(".site-header .nav")).to_be_visible()
         expect(pg.locator(".menu-btn")).to_be_hidden()
+        expect(pg.locator('.site-header .nav a[href="/events/pitch-night-001/"]')).to_be_visible()
         expect(pg.get_by_role("heading", level=1)).to_contain_text("Beyond")
         assert not errors, errors
     check("desktop layout, nav and no script errors", desktop_basics)
@@ -64,15 +65,18 @@ with sync_playwright() as p:
         pg, _ = page_at(b, 390, 844)
         assert pg.evaluate("document.documentElement.scrollWidth") <= 390
         btn = pg.locator(".menu-btn")
-        expect(pg.locator("#site-nav")).to_be_hidden()
+        expect(pg.locator(".site-header .nav")).to_be_hidden()
         btn.click()
         expect(btn).to_have_attribute("aria-expanded", "true")
-        expect(pg.get_by_role("link", name="Connection Board").first).to_be_visible()
+        expect(pg.locator("#site-menu")).to_be_visible()
+        expect(pg.locator("#site-menu").get_by_role("link", name="Connection Board")).to_be_visible()
+        expect(pg.locator('#site-menu a[data-nav="home"]')).to_have_attribute("aria-current", "page")
         pg.keyboard.press("Escape")
         expect(btn).to_have_attribute("aria-expanded", "false")
+        expect(pg.locator("#site-menu")).to_be_hidden()
         expect(btn).to_be_focused()
         btn.click()
-        pg.locator("#site-nav").get_by_role("link", name="About").click()
+        pg.locator("#site-menu").get_by_role("link", name="About").click()
         assert pg.url.endswith("/about/"), pg.url
     check("phone menu opens, dismisses and navigates to About", phone_menu)
 
@@ -184,7 +188,7 @@ with sync_playwright() as p:
         pg.keyboard.press("Tab")
         expect(pg.locator(".skip")).to_be_focused()
         pg.keyboard.press("Tab")
-        expect(pg.locator(".brand")).to_be_focused()
+        expect(pg.locator(".site-header .brand")).to_be_focused()
         outline = pg.evaluate("getComputedStyle(document.activeElement).outlineStyle")
         assert outline != "none", outline
     check("keyboard order and visible focus", keyboard)
@@ -195,6 +199,42 @@ with sync_playwright() as p:
         anim = pg.evaluate("getComputedStyle(document.querySelector('.ticker-track')).animationName")
         assert anim == "none", anim
     check("reduced motion stops the ticker", reduced)
+
+    # 12. Story: the stage follows the step being read on desktop; phones show each prop inline
+    def story():
+        pg, _ = page_at(b, 1366, 768)
+        pg.locator('[data-story-step="2"]').scroll_into_view_if_needed()
+        pg.evaluate("document.querySelector('[data-story-step=\\'2\\']').scrollIntoView({block:'center'})")
+        pg.wait_for_timeout(700)
+        expect(pg.locator('[data-story-prop="2"]')).to_have_class("story-prop is-active")
+        expect(pg.locator("[data-story-count]")).to_have_text("03")
+        ph, _ = page_at(b, 390, 844)
+        expect(ph.locator(".story-stage")).to_be_hidden()
+        expect(ph.locator('[data-story-step="0"] .step-prop')).to_be_visible()
+    check("story stage follows the steps; phones show props inline", story)
+
+    # 13. Motion control pauses the looping text and the prop wall, and remembers it
+    def motion_toggle():
+        pg, _ = page_at(b, 1366, 768)
+        pg.locator(".ticker [data-motion-toggle]").click()
+        assert pg.evaluate("getComputedStyle(document.querySelector('.ticker-track')).animationPlayState") == "paused"
+        assert pg.evaluate("getComputedStyle(document.querySelector('.propwall-track')).animationPlayState") == "paused"
+        expect(pg.locator(".ticker [data-motion-toggle]")).to_have_attribute("aria-pressed", "true")
+        pg.reload(); pg.wait_for_load_state("networkidle")
+        expect(pg.locator(".ticker [data-motion-toggle]")).to_have_attribute("aria-pressed", "true")
+    check("pause control stops looping motion and is remembered", motion_toggle)
+
+    # 14. Props: each wall prop opens the Studio on that prop; the loop copy is hidden; no duplicate ids
+    def props():
+        pg, _ = page_at(b, 1366, 768)
+        hrefs = pg.eval_on_selector_all(".propwall-track li:not([aria-hidden]) a", "a=>a.map(x=>x.getAttribute('href'))")
+        assert len(hrefs) == 10 and hrefs[0].endswith("props.html?prop=1"), hrefs
+        hidden = pg.eval_on_selector_all(".propwall-track li[aria-hidden=true] a", "a=>a.every(x=>x.tabIndex===-1)")
+        assert hidden, "loop copy is focusable"
+        dupes = pg.evaluate("(()=>{const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);return ids.filter((x,i)=>ids.indexOf(x)!==i)})()")
+        assert not dupes, dupes
+        assert pg.evaluate("document.querySelector('.hero-prop--arch svg').getBoundingClientRect().width") > 150
+    check("prop wall links, hidden loop copy and unique ids", props)
 
     b.close()
 
