@@ -157,9 +157,9 @@ a,button{-webkit-tap-highlight-color:transparent}
 
 /* Tablet */
 @media (max-width:1000px){
-  .hero .wrap{grid-template-columns:1fr}
+  .hero .wrap{grid-template-columns:minmax(0,1fr)}
   .next-card{max-width:560px}
-  .about .wrap{grid-template-columns:1fr}
+  .about .wrap{grid-template-columns:minmax(0,1fr)}
   .events-grid{grid-template-columns:1fr}
   .room .wrap{flex-direction:column;align-items:flex-start}
   .site-footer .wrap{grid-template-columns:1fr 1fr}
@@ -167,6 +167,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 }
 /* Phone */
 @media (max-width:720px){
+  .hero .wrap>*,.about .wrap>*{min-width:0}
   .brand svg{height:46px}
   .header-actions{display:flex}
   .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--paper);border-bottom:3px solid var(--ink);padding:8px var(--gutter) 20px}
@@ -192,6 +193,7 @@ a,button{-webkit-tap-highlight-color:transparent}
   /* Keep the headline inside narrow screens, even before custom fonts load. */
   .hero h1{font-size:min(18vw,3.7rem)}
   .next-card .sticker{right:0}
+  .section h2.big{font-size:clamp(2.8rem,14vw,3.4rem)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
