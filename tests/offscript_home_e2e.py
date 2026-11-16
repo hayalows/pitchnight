@@ -31,6 +31,13 @@ def page_at(browser, w, h, **kw):
     pg = browser.new_page(viewport={"width": w, "height": h}, **kw)
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
+    # The local static server has no API. Model an activated list here while
+    # production keeps the form closed until server-side delivery is configured.
+    pg.route("**/api/list-status", lambda route: route.fulfill(
+        status=200, content_type="application/json", body='{"open":true}'))
+    # Resolve the newly separate About page without requiring a reverse proxy.
+    pg.route("**/about/", lambda route: route.fulfill(
+        status=200, content_type="text/html", path="site/about.html"))
     pg.goto(URL)
     pg.wait_for_load_state("networkidle")
     return pg, errors
@@ -66,8 +73,8 @@ with sync_playwright() as p:
         expect(btn).to_be_focused()
         btn.click()
         pg.locator("#site-nav").get_by_role("link", name="About").click()
-        expect(btn).to_have_attribute("aria-expanded", "false")
-    check("phone menu open, Escape, link closes it", phone_menu)
+        assert pg.url.endswith("/about/"), pg.url
+    check("phone menu opens, dismisses and navigates to About", phone_menu)
 
     # 3. Every "list" link lands in the email field
     def list_links_focus():
