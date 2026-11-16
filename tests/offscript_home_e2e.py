@@ -1,4 +1,4 @@
-"""End-to-end journeys for the Offscript homepage (site/index.html).
+"""End-to-end journeys for the OffScript homepage (site/index.html).
 
 Run from the repository root:
     python3 -m http.server 8099 &
@@ -90,6 +90,17 @@ with sync_playwright() as p:
         expect(pg.locator("#email")).not_to_have_attribute("aria-invalid", "true")
     check("form validation messages", validation)
 
+    # Consent must be explicit, and no request may be sent until it is granted.
+    def consent_required():
+        pg, _ = page_at(b, 390, 844)
+        called = []
+        pg.route("**/api/subscribe", lambda r: (called.append(True), r.fulfill(status=200, body="{}")))
+        pg.fill("#email", "sample@example.com")
+        pg.get_by_role("button", name="Notify me").click()
+        expect(pg.locator("#signup-msg")).to_contain_text("Tick the box")
+        assert not called, "submitted without consent"
+    check("explicit email consent before submission", consent_required)
+
     def submit_with(status=None, offline=False):
         pg, _ = page_at(b, 1440, 900)
         seen = {}
@@ -102,29 +113,31 @@ with sync_playwright() as p:
                 route.fulfill(status=status, body="{}", content_type="application/json")
         pg.route("**/api/subscribe", handler)
         pg.fill("#email", "kojo@example.com")
+        pg.locator("#consent").check()
         pg.get_by_role("button", name="Notify me").click()
         return pg, seen
 
     # 5. Success: payload is correct, field hides, confirmation shown
     def success():
         pg, seen = submit_with(200)
-        expect(pg.locator("#signup-msg")).to_contain_text("You are on the list")
+        expect(pg.locator("#signup-msg")).to_contain_text("Check your inbox")
         expect(pg.locator(".field")).to_be_hidden()
         assert '"email":"kojo@example.com"' in seen["body"], seen
         assert '"source":"offscriptgh-home"' in seen["body"], seen
+        assert '"consent":true' in seen["body"], seen
     check("sign-up success state and payload", success)
 
-    # 6. No back end yet (404): honest message, button usable again
+    # 6. Endpoint unavailable (404): honest message, button usable again
     def not_open():
         pg, _ = submit_with(404)
-        expect(pg.locator("#signup-msg")).to_contain_text("not open just yet")
+        expect(pg.locator("#signup-msg")).to_contain_text("couldn't save your email")
         expect(pg.get_by_role("button", name="Notify me")).to_be_enabled()
-    check("list not open yet (404) state", not_open)
+    check("endpoint unavailable (404) state", not_open)
 
     # 7. Server error and offline
     def server_error():
         pg, _ = submit_with(500)
-        expect(pg.locator("#signup-msg")).to_contain_text("could not save")
+        expect(pg.locator("#signup-msg")).to_contain_text("couldn't save your email")
     check("server error (500) state", server_error)
 
     def offline():
