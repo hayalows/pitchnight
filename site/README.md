@@ -23,7 +23,7 @@ The flow:
 
 1. Store the consent and a two-day confirmation token hash in **Cloudflare D1**. Do not activate the address yet.
 2. Send a confirmation request from the verified \`OffScript <hello@offscriptgh.com>\` Resend sender.
-3. \`GET /confirm?token=…\` checks the hash and expiry, marks the subscriber active, then sends a short welcome email.
+3. \`GET /confirm?token=…\` shows a confirmation page without changing any record. The visitor clicks to send \`POST /confirm\`, which checks the hash and expiry, activates the subscriber and sends the welcome. This prevents automatic email scanners from confirming subscriptions.
 4. The welcome email includes a signed \`/unsubscribe\` link. GET opens a confirmation page; POST makes the change, preventing mail scanners from unsubscribing someone by opening the link.
 5. If an active email is submitted again, return a generic message instead of leaking list membership or resending the welcome.
 
@@ -37,7 +37,7 @@ Worker secrets:
 - \`SUBSCRIBE_SIGNING_SECRET\` is generated and stored in Cloudflare.
 - \`RESEND_API_KEY\` must be a **sending-access** Resend key restricted to the verified offscriptgh.com domain. It cannot be placed in source control or shared in chat. Configure this in Cloudflare → Workers & Pages → offscriptgh-site → Settings → Variables and Secrets.
 
-Both bindings and the secret must exist before signup works. If a secret is absent, the endpoint returns HTTP 503 and a truthful error. Keep this known limitation visible if the key has not been entered. Do not claim real email delivery from a mocked test.
+The form checks \`GET /api/list-status\` and stays disabled while configuration is incomplete. The backend still validates origin, email and consent before returning HTTP 503 for missing delivery configuration. All bindings and secrets must exist before real signup is opened. Keep this known limitation visible if the key has not been entered. Do not claim real email delivery from a mocked test.
 
 Deploy as a **module Worker** using a multipart script upload with \`main_module: worker.mjs\`, D1 binding and the correct compatibility date. Confirm the Worker still lists its secret bindings after code updates. Deployment from GitHub is **not** automatically connected to Cloudflare at this point: a Git commit alone does not publish.
 

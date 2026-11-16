@@ -30,12 +30,12 @@ async function signup(request,env){
  if(request.headers.get("Origin")!==u.origin)return dataOut({error:"Request not allowed"},403);
  if(!/application\/json/i.test(request.headers.get("Content-Type")||""))return dataOut({error:"Use JSON"},415);
  if(Number(request.headers.get("Content-Length")||0)>4096)return dataOut({error:"Request too large"},413);
- if(!env.OFFSCRIPT_DB||!env.RESEND_API_KEY||!env.SUBSCRIBE_SIGNING_SECRET)return dataOut({error:"The list is temporarily unavailable."},503);
  let body;try{let raw=await request.text();if(raw.length>4096)throw Error("large");body=JSON.parse(raw)}catch{return dataOut({error:"Enter a valid email address."},400)}
  if(body.company)return dataOut({message:"If this address needs confirmation, an email will arrive."});
  let email=typeof body.email==="string"?body.email.trim().toLowerCase():"";
  if(email.length>254||email.length<6||!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(email))return dataOut({error:"Enter a valid email address."},400);
  if(body.consent!==true)return dataOut({error:"Please agree to receive event emails first."},400);
+ if(!env.OFFSCRIPT_DB||!env.RESEND_API_KEY||!env.SUBSCRIBE_SIGNING_SECRET)return dataOut({error:"The list is temporarily unavailable."},503);
  let source=body.source==="offscriptgh-join"?"offscriptgh-join":"offscriptgh-home";
  try{
   let ip=request.headers.get("CF-Connecting-IP")||"unknown",identity=await signature(env,"ip:"+ip);
@@ -48,14 +48,26 @@ async function signup(request,env){
   await env.OFFSCRIPT_DB.prepare("INSERT INTO subscribers(id,email,status,source,consent_at,created_at,updated_at,verify_token_hash,verify_expires,verification_sent_at,unsubscribed_at) VALUES (?1,?2,'pending',?3,?4,?4,?4,?5,?6,?4,NULL) ON CONFLICT(email) DO UPDATE SET status='pending',source=excluded.source,consent_at=excluded.consent_at,updated_at=excluded.updated_at,verify_token_hash=excluded.verify_token_hash,verify_expires=excluded.verify_expires,verification_sent_at=excluded.verification_sent_at,unsubscribed_at=NULL").bind(id,email,source,current,hash,expiry).run();
   let url=MAIL_SITE+"/confirm?token="+encodeURIComponent(token);
   let paras=["Thanks for finding your way to OffScript. Our first Pitch Night gave people a reason to come together, speak up for their friends and meet someone new.","You asked to hear what comes next. Please confirm your email so we know it was really you. After that, we'll send you a short welcome and share news when there is something to tell you."];
-  await sendOffscript(env,email,"One quick step with OffScript","One more step.",paras,"CONFIRM MY EMAIL",url,"If you did not request this, you can ignore the message. This link expires in 48 hours.","If you did not request this, please ignore it.","offscript-confirm-"+id+"-"+token.slice(0,10));
+  try { await sendOffscript(env,email,"One quick step with OffScript","One more step.",paras,"CONFIRM MY EMAIL",url,"If you did not request this, you can ignore the message. This link expires in 48 hours.","If you did not request this, please ignore it.","offscript-confirm-"+id+"-"+token.slice(0,10)); }
+  catch(e){try{await env.OFFSCRIPT_DB.prepare("UPDATE subscribers SET verification_sent_at=NULL WHERE id=?1 AND verify_token_hash=?2").bind(id,hash).run()}catch{}throw e}
   return dataOut({message:"Check your inbox. We've sent you a link to confirm your email."});
  }catch(e){console.error("OffScript signup failed:",String(e).slice(0,100));return dataOut({error:"We couldn't send that email right now. Please try again."},503)}
 }
 async function confirmEmail(request,env){
- if(request.method!=="GET")return new Response("Method not allowed",{status:405});
- let token=new URL(request.url).searchParams.get("token")||"";
+ if(!["GET","POST"].includes(request.method))return new Response("Method not allowed",{status:405});
+ const requestUrl=new URL(request.url);
+ let token=requestUrl.searchParams.get("token")||"";
+ if(request.method==="POST"){
+   if(request.headers.get("Origin")!==requestUrl.origin)return new Response("Request not allowed",{status:403});
+   try { const form=await request.formData(); token=String(form.get("token")||"") }catch{return responsePage("Link not found","This confirmation request isn't valid.",false)}
+ }
  if(!/^[A-Za-z0-9_-]{43}$/.test(token))return responsePage("Link not found","This confirmation link is invalid.",false);
+ // Mail scanners can open GET links. Only a deliberate POST may confirm a subscription.
+ if(request.method==="GET"){
+   const html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/offscript.css"><title>Confirm your email | OffScript</title></head><body><main class="confirmation-page"><div class="confirmation-card"><a href="/" class="label back-home">← OFFSCRIPT HOME</a><span class="label confirmation-kicker">ONE MORE STEP</span><h1>Is this your email?</h1><p>Confirm that you want updates about future OffScript events. We will send a short welcome note after this.</p><form method="post" action="/confirm"><input type="hidden" name="token" value="'+token+'"><button type="submit" class="btn">YES, CONFIRM MY EMAIL ↗</button></form><p><a href="/" class="text-link">NOT NOW</a></p></div></main></body></html>';
+   return new Response(html,{headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store","X-Robots-Tag":"noindex, nofollow","Referrer-Policy":"no-referrer","X-Content-Type-Options":"nosniff"}});
+ }
+ if(!env.OFFSCRIPT_DB||!env.RESEND_API_KEY||!env.SUBSCRIBE_SIGNING_SECRET)return responsePage("Try again shortly","We cannot confirm emails just now. Please try again later.",false);
  try{
   let hash=await sha256(token);
   let row=await env.OFFSCRIPT_DB.prepare("SELECT id,email,status,verify_expires,welcome_sent_at FROM subscribers WHERE verify_token_hash=?1").bind(hash).first();
