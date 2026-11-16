@@ -13,6 +13,6 @@ Routes:
 
 The event archive still depends on \`makeyourcase.vercel.app\` for its files and private analytics. This is **not a full Vercel exit**. Keep the old production project live. The brand-level navigation only affects requests through the Cloudflare domain; the raw Vercel address is unchanged.
 
-Subscriber D1: \`offscript-subscribers\`. Secret names: \`SUBSCRIBE_SIGNING_SECRET\`, \`RESEND_API_KEY\`. Keep keys out of files, logs and chat. Resend domain: offscriptgh.com (verified). Real delivery requires the sending-only key to be present in Worker secrets. Refer to \`site/README.md\` for the flow and current activation limitation.
+Subscriber D1: \`offscript-subscribers\`. Secret names: \`SUBSCRIBE_SIGNING_SECRET\`, \`RESEND_API_KEY\`. Keep keys out of files, logs and chat. Resend domain: offscriptgh.com (verified). Real delivery requires the sending-only key to be present in Worker secrets. The list remains disabled until \`GET /api/list-status\` confirms configuration. Confirmation links require a user POST; GET only renders the consent page. Refer to \`site/README.md\` for the flow and current activation limitation.
 
 The production Worker is deployed manually using Cloudflare's API. **No auto-deploy from GitHub is configured**, so merging a feature branch does not publish it. Test in a separate Worker first, then publish and verify the live domain, browser routes, email flow and private analytics behaviour. Do not switch or delete Vercel until a complete event archive migration has been verified.

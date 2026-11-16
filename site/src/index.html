@@ -410,6 +410,13 @@ window.OFFSCRIPT_CONFIG = {
   /* Sign-up form */
   var form = document.getElementById("signup"), msg = document.getElementById("signup-msg");
   var submit = form.querySelector("button[type=submit]");
+  // Only accept signups when the server has a working delivery configuration.
+  fetch("/api/list-status", { cache:"no-store" }).then(function(r){return r.ok?r.json():{open:false}}).then(function(data){
+    if(data.open) return;
+    email.disabled = true; submit.disabled = true;
+    var checkbox=document.getElementById("consent"); if(checkbox)checkbox.disabled=true;
+    say("The list isn't open just yet. Please check back soon.", "error");
+  }).catch(function(){email.disabled=true;submit.disabled=true;say("The list isn't open just yet. Please check back soon.", "error")});
   function say(text, kind) { msg.textContent = text; msg.className = "form-msg" + (kind ? " is-" + kind : ""); }
   email.addEventListener("input", function () { if (email.getAttribute("aria-invalid")) { email.removeAttribute("aria-invalid"); say(""); } });
   form.addEventListener("submit", function (e) {
