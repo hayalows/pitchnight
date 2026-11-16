@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#faf4e7"/>
+<title>OffScript Ghana | Beyond the usual. Into connection.</title>
+<meta name="description" content="OffScript creates events in Ghana for shared ideas, good company and real connection. Revisit Pitch Night Edition 001 and be first to hear about Edition 002."/>
+<link rel="canonical" href="https://offscriptgh.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://offscriptgh.com/"/>
+<meta property="og:site_name" content="OffScript"/>
+<meta property="og:title" content="OffScript Ghana | Beyond the usual. Into connection."/>
+<meta property="og:description" content="Events in Ghana for shared ideas, good company and real connection. Edition 002 is on the way."/>
+<meta name="twitter:card" content="summary"/>
+<link rel="icon" type="image/svg+xml" href="{{FAVICON}}"/>
+<link rel="preload" href="/assets/fonts/anton-props.woff2" as="font" type="font/woff2" crossorigin/>
+<style>
+@font-face{font-family:Anton;src:url('/assets/fonts/anton-props.woff2') format('woff2');font-display:swap}
+@font-face{font-family:Space;src:url('/assets/fonts/space-grotesk-props.woff2') format('woff2');font-weight:300 700;font-display:swap}
+@font-face{font-family:"Instrument Serif";font-style:italic;src:url(data:font/woff2;base64,{{FONT_IS}}) format('woff2');font-display:swap}
+:root{
+  color-scheme:light;
+  --paper:#faf4e7;--chalk:#fffdf5;--ink:#141414;--smoke:#5a554e;--rule:#e4dcc8;
+  --blue:#1036af;--yellow:#ffd63b;--red:#e8382b;--red-text:#c42a1e;--mint:#aeef9d;
+  --display:Anton,Impact,"Arial Narrow",sans-serif;
+  --body:Space,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --gutter:clamp(20px,5.2vw,80px);
+  --max:1320px;
+  --line:2px solid var(--ink);
+  --shadow:5px 5px 0 var(--ink);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.55 var(--body)}
+img,svg{display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+a,button{-webkit-tap-highlight-color:transparent}
+.visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--yellow);border:var(--line);padding:10px 14px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+.label{font:700 .74rem/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.icon{width:1em;height:1em;flex:none;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:12px 20px;border:var(--line);background:var(--yellow);color:var(--ink);box-shadow:var(--shadow);font:700 .8rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.btn--ghost{background:var(--paper);box-shadow:none}
+.btn--ghost:hover{box-shadow:var(--shadow)}
+.btn--ink{background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--red)}
+.btn--ink:hover{box-shadow:7px 7px 0 var(--red)}
+.btn--sm{min-height:42px;padding:9px 14px;font-size:.72rem}
+
+/* Header */
+.site-header{border-bottom:3px solid var(--ink);background:var(--paper);position:relative;z-index:20}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:12px;padding-bottom:12px}
+.brand{display:inline-flex;text-decoration:none;color:var(--ink)}
+.brand svg{height:58px;width:auto}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,36px)}
+.nav a:not(.btn){font:700 .76rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:8px 0;border-bottom:2px solid transparent}
+.nav a:not(.btn):hover{border-bottom-color:var(--ink)}
+.header-actions{display:none;align-items:center;gap:10px}
+.menu-btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 12px;background:var(--paper);border:var(--line);font:700 .72rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+.menu-btn .bars{display:grid;gap:4px}
+.menu-btn .bars i{display:block;width:18px;height:2px;background:var(--ink);transition:transform .2s ease,opacity .2s ease}
+.menu-btn[aria-expanded="true"] .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] .bars i:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* Hero */
+.hero{border-bottom:3px solid var(--ink)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.9fr);gap:clamp(32px,5vw,80px);align-items:center;padding-top:clamp(48px,7vw,104px);padding-bottom:clamp(56px,7.5vw,112px)}
+.kicker{display:inline-flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--red)}
+.hero h1{font:400 clamp(4.6rem,10.4vw,10.6rem)/.88 var(--display);letter-spacing:-.03em;margin:22px 0 6px;text-transform:uppercase}
+.hero h1 .blue{color:var(--blue)}
+.hero .into{font:italic 400 clamp(2.6rem,5.6vw,5.4rem)/1 var(--serif);color:var(--red);margin:0 0 26px;letter-spacing:-.01em}
+.hero .lede{max-width:520px;margin:0;font-size:clamp(1.02rem,1.45vw,1.22rem);color:var(--smoke)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+
+/* Next-up card and sign-up */
+.next-card{position:relative;background:var(--ink);color:var(--paper);border:var(--line);box-shadow:10px 10px 0 var(--red);padding:clamp(26px,3vw,40px);scroll-margin-top:24px}
+.next-card .label{color:var(--yellow)}
+.next-card h2{font:400 clamp(2.9rem,4.6vw,4.4rem)/.92 var(--display);text-transform:uppercase;margin:14px 0 14px;letter-spacing:-.01em}
+.next-card .sub{font:italic 400 clamp(1.45rem,2vw,1.8rem)/1.15 var(--serif);margin:0 0 24px;max-width:360px}
+.sticker{position:absolute;top:-30px;right:-18px;width:86px;height:86px;transform:rotate(-12deg)}
+.signup label{display:block;margin-bottom:8px;color:var(--paper)}
+.field{display:flex;border:var(--line);border-color:var(--paper);background:var(--chalk)}
+.field input{flex:1;min-width:0;border:0;background:transparent;padding:14px 14px;font:500 1rem/1.2 var(--body);color:var(--ink)}
+.field input::placeholder{color:#716b62}
+.field input:focus{outline:none}
+.field:focus-within{outline:3px solid var(--yellow);outline-offset:3px}
+.field input[aria-invalid="true"]{background:#fff0ee}
+.field button{border:0;border-left:var(--line);background:var(--yellow);color:var(--ink);padding:0 18px;min-height:52px;font:700 .78rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+.field button:hover{background:#ffe27a}
+.field button[disabled]{cursor:progress;opacity:.75}
+.form-msg{min-height:1.5em;margin:12px 0 0;font-size:.95rem}
+.form-msg.is-error{color:#ffb3aa}
+.form-msg.is-ok{color:var(--mint)}
+.signup.is-done .field{display:none}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.privacy{margin:6px 0 0;font-size:.82rem;color:#bdb6aa}
+
+/* Ticker */
+.ticker{background:var(--ink);color:var(--paper);border-bottom:3px solid var(--ink);overflow:hidden}
+.ticker-track{display:flex;width:max-content;animation:tick 38s linear infinite}
+.ticker ul{display:flex;align-items:center;gap:28px;margin:0;padding:15px 14px;list-style:none}
+.ticker li{display:flex;align-items:center;gap:28px;font:400 clamp(1.4rem,2.2vw,1.9rem)/1 var(--display);text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+.ticker li::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--red)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* Sections */
+.section{padding-top:clamp(64px,8.5vw,128px);padding-bottom:clamp(64px,8.5vw,128px)}
+.section h2.big{font:400 clamp(3.4rem,7.4vw,7.6rem)/.92 var(--display);text-transform:uppercase;letter-spacing:-.015em;margin:16px 0 0}
+.about .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,80px);align-items:start}
+.about p{font-size:clamp(1.08rem,1.7vw,1.42rem);line-height:1.5;margin:0 0 20px;max-width:620px}
+.about .tag{display:inline-block;background:var(--red);color:var(--chalk);border:var(--line);padding:8px 14px;transform:rotate(-3deg);margin-top:8px}
+
+.events{border-top:3px solid var(--ink)}
+.events-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.42fr);gap:28px;margin-top:40px}
+.event{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);background:var(--chalk);border:var(--line);box-shadow:9px 9px 0 var(--ink)}
+.poster{background:var(--yellow);border-right:var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px 20px;overflow:hidden;min-height:300px}
+.poster p{margin:0;font:400 clamp(3.4rem,5.4vw,5.6rem)/.88 var(--display);color:var(--blue);text-align:center;text-transform:uppercase;transform:rotate(-7deg);text-shadow:3px 4px 0 var(--ink)}
+.poster span{background:var(--paper);border:var(--line);padding:7px 10px;transform:rotate(4deg)}
+.event-copy{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.event-copy .label{color:var(--blue)}
+.event-copy h3{font:italic 400 clamp(2.1rem,3vw,2.9rem)/1.02 var(--serif);margin:0}
+.event-copy p{margin:0;color:var(--smoke);max-width:440px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin:4px 0 8px}
+.soon{border:2px dashed var(--ink);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px}
+.soon .label{color:var(--red-text)}
+.soon h3{font:italic 400 clamp(2.2rem,3vw,2.8rem)/1 var(--serif);margin:0}
+.soon p{margin:0;color:var(--smoke)}
+
+.room{background:var(--blue);color:var(--paper);border-top:3px solid var(--ink)}
+.room .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
+.room h2.big .y{color:var(--yellow)}
+.room p{max-width:600px;margin:22px 0 0;font-size:1.08rem}
+
+/* Footer */
+.site-footer{background:var(--ink);color:var(--paper)}
+.site-footer .wrap{display:grid;grid-template-columns:1.3fr repeat(2,minmax(0,.7fr));gap:40px;padding-top:56px;padding-bottom:40px}
+.site-footer .off{height:64px;width:auto;color:var(--paper)}
+.site-footer .tagline{font:italic 400 1.6rem/1.15 var(--serif);margin:16px 0 0}
+.site-footer h2{margin:0 0 14px;color:var(--yellow)}
+.site-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.site-footer ul a{text-decoration:none;border-bottom:1px solid transparent}
+.site-footer ul a:hover{border-bottom-color:var(--paper)}
+.legal{border-top:1px solid #3a3733;grid-column:1/-1;padding-top:22px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;color:#bdb6aa;font-size:.85rem}
+
+/* Sticky bar (phones) */
+.stickybar{display:none}
+
+/* Tablet */
+@media (max-width:1000px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr)}
+  .next-card{max-width:560px}
+  .about .wrap{grid-template-columns:minmax(0,1fr)}
+  .events-grid{grid-template-columns:1fr}
+  .room .wrap{flex-direction:column;align-items:flex-start}
+  .site-footer .wrap{grid-template-columns:1fr 1fr}
+  .site-footer .brandcol{grid-column:1/-1}
+}
+/* Phone */
+@media (max-width:720px){
+  .hero .wrap>*,.about .wrap>*{min-width:0}
+  .brand svg{height:46px}
+  .header-actions{display:flex}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--paper);border-bottom:3px solid var(--ink);padding:8px var(--gutter) 20px}
+  .nav.is-open{display:flex}
+  .nav a:not(.btn){padding:16px 0;border-bottom:1px solid var(--rule);font-size:.86rem}
+  .nav .btn{display:none}
+  .hero .wrap{padding-top:40px;padding-bottom:52px;gap:44px}
+  .hero h1{font-size:clamp(4.4rem,21vw,6.6rem);margin-top:18px}
+  .hero .into{font-size:clamp(2.4rem,11vw,3.2rem);margin-bottom:20px}
+  .hero-actions .btn{flex:1 1 auto}
+  .sticker{width:68px;height:68px;top:-26px;right:-8px}
+  .field{flex-direction:column;border-color:var(--paper)}
+  .field button{border-left:0;border-top:var(--line);justify-content:center;min-height:50px}
+  .event{grid-template-columns:1fr}
+  .poster{border-right:0;border-bottom:var(--line);min-height:220px}
+  .site-footer .wrap{grid-template-columns:1fr}
+  body{padding-bottom:76px}
+  .stickybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter) calc(12px + env(safe-area-inset-bottom));background:var(--ink);color:var(--paper);border-top:3px solid var(--ink);transform:translateY(110%);transition:transform .25s ease}
+  .stickybar.is-visible{transform:none}
+  .stickybar span{font:italic 400 1.3rem/1.1 var(--serif)}
+}
+@media (max-width:360px){
+  /* Keep the headline inside narrow screens, even before custom fonts load. */
+  .hero h1{font-size:min(18vw,3.7rem)}
+  .next-card .sticker{right:0}
+  .section h2.big{font-size:clamp(2.8rem,14vw,3.4rem)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ticker-track{animation:none}
+  .btn,.stickybar{transition:none}
+  .btn:hover,.btn:active{transform:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="OffScript home">
+      <svg viewBox="28.6 47.4 202.2 185.4" role="img" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="{{LOGO_STACKED}}"/></svg>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn--sm" href="#list" data-focus-signup>The list</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="visually-hidden">Open menu</span></button>
+    </div>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#events">Events</a>
+      <a href="/events/pitch-night-001/#memories">Connection Board</a>
+      <a class="btn btn--sm" href="#list" data-focus-signup>Get on the list <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <span class="label kicker">Hello from OffScript / Ghana</span>
+        <h1 id="hero-title">Beyond<br/>the <span class="blue">usual.</span></h1>
+        <p class="into">into connection.</p>
+        <p class="lede">Events in Ghana for shared ideas, good company and the moments that happen when people come together.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#list" data-focus-signup>Get on the list <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--ghost" href="/events/pitch-night-001/">See Pitch Night 001</a>
+        </div>
+      </div>
+
+      <aside class="next-card" id="list" aria-labelledby="next-title">
+        <svg class="sticker" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#e8382b" stroke="#141414" stroke-width="3"/><g transform="translate(60 60) scale(0.78) translate(-193.8 -108.4)"><path fill="#faf4e7" d="{{LOGO_FLIP}}"/></g></svg>
+        <span class="label">What’s next</span>
+        <h2 id="next-title">Edition 002<br/>is on the way.</h2>
+        <p class="sub">Be first to hear the date, the venue and the format.</p>
+        <form class="signup" id="signup" novalidate>
+          <label class="label" for="email">Your email</label>
+          <div class="field">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="signup-msg signup-privacy"/>
+            <button type="submit">Notify me <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"/></div>
+          <p class="form-msg" id="signup-msg" role="status" aria-live="polite"></p>
+          <p class="privacy" id="signup-privacy">One email when the next night is set. No spam.</p>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <ul><li>There’s room for everyone</li><li>Speak up for a friend</li><li>Meet someone new</li><li>Beyond the usual</li></ul>
+      <ul><li>There’s room for everyone</li><li>Speak up for a friend</li><li>Meet someone new</li><li>Beyond the usual</li></ul>
+    </div>
+  </div>
+
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div>
+        <span class="label">001 / Who we are</span>
+        <h2 class="big" id="about-title">There’s<br/>room for<br/>everyone.</h2>
+      </div>
+      <div>
+        <p>OffScript brings people together through events that make space for conversation, creativity and real connections.</p>
+        <p>We began with Pitch Night: Make Your Case, an evening in Accra where people came to speak up for their friends, share a laugh and meet someone new.</p>
+        <span class="label tag">We’re only getting started.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section events" id="events" aria-labelledby="events-title">
+    <div class="wrap">
+      <span class="label">002 / The events</span>
+      <h2 class="big" id="events-title">What we’ve<br/>been up to.</h2>
+      <div class="events-grid">
+        <article class="event" aria-labelledby="ev1-title">
+          <div class="poster" aria-hidden="true"><p>Make<br/>your<br/>case.</p><span class="label">OffScript / Pitch Night 001</span></div>
+          <div class="event-copy">
+            <span class="label">Past event / Edition 001</span>
+            <h3 id="ev1-title">Pitch Night:<br/>Make Your Case</h3>
+            <p>People spoke up for their friends, shared a laugh and met someone new. Read our thank-you note, visit the Connection Board and look back at the programme.</p>
+            <div class="facts label"><span>13 November 2026</span><span>Haatso, Accra</span></div>
+            <a class="btn btn--sm" href="/events/pitch-night-001/">Explore Edition 001 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+        <div class="soon">
+          <span class="label">Coming soon / Edition 002</span>
+          <h3>Your seat<br/>is waiting.</h3>
+          <p>Date and format to be announced. Join the list and we will tell you first.</p>
+          <a class="btn btn--sm" href="#list" data-focus-signup>Tell me first <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section room" id="connect" aria-labelledby="room-title">
+    <div class="wrap">
+      <div>
+        <span class="label">003 / The conversation continues</span>
+        <h2 class="big" id="room-title">Stay <span class="y">in</span><br/>the room.</h2>
+        <p>Were you at Pitch Night? The Connection Board is still open. Tell us what you thought, and help shape what comes next.</p>
+      </div>
+      <a class="btn" href="/events/pitch-night-001/#memories">Go to the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="brandcol">
+      <svg class="off" viewBox="29.8 47.4 188.8 108.8" role="img" aria-label="OffScript"><path fill="currentColor" fill-rule="evenodd" d="{{LOGO_OFF}}"/></svg>
+      <p class="tagline">Beyond the usual.<br/>Into connection.</p>
+    </div>
+    <div>
+      <h2 class="label">Events</h2>
+      <ul>
+        <li><a href="/events/pitch-night-001/">Pitch Night 001</a></li>
+        <li><a href="/events/pitch-night-001/#memories">Connection Board</a></li>
+        <li><a href="/events/pitch-night-001/#thank-you">Our thank-you note</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="label">OffScript</h2>
+      <ul id="footer-links">
+        <li><a href="#about">About us</a></li>
+        <li><a href="#list" data-focus-signup>Get on the list</a></li>
+      </ul>
+    </div>
+    <div class="legal"><span>© 2026 OffScript · Ghana</span><span>Beyond the usual. Into connection.</span></div>
+  </div>
+</footer>
+
+<div class="stickybar" id="stickybar" aria-hidden="true">
+  <span>Next night soon</span>
+  <a class="btn btn--sm" href="#list" data-focus-signup tabindex="-1">Get on the list</a>
+</div>
+
+<script>
+/* ===== Settings to fill in (back end and contact details) =====
+   signupEndpoint: where the email form POSTs JSON {email, source}.
+                   Return 2xx on success. Until it exists the form says the list is not open yet.
+   links: add real profile URLs to show them in the footer. Leave blank to hide. */
+window.OFFSCRIPT_CONFIG = {
+  signupEndpoint: "/api/subscribe",
+  links: { instagram: "", tiktok: "", whatsapp: "", email: "" }
+};
+
+(function () {
+  var cfg = window.OFFSCRIPT_CONFIG;
+
+  /* Footer links from settings (none are invented). */
+  var names = { instagram: "Instagram", tiktok: "TikTok", whatsapp: "WhatsApp", email: "Email us" };
+  var list = document.getElementById("footer-links");
+  Object.keys(names).forEach(function (k) {
+    var v = cfg.links[k];
+    if (!v) return;
+    var li = document.createElement("li"), a = document.createElement("a");
+    a.textContent = names[k];
+    a.href = k === "email" ? "mailto:" + v : v;
+    if (k !== "email") { a.target = "_blank"; a.rel = "noopener"; }
+    li.appendChild(a); list.appendChild(li);
+  });
+
+  /* Mobile menu */
+  var btn = document.querySelector(".menu-btn"), nav = document.getElementById("site-nav");
+  function setMenu(open) {
+    btn.setAttribute("aria-expanded", String(open));
+    btn.querySelector(".visually-hidden").textContent = open ? "Close menu" : "Open menu";
+    nav.classList.toggle("is-open", open);
+  }
+  btn.addEventListener("click", function () { setMenu(btn.getAttribute("aria-expanded") !== "true"); });
+  nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && btn.getAttribute("aria-expanded") === "true") { setMenu(false); btn.focus(); }
+  });
+
+  /* Every "list" link lands on the form with the cursor in the field. */
+  var email = document.getElementById("email");
+  document.querySelectorAll("[data-focus-signup]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var card = document.getElementById("list");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      card.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      setTimeout(function () { email.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+      history.replaceState(null, "", "#list");
+    });
+  });
+
+  /* Sign-up form */
+  var form = document.getElementById("signup"), msg = document.getElementById("signup-msg");
+  var submit = form.querySelector("button[type=submit]");
+  function say(text, kind) { msg.textContent = text; msg.className = "form-msg" + (kind ? " is-" + kind : ""); }
+  email.addEventListener("input", function () { if (email.getAttribute("aria-invalid")) { email.removeAttribute("aria-invalid"); say(""); } });
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (form.company.value) return; /* quiet spam trap */
+    var value = email.value.trim();
+    if (!value || !email.checkValidity()) {
+      email.setAttribute("aria-invalid", "true");
+      say(value ? "That email does not look right. Try name@example.com." : "Enter your email to get on the list.", "error");
+      email.focus();
+      return;
+    }
+    submit.disabled = true;
+    var original = submit.firstChild.nodeValue;
+    submit.firstChild.nodeValue = "Saving ";
+    say("");
+    fetch(cfg.signupEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: value, source: "offscriptgh-home" })
+    }).then(function (r) {
+      if (r.ok) {
+        form.classList.add("is-done");
+        say("You are on the list. We will email you when Edition 002 is set.", "ok");
+        return;
+      }
+      if (r.status === 404 || r.status === 405 || r.status === 501) {
+        say("The list is not open just yet. Please check back soon.", "error");
+      } else {
+        say("We could not save that. Please try again in a moment.", "error");
+      }
+    }).catch(function () {
+      say("You seem to be offline. Check your connection and try again.", "error");
+    }).then(function () {
+      submit.disabled = false;
+      submit.firstChild.nodeValue = original;
+    });
+  });
+
+  /* Sticky bar on phones: show after the hero card, hide near the form and the footer. */
+  var bar = document.getElementById("stickybar");
+  if ("IntersectionObserver" in window) {
+    var cardVisible = true, footVisible = false, passed = false;
+    var card = document.getElementById("list"), foot = document.querySelector(".site-footer");
+    function update() {
+      var show = passed && !cardVisible && !footVisible;
+      bar.classList.toggle("is-visible", show);
+      bar.setAttribute("aria-hidden", String(!show));
+      bar.querySelector("a").tabIndex = show ? 0 : -1;
+    }
+    new IntersectionObserver(function (en) {
+      cardVisible = en[0].isIntersecting;
+      if (!cardVisible && en[0].boundingClientRect.top < 0) passed = true;
+      if (cardVisible) passed = passed && en[0].boundingClientRect.top < 0;
+      update();
+    }).observe(card);
+    new IntersectionObserver(function (en) { footVisible = en[0].isIntersecting; update(); }).observe(foot);
+  }
+})();
+</script>
+</body>
+</html>

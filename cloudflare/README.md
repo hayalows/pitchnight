@@ -21,3 +21,7 @@ This branch stores the currently deployed Worker source as `cloudflare/offscript
 The next technical phase is to move public assets to Cloudflare Workers Static Assets, then adapt `/api/track` and `/api/admin` and copy Vercel Blob sessions, feedback and organiser figures to a supported Cloudflare store (R2 activation is currently pending). Validate private dashboard behaviour, data completeness, and same-origin protections before cutting over. The original Vercel site remains live for rollback.
 
 The new apex domain and `www` use Cloudflare Workers Custom Domains. `www` redirects to the apex. Keep the event archive and homepage navigation separate: the Offscript homepage represents the brand, not an event announcement.
+
+## Homepage redesign (November 2026)
+
+The homepage now comes from `site/`. Edit `site/src/index.html`, run `node site/build.mjs`, and the build writes the page into this Worker's `HOME` constant. Routing is unchanged. See `site/README.md` for the sign-up endpoint contract and tests.
