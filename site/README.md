@@ -4,14 +4,44 @@ The public website is https://offscriptgh.com/. Pitch Night Edition 001 is the a
 
 ## Structure
 
-- \`site/src/index.html\`: home page and "Get on the list" form.
-- \`site/src/about.html\`, \`events.html\`, \`join.html\`, \`privacy.html\`: separate editorial pages.
-- \`site/src/pages.css\`: shared design-system styles, built into the home page and served at \`/offscript.css\`.
-- \`site/src/logo-paths.json\`: original OffScript vector marks from approved brand work.
-- \`site/build.mjs\`: \`node site/build.mjs\`. Writes built HTML, CSS and the full Cloudflare Worker.
-- \`cloudflare/subscriptions.js\`: double-opt-in API, confirmation and unsubscribe logic.
-- \`cloudflare/offscriptgh-site-worker.js\`: **ES module** Worker, serving home and editorial pages, while the existing Pitch Night event origin and analytics stay proxied from Vercel.
-- \`tests/offscript_home_e2e.py\`: actual browser journeys for home page; network responses are stubbed to test UI states.
+Edit sources in `site/src/`, then run `node site/build.mjs`. Everything else is generated.
+
+| Source | What it is |
+| --- | --- |
+| `site/src/index.html` | Home page (hero, story, events, prop wall, sign-up form and its script). |
+| `site/src/about.html`, `events.html`, `join.html`, `privacy.html` | Editorial pages. Each sets `<body data-page="…">` so the header marks the current page. |
+| `site/src/partials/header.html`, `footer.html` | One header, menu sheet and footer for every OffScript page (`{{HEADER}}`, `{{FOOTER}}`). |
+| `site/src/pages.css`, `experience.css` | Shared styles. Home inlines them; other pages load `/offscript.css`. |
+| `site/src/site.js` | Shared behaviour (`{{SITE_JS}}`): sticky header, menu dialog, list links, reveals, motion pause. |
+| `site/src/props/prop-01.svg` … `prop-10.svg` | The ten Edition 001 props as vectors. Place with `{{PROP_NN}}`; the wall uses `{{PROP_TILES}}`. Each page defines the props it uses once as `<symbol>`s. |
+| `site/src/bridge/` | The OffScript family layer the Worker adds to every event page: bar, footer and `bridge.css`. |
+| `site/src/logo-paths.json` | Original OffScript vector marks. Do not redraw. |
+| `site/src/apple-touch-icon.png` | Home-screen icon made from the red mark. |
+
+Generated: `site/*.html`, `site/offscript.css`, `favicon.svg` and `apple-touch-icon.png` (repository root, so the event origin serves the same red mark), and the constants inside `cloudflare/offscriptgh-site-worker.js`.
+
+### How the event pages join the family
+
+Event pages still come from the Vercel origin. On the way through `offscriptgh.com`, the Worker (`familyLayer`):
+
+- adds the OffScript bar (OffScript / Events / page) under the skip link, and the OffScript footer at the end;
+- points every OffScript logo (`.brand`, `.footer-brand`, `.prop-brand`, `.head-logo`) to `/`;
+- removes Google Fonts and loads the self-hosted Anton, Space Grotesk and Instrument Serif instead;
+- swaps the favicon for `/favicon.svg` (the red mark) and adds the touch icon.
+
+Links such as "Back to the event" keep pointing inside the event.
+
+### Run it locally
+
+```
+node site/build.mjs
+node tools/local-worker.mjs 8787      # the Worker, with the event archive served from this checkout
+python3 -m http.server 8099 &          # for the home page test
+CHROME=/usr/bin/google-chrome python3 tests/offscript_home_e2e.py
+CHROME=/usr/bin/google-chrome python3 tests/offscript_family_e2e.py
+```
+
+Open http://localhost:8787/ to see the whole site, event pages included.
 
 ## Subscriber backend
 
