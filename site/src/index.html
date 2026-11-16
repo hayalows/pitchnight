@@ -220,8 +220,9 @@ a,button{-webkit-tap-highlight-color:transparent}
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="visually-hidden">Open menu</span></button>
     </div>
     <nav class="nav" id="site-nav" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#events">Events</a>
+      <a href="/about/">About</a>
+      <a href="/events/">Events</a>
+      <a href="/join/">Join us</a>
       <a href="/events/pitch-night-001/#memories">Connection Board</a>
       <a class="btn btn--sm" href="#list" data-focus-signup>Get on the list <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </nav>
@@ -255,7 +256,7 @@ a,button{-webkit-tap-highlight-color:transparent}
           </div>
           <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"/></div>
           <p class="form-msg" id="signup-msg" role="status" aria-live="polite"></p>
-          <p class="privacy" id="signup-privacy">One email when the next night is set. No spam.</p>
+          <label class="form-consent"><input type="checkbox" id="consent" name="consent" required><span>Yes, email me about future OffScript events. I can leave the list at any time.</span></label><p class="privacy" id="signup-privacy">We'll write when we have event news. <a href="/privacy/">How we use your email</a>.</p>
         </form>
       </aside>
     </div>
@@ -277,7 +278,7 @@ a,button{-webkit-tap-highlight-color:transparent}
       <div>
         <p>OffScript brings people together through events that make space for conversation, creativity and real connections.</p>
         <p>We began with Pitch Night: Make Your Case, an evening in Accra where people came to speak up for their friends, share a laugh and meet someone new.</p>
-        <span class="label tag">We’re only getting started.</span>
+        <span class="label tag">We’re only getting started.</span><p style="margin-top:28px"><a class="btn btn--sm" href="/about/">MORE ABOUT OFFSCRIPT ↗</a></p>
       </div>
     </div>
   </section>
@@ -303,6 +304,7 @@ a,button{-webkit-tap-highlight-color:transparent}
           <p>Date and format to be announced. Join the list and we will tell you first.</p>
           <a class="btn btn--sm" href="#list" data-focus-signup>Tell me first <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
+        <div class="home-next-links"><a href="/events/">SEE ALL EVENTS ↗</a></div>
       </div>
     </div>
   </section>
@@ -317,6 +319,7 @@ a,button{-webkit-tap-highlight-color:transparent}
       <a class="btn" href="/events/pitch-night-001/#memories">Go to the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </section>
+<section class="home-join"><div class="wrap"><div><span class="label">004 / GET INVOLVED</span><h2>GOOD NIGHTS NEED GOOD PEOPLE.</h2><p>There may be ways to help shape future events, from welcoming guests to working behind the scenes. We're not advertising roles yet, but we'd like to stay in touch with people who care about what we're building.</p></div><a class="btn" href="/join/">JOIN THE CONVERSATION ↗</a></div></section>
 </main>
 
 <footer class="site-footer">
@@ -336,10 +339,13 @@ a,button{-webkit-tap-highlight-color:transparent}
     <div>
       <h2 class="label">OffScript</h2>
       <ul id="footer-links">
-        <li><a href="#about">About us</a></li>
+        <li><a href="/about/">About us</a></li>
+        <li><a href="/events/">All events</a></li>
+        <li><a href="/join/">Join us</a></li>
         <li><a href="#list" data-focus-signup>Get on the list</a></li>
       </ul>
     </div>
+    <div><h2 class="label">Get in touch</h2><ul><li><a href="/privacy/">Privacy</a></li><li><a href="mailto:offscript.beyondtheusual@gmail.com">Email us</a></li></ul></div>
     <div class="legal"><span>© 2026 OffScript · Ghana</span><span>Beyond the usual. Into connection.</span></div>
   </div>
 </footer>
@@ -416,6 +422,8 @@ window.OFFSCRIPT_CONFIG = {
       email.focus();
       return;
     }
+    var consent = document.getElementById("consent");
+    if (!consent.checked) { say("Tick the box if you'd like to receive event emails.", "error"); consent.focus(); return; }
     submit.disabled = true;
     var original = submit.firstChild.nodeValue;
     submit.firstChild.nodeValue = "Saving ";
@@ -423,18 +431,13 @@ window.OFFSCRIPT_CONFIG = {
     fetch(cfg.signupEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: value, source: "offscriptgh-home" })
+      body: JSON.stringify({ email: value, source: "offscriptgh-home", consent: consent.checked, company: form.company.value })
     }).then(function (r) {
-      if (r.ok) {
-        form.classList.add("is-done");
-        say("You are on the list. We will email you when Edition 002 is set.", "ok");
-        return;
-      }
-      if (r.status === 404 || r.status === 405 || r.status === 501) {
-        say("The list is not open just yet. Please check back soon.", "error");
-      } else {
-        say("We could not save that. Please try again in a moment.", "error");
-      }
+      return r.json().catch(function(){ return {}; }).then(function(reply){
+        if (r.ok) { form.classList.add("is-done"); say(reply.message || "Check your inbox to confirm your email.", "ok"); }
+        else if (r.status === 429) say(reply.error || "Too many attempts. Try later.", "error");
+        else say(reply.error || "We couldn't save your email right now. Please try again.", "error");
+      });
     }).catch(function () {
       say("You seem to be offline. Check your connection and try again.", "error");
     }).then(function () {
