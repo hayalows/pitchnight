@@ -233,8 +233,21 @@ with sync_playwright() as p:
         assert hidden, "loop copy is focusable"
         dupes = pg.evaluate("(()=>{const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);return ids.filter((x,i)=>ids.indexOf(x)!==i)})()")
         assert not dupes, dupes
+        pg.wait_for_timeout(2400)  # let the hero props finish their entrance pop
         assert pg.evaluate("document.querySelector('.hero-prop--arch svg').getBoundingClientRect().width") > 150
     check("prop wall links, hidden loop copy and unique ids", props)
+
+    # 15. Fold: on common laptops the whole hero (headline, actions, email field) fits on the first screen
+    def fold():
+        for w, h in [(1536, 730), (1366, 768), (1280, 650), (1440, 900)]:
+            pg, _ = page_at(b, w, h)
+            pg.wait_for_timeout(1800)
+            box = pg.evaluate("""(()=>{const b=s=>document.querySelector(s).getBoundingClientRect().bottom;
+              return {actions:b('.hero-actions'),field:b('#signup .field'),card:b('.next-card'),tickerTop:document.querySelector('.ticker').getBoundingClientRect().top}})()""")
+            assert box["actions"] <= h and box["field"] <= h and box["card"] <= h, (w, h, box)
+            assert box["tickerTop"] < h, ("ticker should peek above the fold", w, h, box)
+            pg.close()
+    check("laptop hero fits the first screen and the ticker peeks", fold)
 
     b.close()
 

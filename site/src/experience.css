@@ -294,3 +294,79 @@ html.js .story-step.is-active{opacity:1}
   .site-footer .footer-nav-group a{font-size:.8rem}
   .site-footer .footer-mobile-encore h2{font-size:clamp(3.25rem,16vw,4rem)}
 }
+
+/* ---------- Fold fit (2026-11) ----------
+   The hero is sized by screen height as well as width, so the whole message,
+   both actions and the sign-up card fit on the first screen of a laptop,
+   and the ticker peeks in below as the cue to scroll. */
+:root{--head:69px;--tick:68px}
+.brand svg{height:50px}
+.site-header .wrap{padding-top:8px;padding-bottom:8px}
+@media (min-width:1001px){
+  .hero .wrap{min-height:clamp(500px,calc(100vh - var(--head) - var(--tick)),880px);min-height:clamp(500px,calc(100svh - var(--head) - var(--tick)),880px);align-content:center;padding-top:clamp(18px,3.6svh,52px);padding-bottom:clamp(18px,3.6svh,52px);gap:clamp(32px,4.4vw,72px)}
+  .hero h1{font-size:clamp(4.2rem,min(7.2vw,13.4svh),9.6rem);margin:clamp(10px,2.2svh,22px) 0 4px}
+  .hero .into{font-size:clamp(2.1rem,min(4.1vw,7.6svh),4.8rem);margin-bottom:clamp(10px,2.4svh,24px)}
+  .hero .lede{font-size:clamp(1rem,min(1.3vw,2.7svh),1.2rem);max-width:500px;line-height:1.5}
+  .hero-actions{margin-top:clamp(14px,3svh,30px)}
+  .hero-stage{padding:clamp(16px,2.6svh,28px) 0 clamp(16px,3svh,36px)}
+  .next-card{padding:clamp(20px,3.6svh,36px) clamp(22px,2.4vw,36px)}
+  .next-card h2{font-size:clamp(2.2rem,min(3.3vw,6.6svh),4rem);margin:clamp(8px,1.4svh,14px) 0}
+  .next-card .sub{font-size:clamp(1.12rem,min(1.45vw,3.1svh),1.6rem);margin-bottom:clamp(12px,2.4svh,22px)}
+  .next-card .sticker{width:clamp(64px,10svh,86px);height:clamp(64px,10svh,86px)}
+  .signup .form-msg{min-height:1.3em;margin-top:clamp(6px,1.2svh,12px);font-size:.9rem}
+  .signup .form-consent{font-size:.86rem;line-height:1.4}
+  .signup .privacy{font-size:.78rem}
+  .hero-prop--arch{width:clamp(150px,min(15vw,30svh),260px);bottom:clamp(8px,4svh,70px)}
+  /* The bubble sits in the gap left of the card, so it never covers the form or its links. */
+  .hero-prop--bubble{width:clamp(130px,min(12vw,24svh),210px);right:auto;bottom:auto;left:calc(-1 * clamp(120px,11.5vw,200px));top:clamp(4px,3svh,36px);z-index:1}
+  .hero-prop--bubble>svg{rotate:-7deg}
+  .story-step{min-height:min(52svh,540px)}
+  .story-stage{height:calc(100svh - 150px);max-height:580px;min-height:380px}
+}
+/* Short laptops (650–760px tall): drop the second line of small print. */
+@media (min-width:1001px) and (max-height:700px){
+  .signup .privacy{display:none}
+  .next-card .sub{display:none}
+}
+/* Tablets: two columns again so the card sits beside the copy, not a screen below it. */
+@media (min-width:760px) and (max-width:1000px){
+  .hero .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:end;padding-top:48px;padding-bottom:56px}
+  .hero h1{font-size:clamp(4rem,10vw,6.4rem)}
+  .hero .into{font-size:clamp(2.2rem,5.4vw,3.4rem)}
+  .hero-stage{padding:120px 0 40px;max-width:none}
+  .next-card{max-width:none}
+  .next-card h2{font-size:clamp(2.2rem,4.6vw,3rem)}
+  .hero-prop--arch{left:-10px;width:min(56%,210px)}
+  .hero-prop--bubble{width:min(36%,140px);bottom:-30px;right:-8px}
+}
+/* Phones: tighter rhythm, one clear primary action, the card starts closer. */
+@media (max-width:720px){
+  .hero .wrap{padding-top:28px;padding-bottom:40px;gap:20px}
+  .hero h1{margin-top:14px}
+  .hero .into{margin-bottom:14px}
+  .hero .lede{font-size:1.02rem;line-height:1.5}
+  .hero-actions{display:grid;grid-template-columns:1fr;gap:4px;margin-top:22px}
+  .hero-actions .btn{width:100%}
+  .hero-actions .btn--ghost{background:transparent;border-color:transparent;box-shadow:none;min-height:46px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+  .hero-actions .btn--ghost:hover{box-shadow:none;transform:none}
+  .hero-stage{padding:92px 0 72px}
+  .next-card{padding:24px 20px 22px;box-shadow:7px 7px 0 var(--red)}
+  .next-card h2{font-size:clamp(2.3rem,11vw,2.9rem);margin:10px 0}
+  .next-card .sub{font-size:1.2rem;margin-bottom:16px}
+  .signup .form-consent{font-size:.86rem;line-height:1.4}
+  .section{padding-top:56px;padding-bottom:60px}
+  .section h2.big{font-size:clamp(3rem,15vw,4.2rem)}
+  .about p{font-size:1.06rem}
+  .story-step{padding:28px 0}
+  .story-step h3{font-size:clamp(2.4rem,11.5vw,3.2rem);margin:10px 0 12px}
+  .step-prop{width:min(78%,260px);margin-top:18px}
+  .events-grid{margin-top:28px;gap:22px}
+  .propwall{padding:52px 0 44px}
+  .propwall h2{font-size:clamp(2.8rem,13.5vw,3.8rem)}
+}
+@media (max-width:380px){
+  .hero-stage{padding-top:84px}
+  .hero h1{font-size:min(19vw,4.4rem)}
+}
+
+.signup .form-consent{gap:12px}
