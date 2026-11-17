@@ -16,3 +16,14 @@ The event archive still depends on \`makeyourcase.vercel.app\` for its files and
 Subscriber D1: \`offscript-subscribers\`. Secret names: \`SUBSCRIBE_SIGNING_SECRET\`, \`RESEND_API_KEY\`. Keep keys out of files, logs and chat. Resend domain: offscriptgh.com (verified). Real delivery requires the sending-only key to be present in Worker secrets. The list remains disabled until \`GET /api/list-status\` confirms configuration. Confirmation links require a user POST; GET only renders the consent page. Refer to \`site/README.md\` for the flow and current activation limitation.
 
 The production Worker is deployed manually using Cloudflare's API. **No auto-deploy from GitHub is configured**, so merging a feature branch does not publish it. Test in a separate Worker first, then publish and verify the live domain, browser routes, email flow and private analytics behaviour. Do not switch or delete Vercel until a complete event archive migration has been verified.
+
+## Releasing the unified experience (two parts)
+
+The unified site has changes on both origins. Publish both, in this order:
+
+1. **Event origin (Vercel, `main`).** Merge the event-file changes into `main` so makeyourcase.vercel.app serves them: the red `favicon.svg` and `apple-touch-icon.png`, self-hosted fonts in `styles.css` and `venue-explore.css`, the aligned thank-you section in `post-event.css`, logo links in `index.html`, `props.html` and `venue-explore.html`, and `?prop=N` in `props.js`.
+2. **Worker.** Run `node site/build.mjs` and deploy `cloudflare/offscriptgh-site-worker.js` to `offscriptgh-site` as before (module Worker, keep the D1 binding and secrets).
+
+The Worker works with either version of the event files, so the order is not fragile: it already adds the bar, footer, favicon, fonts and home links to the current event pages.
+
+After deploying, check: `/` (hero, story, prop wall), `/events/pitch-night-001/` (OffScript bar, logo goes home, red favicon, no Google Fonts request), `/events/pitch-night-001/props.html?prop=3`, and the mobile menu.
