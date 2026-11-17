@@ -188,7 +188,7 @@ async function confirmEmail(request,env){
  const requestUrl=new URL(request.url);
  let token=requestUrl.searchParams.get("token")||"";
  if(request.method==="POST"){
-   if(request.headers.get("Origin")!==requestUrl.origin)return new Response("Request not allowed",{status:403});
+   // The random single-use email token authorizes this POST. A no-referrer page may omit the Origin header.
    try { const form=await request.formData(); token=String(form.get("token")||"") }catch{return responsePage("Link not found","This confirmation request isn't valid.",false)}
  }
  if(!/^[A-Za-z0-9_-]{43}$/.test(token))return responsePage("Link not found","This confirmation link is invalid.",false);
@@ -219,7 +219,10 @@ async function confirmEmail(request,env){
 async function unsubscribeEmail(request,env){
  if(!["GET","POST"].includes(request.method))return new Response("Method not allowed",{status:405});
  let u=new URL(request.url),sid=u.searchParams.get("sid")||"",sig=u.searchParams.get("sig")||"";
- if(request.method==="POST"){if(request.headers.get("Origin")!==u.origin)return new Response("Request not allowed",{status:403});let d=await request.formData();sid=String(d.get("sid")||"");sig=String(d.get("sig")||"")}
+ if(request.method==="POST"){
+  // The signed unsubscribe link authorizes this POST even when the browser omits Origin.
+  let d=await request.formData();sid=String(d.get("sid")||"");sig=String(d.get("sig")||"")
+ }
  if(!env.OFFSCRIPT_DB||!env.SUBSCRIBE_SIGNING_SECRET||!(await validSig(env,sid,sig)))return responsePage("Link not found","That unsubscribe link is invalid.",false);
  if(request.method==="GET"){
   let html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/offscript.css"><title>Unsubscribe | OffScript</title></head><body><main class="confirmation-page"><div class="confirmation-card"><a class="label back-home" href="/">← OFFSCRIPT HOME</a><h1>Leave the list?</h1><p>We will stop sending you news about future OffScript events.</p><form method="post" action="/unsubscribe"><input type="hidden" name="sid" value="'+sid+'"><input type="hidden" name="sig" value="'+sig+'"><button type="submit" class="btn">YES, UNSUBSCRIBE</button></form><p><a href="/" class="text-link">KEEP ME ON THE LIST</a></p></div></main></body></html>';
