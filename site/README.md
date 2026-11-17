@@ -24,7 +24,8 @@ Generated: `site/*.html`, `site/offscript.css`, `favicon.svg` and `apple-touch-i
 
 Event pages still come from the Vercel origin. On the way through `offscriptgh.com`, the Worker (`familyLayer`):
 
-- adds the OffScript bar (OffScript / Events / page) under the skip link, and the OffScript footer at the end;
+- turns the event's own "OffScript / Edition 001" line into a clickable breadcrumb (OffScript / Events / Pitch Night 001); sub-pages get the same breadcrumb as a slim strip. There is no second bar on top;
+- replaces the event's own small footers with the one OffScript footer, and adds links home to the end of the event menu;
 - points every OffScript logo (`.brand`, `.footer-brand`, `.prop-brand`, `.head-logo`) to `/`;
 - removes Google Fonts and loads the self-hosted Anton, Space Grotesk and Instrument Serif instead;
 - swaps the favicon for `/favicon.svg` (the red mark) and adds the touch icon.

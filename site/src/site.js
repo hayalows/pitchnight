@@ -9,25 +9,21 @@
   var page = document.body.getAttribute("data-page");
   if (page) document.querySelectorAll('[data-nav="' + page + '"]').forEach(function (a) { a.setAttribute("aria-current", "page"); });
 
-  /* Header: compact after the first scroll, hides while reading down on phones, returns on the way up. */
+  /* Header: always there (it never hides while you read), a little more compact after the first scroll,
+     with a thin red line that shows how far down the page you are. */
   var header = document.querySelector("[data-site-header]");
   var progress = header && header.querySelector(".scroll-progress");
-  var lastY = window.scrollY, ticking = false;
+  var ticking = false;
   function onScroll() {
     ticking = false;
     var y = window.scrollY, max = doc.scrollHeight - window.innerHeight;
-    if (header) {
-      header.classList.toggle("is-scrolled", y > 8);
-      var goingDown = y > lastY + 4, goingUp = y < lastY - 4;
-      if (goingDown && y > 420 && !document.querySelector("dialog[open]") && !header.contains(document.activeElement)) header.classList.add("is-tucked");
-      else if (goingUp || y < 120) header.classList.remove("is-tucked");
-    }
+    if (header) header.classList.toggle("is-scrolled", y > 8);
     if (progress) progress.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
-    lastY = y;
   }
   window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  /* Coming back with the browser's Back button restores the page from memory: refresh its state. */
+  window.addEventListener("pageshow", function () { onScroll(); window.dispatchEvent(new Event("offscript:return")); });
   onScroll();
-  if (header) header.addEventListener("focusin", function () { header.classList.remove("is-tucked"); });
 
   /* Menu sheet: a native modal dialog, so focus stays inside and Escape closes it. */
   var menuBtn = document.querySelector(".menu-btn"), menu = document.getElementById("site-menu");
@@ -43,6 +39,9 @@
     menuBtn.addEventListener("click", function () {
       if (menu.open) { closeMenu(); return; }
       menu.showModal();
+      /* Focus the sheet itself, not the first link, so no focus ring is drawn around the logo on open.
+         Tab still moves straight into the links. */
+      menu.focus({ preventScroll: true });
       requestAnimationFrame(function () { menu.classList.add("is-open"); });
       menuBtn.setAttribute("aria-expanded", "true");
       document.body.classList.add("menu-open");

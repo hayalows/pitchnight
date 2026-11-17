@@ -47,16 +47,19 @@ with sync_playwright() as p:
     def family_bar():
         for path, here in [(EVENT, "Pitch Night 001"), (EVENT + "props.html", "Prop Studio"), (EVENT + "venue-explore.html", "The venue")]:
             pg, _, errors = open_page(b, path)
-            bar = pg.locator(".osx-bar")
+            # One navigation layer: no second bar on top, just a breadcrumb that links home.
+            assert pg.locator(".osx-bar").count() == 0, path
+            bar = pg.locator(".osx-crumbs")
             expect(bar).to_be_visible()
             expect(bar.locator('[aria-current="page"]')).to_have_text(here)
             expect(bar.locator('a[href="/"]').first).to_be_visible()
             expect(pg.locator(".osx-foot")).to_have_count(1)
+            assert pg.locator("footer").count() == 1, (path, "one footer only")
             assert not errors, (path, errors)
-    check("every event page carries the OffScript bar and footer", family_bar)
+    check("every event page has one breadcrumb home and one footer", family_bar)
 
     def logo_goes_home():
-        for path, sel in [(EVENT, ".site-header .brand"), (EVENT, ".footer-brand"), (EVENT + "props.html", ".prop-brand"), (EVENT + "venue-explore.html", ".head-logo")]:
+        for path, sel in [(EVENT, ".site-header .brand"), (EVENT, '.osx-foot-brand a[aria-label="OffScript home"]'), (EVENT + "props.html", ".prop-brand"), (EVENT + "venue-explore.html", ".head-logo")]:
             pg, _, _ = open_page(b, path)
             assert pg.get_attribute(sel, "href") == "/", (path, sel, pg.get_attribute(sel, "href"))
     check("the OffScript logo on event pages leads to the main site", logo_goes_home)
@@ -90,20 +93,20 @@ with sync_playwright() as p:
         for w in (1366, 1920, 2560):
             pg, _, _ = open_page(b, EVENT, w, 1200)
             xs = pg.evaluate("""[
-              document.querySelector('.osx-bar .osx-home').getBoundingClientRect().left,
+              document.querySelector('.osx-crumbs a').getBoundingClientRect().left,
               document.querySelector('.site-header .brand').getBoundingClientRect().left,
               document.querySelector('.paper-intro .post-kicker').getBoundingClientRect().left,
               document.querySelector('#about .section-kicker, #about [class*=kicker], #about span').getBoundingClientRect().left]""")
             assert max(xs) - min(xs) <= 8, (w, xs)
             assert pg.evaluate("document.documentElement.scrollWidth") <= w
-    check("event bar, header and thank-you note share one frame at 1366/1920/2560", frame_alignment)
+    check("breadcrumb, header and thank-you note share one frame at 1366/1920/2560", frame_alignment)
 
     def main_matches_event_frame():
         for w in (1366, 2560):
             main, _, _ = open_page(b, "/", w, 1000)
             ev, _, _ = open_page(b, EVENT, w, 1000)
             a = main.evaluate("document.querySelector('.site-header .brand').getBoundingClientRect().left")
-            c = ev.evaluate("document.querySelector('.osx-bar .osx-home').getBoundingClientRect().left")
+            c = ev.evaluate("document.querySelector('.site-header .brand').getBoundingClientRect().left")
             assert abs(a - c) <= 8, (w, a, c)
     check("main site and event pages align to the same frame", main_matches_event_frame)
 

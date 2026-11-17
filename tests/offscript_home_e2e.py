@@ -249,6 +249,41 @@ with sync_playwright() as p:
             pg.close()
     check("laptop hero fits the first screen and the ticker peeks", fold)
 
+    # 16. Round 3: stickers move, nothing duplicated, calm navigation
+    def round3():
+        pg, _ = page_at(b, 1536, 730)
+        pg.wait_for_timeout(2600)
+        box = pg.locator(".hero-prop--arch").bounding_box()
+        x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+        pg.mouse.move(x, y); pg.mouse.down()
+        for i in range(10): pg.mouse.move(x - 25 * i, y - 15 * i)
+        pg.mouse.up(); pg.wait_for_timeout(1200)
+        after = pg.locator(".hero-prop--arch").bounding_box()
+        assert after["x"] < box["x"] - 100, ("sticker should follow a drag", box, after)
+        assert pg.url.endswith("/site/index.html"), "dragging a sticker must not navigate"
+        assert not pg.evaluate("document.querySelector('.hero-title').textContent.includes('usual.')"), "no full stop after usual"
+        assert pg.locator(".hero-actions [data-focus-signup]").is_hidden(), "laptop hero should not repeat the sign-up card"
+        assert pg.locator(".about .tag").count() == 0 and pg.locator(".aside-note").count() == 1
+        assert pg.locator(".site-footer .off--full").count() == 1, "footer shows the full OffScript logo"
+        pg.evaluate("scrollTo(0, 2400)"); pg.wait_for_timeout(300); pg.evaluate("scrollTo(0, 3200)"); pg.wait_for_timeout(400)
+        assert pg.evaluate("document.querySelector('.site-header').getBoundingClientRect().top") == 0, "header never hides"
+        ph, _ = page_at(b, 390, 664, is_mobile=True, has_touch=True)
+        ph.wait_for_timeout(2400)
+        assert ph.locator(".header-cta").is_hidden(), "phone header keeps only Menu"
+        a = ph.locator(".hero-prop--bubble").bounding_box(); c = ph.locator(".next-card").bounding_box()
+        assert a["y"] + a["height"] <= c["y"] + 12, ("stickers sit above the card on phones", a, c)
+        ph.tap(".hero-prop--bubble"); ph.wait_for_timeout(1200)
+        a2 = ph.locator(".hero-prop--bubble").bounding_box()
+        assert abs(a2["x"] - a["x"]) + abs(a2["y"] - a["y"]) > 20, "a tap tosses the sticker"
+        ph.locator(".menu-btn").tap(); ph.wait_for_timeout(500)
+        assert ph.evaluate("document.activeElement.id") == "site-menu", "menu opens without a focus ring on the logo"
+        ph.locator(".menu-close").tap(); ph.wait_for_timeout(400)
+        ph.evaluate("scrollTo(0, 2600)"); ph.wait_for_timeout(400)
+        assert ph.evaluate("document.getElementById('stickybar').classList.contains('is-visible')")
+        ph.evaluate("scrollTo(0, 1500)"); ph.wait_for_timeout(400)
+        assert ph.evaluate("document.getElementById('stickybar').classList.contains('is-visible')"), "bar stays while scrolling back up"
+    check("stickers move, no duplicates, header and bottom bar stay put", round3)
+
     b.close()
 
 width = max(len(n) for n, _, _ in results)

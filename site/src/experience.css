@@ -7,7 +7,6 @@ body.menu-open{overflow:hidden}
 
 /* ---------- Header ---------- */
 .site-header{position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:3px solid var(--ink);transition:transform .32s cubic-bezier(.2,.8,.2,1),box-shadow .2s ease}
-.site-header.is-tucked{transform:translateY(calc(-100% - 4px))}
 .site-header.is-scrolled{box-shadow:0 6px 0 rgba(20,20,20,.06)}
 .site-header .wrap{display:flex;align-items:center;gap:clamp(16px,3vw,44px);padding-top:10px;padding-bottom:10px}
 .brand{display:inline-flex;color:var(--ink);text-decoration:none;flex:none}
@@ -177,7 +176,6 @@ html.js .story-step.is-active{opacity:1}
 .propwall-actions{display:flex;align-items:center;gap:12px}
 .propwall-rail{margin-top:clamp(34px,5vw,64px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
 .propwall-track{display:flex;align-items:center;gap:clamp(18px,2.2vw,32px);width:max-content;margin:0;padding:18px 0;list-style:none}
-.propwall-track.is-looping{animation:tick 70s linear infinite}
 .propwall-rail{overflow-x:auto;scrollbar-width:none}
 .propwall-rail::-webkit-scrollbar{display:none}
 .propwall-rail:hover .propwall-track,.propwall-rail:focus-within .propwall-track{animation-play-state:paused}
@@ -370,3 +368,69 @@ html.js .story-step.is-active{opacity:1}
 }
 
 .signup .form-consent{gap:12px}
+
+
+/* ---------- Round 3 (2026-11): fewer duplicates, playful stickers, calmer navigation ---------- */
+/* Menu opens without drawing a focus ring around the logo. */
+dialog.menu-sheet:focus{outline:none}
+/* Phones and tablets: the header keeps just the logo and Menu. Get on the list lives in the menu,
+   in the hero and in the bar at the bottom, so it does not need a fourth home up here. */
+@media (max-width:900px){.header-actions .header-cta{display:none}}
+/* Laptops: the sign-up card sits right beside the headline, so the hero doesn't repeat it as a button. */
+@media (min-width:1001px){.hero-actions [data-focus-signup]{display:none}}
+
+/* Hero stickers you can pick up, throw, or tap to toss. */
+.hero-prop{appearance:none;-webkit-appearance:none;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;transition:none}
+.hero-prop:focus-visible{outline:3px solid var(--blue);outline-offset:6px;border-radius:14px}
+.toy-body{display:block;position:relative;transition:scale .22s cubic-bezier(.2,.8,.2,1),translate .22s cubic-bezier(.2,.8,.2,1)}
+.toy-body>svg{width:100%;height:auto}
+.hero-prop:hover .toy-body{scale:1.04}
+.hero-prop.is-held{cursor:grabbing;z-index:6}
+.hero-prop.is-held .toy-body{scale:1.12;translate:0 -6px}
+.hero-prop.is-held>.toy-body>svg,.hero-prop.is-flying>.toy-body>svg{animation-play-state:paused}
+/* A clean light sweep across the sticker when you pick it up or toss it, like a glossy print catching the light. */
+.toy-body::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 48%,transparent 60%) no-repeat;background-size:250% 100%;background-position:130% 0;-webkit-mask:var(--toy-mask,none);opacity:0;mix-blend-mode:soft-light}
+.hero-prop.is-held .toy-body::after,.hero-prop.is-tossed .toy-body::after{animation:toy-shine .7s ease-out}
+@keyframes toy-shine{0%{opacity:1;background-position:130% 0}100%{opacity:0;background-position:-30% 0}}
+html.js .hero-prop{animation:os-pop .8s cubic-bezier(.3,1.4,.5,1) both}
+.toy-hint{position:absolute;z-index:1;margin:0;font:italic 400 1.15rem/1.1 var(--serif);color:var(--red-text);pointer-events:none;white-space:nowrap;transition:opacity .4s ease;opacity:0;animation:os-fade .6s ease 2.4s both}
+.toy-hint::before{content:"↖";display:inline-block;margin-right:6px;font-style:normal;rotate:-10deg}
+.hero.toys-found .toy-hint{opacity:0!important;animation:none}
+@media (min-width:1001px){
+  .toy-hint{left:calc(-1 * clamp(150px,15vw,250px));bottom:-2px}
+  html.js .hero:not(.toys-found) .toy-hint{opacity:1}
+}
+/* Phones: the two stickers sit side by side above the card (never underneath it) and stay touchable. */
+@media (max-width:1000px){
+  .hero-prop{z-index:3}
+  .toy-hint{display:none}
+}
+@media (max-width:720px){
+  .hero-stage{padding:150px 0 28px}
+  .hero-prop--arch{top:6px;bottom:auto;left:-4px;right:auto;width:min(44%,190px)}
+  .hero-prop--bubble{top:20px;bottom:auto;right:-4px;left:auto;width:min(42%,176px)}
+  .hero-prop--arch>.toy-body>svg{rotate:-8deg}
+  .hero-prop--bubble>.toy-body>svg{rotate:7deg}
+}
+@media (max-width:380px){.hero-stage{padding-top:132px}}
+
+/* About: a handwritten aside, not something that looks like a button. */
+.aside-note{margin:0;font:italic 400 clamp(1.5rem,2.2vw,1.9rem)/1.1 var(--serif);color:var(--red-text);position:relative;padding-bottom:8px}
+.aside-note::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5c20-4 38 2 58-1s40-3 58 0' fill='none' stroke='%23e8382b' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/100% 100%}
+
+/* Prop wall: you can grab and drag it, swipe it, or scroll it. */
+.propwall-rail{cursor:grab;scroll-behavior:auto;overscroll-behavior-x:contain}
+.propwall-rail.is-dragging{cursor:grabbing}
+.propwall-rail.is-dragging a{pointer-events:none}
+.propwall-rail:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px}
+.propwall-track img,.propwall-track svg{-webkit-user-drag:none;user-select:none}
+
+/* Footer: the whole OffScript logo, Off and Script together. */
+.site-footer .off--full{height:96px;width:auto}
+@media (max-width:720px){.site-footer .brandcol>.footer-logo .off--full{height:76px}}
+.toy-body>svg{animation:os-bob 7s ease-in-out infinite}
+.hero-prop--arch .toy-body>svg{rotate:-9deg}
+.hero-prop--bubble .toy-body>svg{rotate:8deg;animation-delay:-3.5s}
+@media (min-width:1001px){.hero-prop--bubble .toy-body>svg{rotate:-7deg}.hero-actions .btn--ghost{background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--red)}.hero-actions .btn--ghost:hover{box-shadow:7px 7px 0 var(--red)}}
+html.motion-paused .toy-body>svg{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.toy-body>svg{animation:none}.toy-body::after{display:none}.toy-hint{animation:none;opacity:1}}
