@@ -314,6 +314,27 @@
     if (openList(a)) e.preventDefault();
   });
 
+
+  /* Keep deliberate section navigation smooth without animating browser history restoration.
+     Modal-menu links stay with their own close-and-navigate logic. */
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (document.querySelector("dialog[open]")) return;
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a || a.hasAttribute("data-os-top")) return;
+    var hash = a.getAttribute("href");
+    if (!hash || hash.length < 2) return;
+    var id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch (err) { return; }
+    var target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    if (location.hash !== hash) history.pushState(null, "", hash);
+    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ behavior: reduce.matches ? "instant" : "smooth", block: "start" });
+  });
+
   /* ---------- Back to top ---------- */
   document.addEventListener("click", function (e) {
     var a = e.target.closest("[data-os-top]");
