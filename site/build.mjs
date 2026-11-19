@@ -38,6 +38,7 @@ function propTiles(){
   return propNames.map((name,i)=>`<li><a href="/events/pitch-night-001/props.html?prop=${i+1}" style="--r:${tilts[i]}deg" aria-label="${name.replace(/'/g,"&#39;")} Open this prop in the Prop Studio">${prop(i)}</a></li>`).join("");
 }
 const sharedJs=read("site/src/shared.js");
+const analyticsCollector=read("site/src/analytics-collector.js");
 const siteJs=sharedJs+"\n"+read("site/src/site.js");
 const listSheet=read("site/src/partials/list-sheet.html");
 // The footer logo as nine separate letters (O, f, flipped f, S, c, r, i, p, t), so each can react on its own.
@@ -82,7 +83,7 @@ const bridgeFoot=render(footer+"\n"+listSheet).trim();
 
 let worker=read("cloudflare/offscriptgh-site-worker.js");
 const constants={HOME:home,BRAND_CSS:css,PAGE_ABOUT:pages.about,PAGE_EVENTS:pages.events,PAGE_JOIN:pages.join,PAGE_PRIVACY:pages.privacy,
-  BRIDGE_CSS:bridgeCss,BRIDGE_JS:sharedJs,BRIDGE_BAR:bridgeBar,BRIDGE_FOOT:bridgeFoot,FAVICON_SVG:favicon,TOUCH_ICON_B64:touchIcon.toString("base64"),FONT_SERIF_B64:fontSerif};
+  BRIDGE_CSS:bridgeCss,BRIDGE_JS:sharedJs,BRIDGE_BAR:bridgeBar,BRIDGE_FOOT:bridgeFoot,FAVICON_SVG:favicon,TOUCH_ICON_B64:touchIcon.toString("base64"),FONT_SERIF_B64:fontSerif,OFFSCRIPT_ANALYTICS_JS:analyticsCollector};
 for(const [name,value] of Object.entries(constants)){
   const regex=new RegExp("^const "+name+"=.*;\\n","m");
   if(!regex.test(worker))throw Error("Missing "+name);
