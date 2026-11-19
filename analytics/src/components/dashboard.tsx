@@ -149,15 +149,17 @@ function BreakdownCard({title,description,items}:{title:string;description:strin
 function SourceComposition({items}:{items:Breakdown[]}) {
   const palette=["#e8382b","#ffd63b","#177c73","#bf8e75","#999186","#dfd6c9"];
   const total=items.reduce((n,r)=>n+r.views,0);
+  const remainder=items.slice(5).reduce((sum,r)=>({label:"Other",views:sum.views+r.views,visitors:sum.visitors+r.visitors}),{label:"Other",views:0,visitors:0});
+  const rows=items.slice(0,5).concat(remainder.views ? [remainder] : []);
   let soFar=0;
-  const stops=items.slice(0,6).map((r,i)=>{
+  const stops=rows.map((r,i)=>{
     const start=soFar;soFar+=total?r.views/total*100:0;
     return palette[i]+" "+start+"% "+soFar+"%";
   }).join(",");
   return <article className="panel smallPanel"><div className="panelHeader"><div><h3>Where visitors arrive from</h3><p>Traffic sources by recorded page views.</p></div><Globe size={22}/></div>
     {total?<div className="composition"><div className="donut" role="img" aria-label={"Traffic source breakdown, "+integer(total)+" page views"} style={{background:"conic-gradient("+stops+")"}}>
       <div className="donutInner"><strong>{integer(total)}</strong><span>views</span></div></div>
-      <div className="donutLegend">{items.slice(0,6).map((row,i)=><div key={row.label}><i style={{background:palette[i]}}/><span>{row.label}</span><strong>{Math.round(row.views/total*100)}%</strong></div>)}</div></div>:<p className="emptySmall">Sources will appear after the first page view.</p>}
+      <div className="donutLegend">{rows.map((row,i)=><div key={row.label}><i style={{background:palette[i]}}/><span>{row.label}</span><strong>{Math.round(row.views/total*100)}%</strong></div>)}</div></div>:<p className="emptySmall">Sources will appear after the first page view.</p>}
   </article>;
 }
 function Heatmap({activity}:{activity:Report["activity"]}) {
@@ -185,6 +187,19 @@ function Actions({report}:{report:Report}) {
     {report.events.length?<div className="tableScroll"><table><thead><tr><th>Action</th><th>Sessions</th><th>Occurrences</th></tr></thead>
       <tbody>{report.events.map(r=><tr key={r.label}><td>{eventLabels[r.label]||r.label}</td><td>{integer(r.sessions)}</td><td>{integer(r.total)}</td></tr>)}</tbody></table></div>:
       <p className="emptySmall">Interactions will appear as visitors use the site.</p>}
+  </section>;
+}
+function PageTime({rows}:{rows:Report["pageEngagement"]}) {
+  const time=(seconds:number)=>seconds<60?seconds+" sec":Math.floor(seconds/60)+" min"+(seconds%60?" "+seconds%60+" sec":"");
+  return <section className="panel pageTimePanel" aria-labelledby="pageTimeTitle">
+    <div className="panelHeader"><div><h3 id="pageTimeTitle">Engagement by page</h3>
+      <p>Which pages keep visitors reading or exploring?</p></div><Clock size={22}/></div>
+    {rows.length?<div className="tableScroll"><table>
+      <thead><tr><th>Page</th><th>Tracked sessions</th><th>Avg. minimum visible time</th><th>Reached 1 minute</th></tr></thead>
+      <tbody>{rows.map(row=><tr key={row.page}><td>{row.page}</td>
+        <td>{integer(row.sessions)}</td><td>{time(row.minimumSeconds)}</td><td>{integer(row.engaged60)}</td></tr>)}</tbody>
+      </table></div>:<p className="emptySmall">Page engagement appears after visitors reach the first recorded time milestone.</p>}
+    <p className="panelFootnote">Times are lower-bound estimates from visible-page milestones, averaged across tracked sessions. They exclude sessions below 10 seconds and do not measure exact attention. The maximum recorded milestone is 10 minutes.</p>
   </section>;
 }
 function Engagement({report}:{report:Report}) {
@@ -245,6 +260,7 @@ export function Dashboard({report,filterOptions}:DashboardProps) {
       <section id="behavior" className="sectionBlock" aria-labelledby="behaviorHeading"><div className="sectionHeader"><div>
         <p className="eyebrow">03 / BEHAVIOUR</p><h2 id="behaviorHeading">What happens after a visit</h2></div></div>
         <div className="behaviorGrid"><Actions report={report}/><Engagement report={report}/></div>
+        <PageTime rows={report.pageEngagement}/>
       </section>
       <section id="activity" className="sectionBlock" aria-label="Activity and detailed data">
         <div className="detailGrid"><Heatmap activity={report.activity}/><BreakdownCard title="Most visited pages" description="Recorded page views by address" items={report.breakdowns.page}/></div>

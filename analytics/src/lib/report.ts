@@ -6,6 +6,7 @@ export type Breakdown = { label:string; visitors:number; views:number };
 export type TrendPoint = { label:string; visitors:number; pageViews:number; actions:number };
 export type ActionRow = { label:string; sessions:number; total:number };
 export type EngagementRow = { seconds:number; sessions:number };
+export type PageEngagement = {page:string; sessions:number; minimumSeconds:number; engaged60:number};
 export type Report = {
   status: "ready"|"unconfigured"|"error";
   filters: Filters; audienceLabel:string; generatedAt:string; latestEventAt:string|null;
@@ -13,14 +14,14 @@ export type Report = {
   previous: {visitors:number; pageViews:number; actions:number}|null;
   trend: TrendPoint[]; activity: {date:string;visitors:number}[];
   breakdowns: Record<"country"|"device"|"browser"|"source"|"page"|"edition",Breakdown[]>;
-  events:ActionRow[]; engagement: EngagementRow[];
+  events:ActionRow[]; engagement: EngagementRow[]; pageEngagement:PageEngagement[];
 };
 const emptyRows = () => ({country:[],device:[],browser:[],source:[],page:[],edition:[]});
 const noMetrics = () => ({visitors:0,sessions:0,pageViews:0,actionSessions:0,actions:0,returning:0,activeNow:0,engaged60:0});
 export function emptyReport(filters:Filters,status:"unconfigured"|"error"):Report {
   return {status,filters,audienceLabel:labelFor(filters),generatedAt:new Date().toISOString(),
     latestEventAt:null,metrics:noMetrics(),previous:null,trend:[],activity:[],breakdowns:emptyRows(),
-    events:[],engagement:[]};
+    events:[],engagement:[],pageEngagement:[]};
 }
 const dimCols = {country:"country",device:"device",browser:"browser",source:"source",page:"page_path",edition:"event_edition"} as const;
 async function breakdown(field:string, clause:string, params:unknown[]):Promise<Breakdown[]> {
@@ -41,7 +42,7 @@ export async function loadReport(filters:Filters):Promise<Report> {
   const clause = scope.sql, params=scope.params;
   const lastPeriodStart = new Date(period.start.getTime()-(period.end.getTime()-period.start.getTime()));
   try {
-    const [totals,trend,actions,engagement,activity,presence,...groups] = await Promise.all([
+    const [totals,trend,actions,engagement,activity,pageTime,presence,...groups] = await Promise.all([
       query<{
         visitors:unknown;sessions:unknown;page_views:unknown;actions:unknown;action_sessions:unknown;
         returning:unknown;engaged_60:unknown;latest_at:unknown
@@ -78,6 +79,13 @@ export async function loadReport(filters:Filters):Promise<Report> {
         "WHERE "+where(filters,new Date(Date.now()-90*86400000),new Date()).sql+
         " AND event_name='page_view' GROUP BY 1 ORDER BY 1",
         where(filters,new Date(Date.now()-90*86400000),new Date()).params),
+      query<{page:unknown;sessions:unknown;minimum_seconds:unknown;engaged_60:unknown}>(
+        "WITH session_page AS (SELECT page_path,session_id,max((metadata->>'milestoneSeconds')::int) milestone "+
+        "FROM offscript_analytics_events WHERE "+clause+
+        " AND event_name='engagement' AND metadata ? 'milestoneSeconds' GROUP BY page_path,session_id) "+
+        "SELECT page_path page,count(*) sessions,round(avg(milestone)) minimum_seconds, "+
+        "count(*) FILTER(WHERE milestone>=60) engaged_60 FROM session_page GROUP BY page_path "+
+        "ORDER BY sessions DESC LIMIT 12",params),
       query<{total:unknown}>(
         "SELECT count(DISTINCT visitor_id) total FROM offscript_analytics_events WHERE event_name='presence' "+
         "AND created_at>=now()-interval '90 seconds'"+
@@ -93,6 +101,8 @@ export async function loadReport(filters:Filters):Promise<Report> {
     base.trend=trend.map(r=>({label:String(r.label),visitors:number(r.visitors),pageViews:number(r.page_views),actions:number(r.actions)}));
     base.events=actions.map(r=>({label:String(r.label),sessions:number(r.sessions),total:number(r.total)}));
     base.engagement=engagement.map(r=>({seconds:number(r.seconds),sessions:number(r.sessions)}));
+    base.pageEngagement=pageTime.map(r=>({page:String(r.page),sessions:number(r.sessions),
+      minimumSeconds:number(r.minimum_seconds),engaged60:number(r.engaged_60)}));
     base.activity=activity.map(r=>({date:String(r.date),visitors:number(r.visitors)}));
     Object.keys(dimCols).forEach((d,i)=>{base.breakdowns[d as keyof typeof dimCols]=groups[i]});
     if(filters.range!=="all"){

@@ -20,7 +20,7 @@ Private organiser -> `/analytics/login` -> server-verified signed cookie -> `/an
 
 **Data collected:** random browser and session IDs, limited page routes, named action, coarse country/device/browser, source and campaign labels, visible-time milestones, presence heartbeats (every 30s). The active-now window is 90 seconds. No raw IP addresses, emails, form answers, payment details, friendship names or full referrer URLs go into the analytics event table. Signed-in admins can see aggregates, not individual visitor rows.
 
-**Data definitions:** Unique visitor = distinct anonymous browser ID with a page-view in the period. Session = distinct random session ID with a page-view. Actions = named interactions excluding views, presence and engagement. Engaged 60s = sessions that crossed a visible-time milestone; the page timer pauses when hidden. Daily activity may count the same visitor on different days.
+**Data definitions:** Unique visitor = distinct anonymous browser ID with a page-view in the period. Session = distinct random session ID with a page-view. Actions = named interactions excluding views, presence and engagement. Engaged 60s = sessions that crossed a visible-time milestone; the page timer pauses when hidden. The per-page engagement report displays an average **minimum** visible duration based on the highest milestone reached by each tracked session and page. It excludes visits below ten seconds and caps recorded milestones at ten minutes. It is not exact reading time. Daily activity may count the same visitor on different days.
 
 **Privacy:** Global Privacy Control and the pause toggle on Offscript's Privacy page stop new collection. The existing event pause preference is also respected. Failing analytics calls never stop page interactions. No data moves from English Chat Finder.
 
@@ -49,6 +49,8 @@ No production analytics records are fetched by the build or tests. Do not run th
 ## Known limits
 
 - No live integration or populated staging evidence is included in a code-only PR.
+- The dashboard and private login were rendered with a **local synthetic data fixture** at 360px, 768px and 1280px. Those values were invented solely for layout inspection and are NOT actual Offscript analytics. The local-only QA route and screenshots are not committed. The mobile date sheet, desktop date popover, and Escape-close behaviour were exercised through the browser DevTools protocol. No document-level horizontal overflow was observed; wide tables scroll inside their panels.
+- The dashboard source passed the local TypeScript check after adding the engagement-by-page section. These checks do not substitute for a populated-database test, actual screen reader pass or staging browser flows.
 - Active-now is approximate; background/blocked clients may not report.
 - Anonymous browser IDs undercount returning people whose storage is cleared or disabled.
 - Existing Pitch Night counts should not be added directly to these new unique-visitor figures because the session definitions differ.
