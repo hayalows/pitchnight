@@ -82,13 +82,19 @@ with sync_playwright() as p:
 
     # 3. Every "list" link lands in the email field
     def list_links_focus():
+        # On screen: the hero button wakes the card itself. Off screen: the header button opens the list sheet in place.
         pg, _ = page_at(b, 1440, 900)
-        pg.locator(".soon a").click()
-        pg.wait_for_timeout(700)
+        pg.locator(".hero-actions [data-focus-signup]").click()
+        pg.wait_for_timeout(300)
         expect(pg.locator("#email")).to_be_focused()
-    check("Tell me first lands in the email field", list_links_focus)
+        assert not pg.evaluate("document.getElementById('os-list').open")
+        pg.mouse.wheel(0, 2600); pg.wait_for_timeout(600)
+        pg.locator(".header-cta").click(); pg.wait_for_timeout(500)
+        assert pg.evaluate("document.getElementById('os-list').open"), "list sheet opens where you are"
+        expect(pg.locator("#os-list-email")).to_be_focused()
+        assert pg.url.endswith("/site/index.html"), "no navigation"
+    check("Get on the list works where you are", list_links_focus)
 
-    # 4. Validation: empty and malformed emails explain the fix and mark the field
     def validation():
         pg, _ = page_at(b, 1440, 900)
         pg.get_by_role("button", name="Notify me").click()
@@ -169,20 +175,19 @@ with sync_playwright() as p:
     check("spam trap blocks bots quietly", honeypot)
 
     # 9. Phone sticky bar: hidden at load, shows mid-page, hides at the footer
-    def sticky():
-        pg, _ = page_at(b, 390, 844)
-        bar = pg.locator("#stickybar")
-        assert "is-visible" not in (bar.get_attribute("class") or "")
-        pg.locator("#about").scroll_into_view_if_needed()
-        pg.mouse.wheel(0, 900)
-        pg.wait_for_timeout(500)
-        assert "is-visible" in bar.get_attribute("class"), "bar did not appear mid-page"
-        pg.locator(".legal").scroll_into_view_if_needed()
-        pg.wait_for_timeout(500)
-        assert "is-visible" not in bar.get_attribute("class"), "bar covers the footer"
-    check("phone sticky bar timing", sticky)
+    def footer_and_board():
+        pg, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
+        assert pg.locator("#stickybar").count() == 0, "no nagging bottom bar"
+        assert pg.locator(".osf .osf-links a").count() == 4
+        assert pg.locator('.osf a[href*="pitch-night-001"]').count() == 0, "footer has no Pitch Night column"
+        assert pg.locator(".osf-g").count() == 9, "footer logo is nine letters"
+        pg.route("https://docs.google.com/**", lambda r: r.fulfill(status=200, content_type="text/html", body="<p>form</p>"))
+        pg.locator("#connect [data-os-board]").scroll_into_view_if_needed(); pg.wait_for_timeout(300)
+        pg.locator("#connect [data-os-board]").tap(); pg.wait_for_timeout(800)
+        assert pg.evaluate("document.getElementById('os-board').open"), "board opens in place"
+        assert pg.url.endswith("/site/index.html")
+    check("footer is lean and the Connection Board opens in place", footer_and_board)
 
-    # 10. Keyboard: skip link first, then the logo, focus visible
     def keyboard():
         pg, _ = page_at(b, 1440, 900)
         pg.keyboard.press("Tab")
@@ -257,32 +262,31 @@ with sync_playwright() as p:
         x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
         pg.mouse.move(x, y); pg.mouse.down()
         for i in range(10): pg.mouse.move(x - 25 * i, y - 15 * i)
-        pg.mouse.up(); pg.wait_for_timeout(1200)
+        pg.mouse.up(); pg.wait_for_timeout(2400)
         after = pg.locator(".hero-prop--arch").bounding_box()
-        assert after["x"] < box["x"] - 100, ("sticker should follow a drag", box, after)
+        assert abs(after["x"] - box["x"]) < 6 and abs(after["y"] - box["y"]) < 12, ("sticker springs home, no gap left", box, after)
         assert pg.url.endswith("/site/index.html"), "dragging a sticker must not navigate"
         assert not pg.evaluate("document.querySelector('.hero-title').textContent.includes('usual.')"), "no full stop after usual"
-        assert pg.locator(".hero-actions [data-focus-signup]").is_hidden(), "laptop hero should not repeat the sign-up card"
-        assert pg.locator(".about .tag").count() == 0 and pg.locator(".aside-note").count() == 1
-        assert pg.locator(".site-footer .off--full").count() == 1, "footer shows the full OffScript logo"
+        assert pg.locator(".hero-actions [data-focus-signup]").is_visible(), "laptop hero has a Get on the list button"
+        assert pg.locator(".about .tag").count() == 0 and pg.locator(".aside-note").count() == 0
+        assert not pg.evaluate("[...document.querySelectorAll('main .label')].some(l => /^\\s*0\\d+ \\//.test(l.textContent))"), "no numbered section labels"
         pg.evaluate("scrollTo(0, 2400)"); pg.wait_for_timeout(300); pg.evaluate("scrollTo(0, 3200)"); pg.wait_for_timeout(400)
         assert pg.evaluate("document.querySelector('.site-header').getBoundingClientRect().top") == 0, "header never hides"
         ph, _ = page_at(b, 390, 664, is_mobile=True, has_touch=True)
         ph.wait_for_timeout(2400)
         assert ph.locator(".header-cta").is_hidden(), "phone header keeps only Menu"
         a = ph.locator(".hero-prop--bubble").bounding_box(); c = ph.locator(".next-card").bounding_box()
-        assert a["y"] + a["height"] <= c["y"] + 12, ("stickers sit above the card on phones", a, c)
-        ph.tap(".hero-prop--bubble"); ph.wait_for_timeout(1200)
+        assert a["y"] < c["y"] and a["y"] + a["height"] <= c["y"] + 90, ("stickers tuck onto the card edge on phones", a, c)
+        ph.tap(".hero-prop--bubble"); ph.wait_for_timeout(120)
         a2 = ph.locator(".hero-prop--bubble").bounding_box()
-        assert abs(a2["x"] - a["x"]) + abs(a2["y"] - a["y"]) > 20, "a tap tosses the sticker"
+        assert abs(a2["x"] - a["x"]) + abs(a2["y"] - a["y"]) > 10, "a tap tosses the sticker"
+        ph.wait_for_timeout(2200)
+        a3 = ph.locator(".hero-prop--bubble").bounding_box()
+        assert abs(a3["x"] - a["x"]) + abs(a3["y"] - a["y"]) < 14, "and it lands back home"
         ph.locator(".menu-btn").tap(); ph.wait_for_timeout(500)
         assert ph.evaluate("document.activeElement.id") == "site-menu", "menu opens without a focus ring on the logo"
         ph.locator(".menu-close").tap(); ph.wait_for_timeout(400)
-        ph.evaluate("scrollTo(0, 2600)"); ph.wait_for_timeout(400)
-        assert ph.evaluate("document.getElementById('stickybar').classList.contains('is-visible')")
-        ph.evaluate("scrollTo(0, 1500)"); ph.wait_for_timeout(400)
-        assert ph.evaluate("document.getElementById('stickybar').classList.contains('is-visible')"), "bar stays while scrolling back up"
-    check("stickers move, no duplicates, header and bottom bar stay put", round3)
+    check("stickers spring home, no duplicates, header stays put", round3)
 
     b.close()
 
