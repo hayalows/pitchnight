@@ -96,7 +96,7 @@ async function forward(request,path,eventPage){
  if(eventPage&&ct.includes("text/html")&&method==="GET"&&upstream.status===200){
   let html=await upstream.text();
   // Absolute-root resources in the archive must continue resolving inside the archive.
-  html=html.replace(/(href|src)=(["'])\/(?!\/)/gi,(full,attr,q)=>attr+"="+q+EVENT+"/");
+  html=html.replace(/(href|src)=(["'])\/(?!\/|assets\/fonts\/)/gi,(full,attr,q)=>attr+"="+q+EVENT+"/");
   html=html.replaceAll(ORIGIN,PUBLIC+EVENT);
   html=familyLayer(html,path);
   if(path==="/"||path==="/index.html"){
