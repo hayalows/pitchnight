@@ -138,6 +138,30 @@ with sync_playwright() as p:
             assert not pg.evaluate("document.getElementById('os-list').open"), path
     check("'Get on the list' opens in place on every page", list_from_subpage)
 
+
+    def poster_opens_on_first_click():
+        pg, _, errors = open_page(b, EVENT, 390, 844)
+        button = pg.locator("[data-open-pass]").first
+        button.scroll_into_view_if_needed()
+        button.click()
+        pg.wait_for_function("document.getElementById('pass-dialog').open", timeout=10000)
+        assert pg.locator("#pass-dialog").evaluate("(d)=>d.open")
+        pg.keyboard.press("Escape")
+        assert not errors, errors
+        pg.close()
+    check("poster editor loads on demand and opens with one click", poster_opens_on_first_click)
+
+    def mobile_footer_logo_first_tap():
+        ctx = b.new_context(viewport={"width":390,"height":844}, is_mobile=True, has_touch=True)
+        pg = ctx.new_page()
+        pg.route("**/*", lambda r: r.continue_() if r.request.url.startswith(BASE) else r.abort())
+        pg.goto(BASE + "/events/", wait_until="load")
+        pg.locator(".osf-logo").first.scroll_into_view_if_needed()
+        pg.locator(".osf-logo").first.tap()
+        pg.wait_for_url(BASE + "/", timeout=10000)
+        ctx.close()
+    check("mobile footer logo follows Home on its first tap", mobile_footer_logo_first_tap)
+
     b.close()
 
 width = max(len(n) for n, _, _ in results)
