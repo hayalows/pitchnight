@@ -14,7 +14,9 @@ A dedicated private Next.js dashboard, first-party collector and PostgreSQL repo
 
 ## Architecture
 
-Browser -> `/offscript-analytics.js` -> `POST /analytics/api/collect` -> new Neon PostgreSQL database.
+Browser -> `/offscript-analytics.js` -> `POST /analytics/api/collect` -> dedicated Neon PostgreSQL database. The Cloudflare Worker appends a private gateway token before forwarding; direct requests to the Vercel origin are rejected by `src/proxy.ts`.
+
+**Retention:** Vercel runs one daily scheduled maintenance job at 03:00 UTC/Ghana time. Authenticated by `CRON_SECRET`, the route removes anonymous events older than 90 days and login throttling records older than 48 hours. The Offscript mailing list is not touched.
 
 Private organiser -> `/analytics/login` -> server-verified signed cookie -> `/analytics/` dashboard -> parameterised SQL reads, aggregate CSV export.
 
@@ -28,7 +30,7 @@ Private organiser -> `/analytics/login` -> server-verified signed cookie -> `/an
 
 1. `cd analytics && npm ci`
 2. `npm run build` and `npm run typecheck`
-3. Run `npm run dev` in one terminal, then `npm run test:e2e` in another, **with DATABASE_URL and organiser credentials unset**, to test guarded access and the fail-open public collector.
+3. Run `npm run dev` in one terminal, then `npm run test:e2e` in another, **with DATABASE_URL and organiser credentials unset**, to test guarded access and the fail-open public collector. In production-mode HTTP tests, set a temporary local `OFFSCRIPT_ANALYTICS_EDGE_SECRET` in the server environment and the matching `E2E_EDGE_SECRET` in the test runner. The extra cases verify missing and incorrect gateway keys are denied.
 4. For a populated local dashboard test, create a **separate** Neon database, apply `schema.sql`, set the three private values from `.env.example` only in `.env.local`, then log in at `http://localhost:3000/analytics/login`.
 5. To regenerate Offscript HTML and Worker from sources, run `node site/build.mjs` at the repository root. Inspect the generated diff before any deployment.
 
@@ -40,9 +42,9 @@ No production analytics records are fetched by the build or tests. Do not run th
 2. Provision a separate Next.js project with **Root Directory = analytics**, production build `next build`, and add the database, organiser password, and 32+ character session secret as server-only environment variables. Confirm the Next.js app responds at `/analytics/login` on its Vercel hostname.
 3. Set `OFFSCRIPT_ANALYTICS_ORIGIN` on Cloudflare Worker `offscriptgh-site` to that exact HTTPS origin (no trailing path or slash). Keep this value out of user-controlled requests.
 4. Before any Cloudflare deploy, run `node site/build.mjs`, verify unchanged public routes and event archive behaviour, and inspect the new `/analytics/` and `/offscript-analytics.js` routes. The Worker is manually deployed; GitHub merges do **not** automatically publish it.
-5. Add Cloudflare Access in front of organiser dashboard paths and WAF/rate limits for the collector. The collector contains input guards and per-session caps; these do not replace edge abuse protection.
+5. A Cloudflare-to-Vercel gateway secret is required, and the server-side password, eight-attempt per-source and shared throttle protect organiser login. Cloudflare Access is not yet enabled on this Cloudflare account. Review enabling it later, and apply a WAF/rate limit to the collector when available. The per-session cap is not a replacement for edge abuse protection.
 6. Verify 360px / 768px / 1280px browsers, keyboard/Escape/outside-click handling, auth failure, initial no-data state, normal/paused measurement, CSV formula neutralisation, dates and source filters, and expiry/sign-out in a staging environment.
-7. Verify retention policy, data-use notice, database backup and an operator runbook; add retention automation as a separate reviewed change. The schema currently holds events until removed.
+7. Verify the 90-day retention policy and daily Vercel cron in production. Backups, access logging and database cost alerts remain operational follow-ups.
 8. Publish the separate app and Worker only after an explicit release approval. Recheck every major public page and the archived Pitch Night, and confirm production event flows independently.
 9. Keep the old Pitch Night reporting system unchanged until a *separate* historical migration plan is approved.
 
@@ -54,5 +56,5 @@ No production analytics records are fetched by the build or tests. Do not run th
 - Active-now is approximate; background/blocked clients may not report.
 - Anonymous browser IDs undercount returning people whose storage is cleared or disabled.
 - Existing Pitch Night counts should not be added directly to these new unique-visitor figures because the session definitions differ.
-- Current reporting queries assume modest event volumes. As traffic grows, add daily rollups and a retention routine.
-- The organiser password is a single shared secret. Require Cloudflare Access for production and rotate credentials after access changes.
+- Current reporting queries assume modest event volumes. As traffic grows, add daily rollups and inspect scheduled cleanup logs.
+- The organiser password is a single shared secret. It is protected by a separate Cloudflare-to-Vercel gateway key, but Cloudflare Access is not enabled on this account. Consider enabling identity-based login later and rotate credentials after access changes.

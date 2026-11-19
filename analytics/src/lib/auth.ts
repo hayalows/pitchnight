@@ -40,12 +40,16 @@ export function correctPassword(submitted: string) {
 export async function permittedLoginAttempt(ip: string): Promise<boolean> {
   const secret = process.env.OFFSCRIPT_ANALYTICS_SESSION_SECRET || "disabled";
   const fingerprint = createHmac("sha256",secret).update(ip.slice(0,150)).digest("hex");
+  const globalFingerprint=createHmac("sha256",secret).update("all-login-attempts").digest("hex");
   const bucket = new Date(Math.floor(Date.now()/900000)*900000).toISOString();
-  const rows = await query<{attempts:unknown}>(
-    "INSERT INTO offscript_analytics_login_attempts(fingerprint,window_start,attempts) VALUES($1,$2,1) " +
+  const statement="INSERT INTO offscript_analytics_login_attempts(fingerprint,window_start,attempts) VALUES($1,$2,1) " +
     "ON CONFLICT (fingerprint,window_start) DO UPDATE SET attempts=offscript_analytics_login_attempts.attempts+1 " +
-    "RETURNING attempts", [fingerprint,bucket]);
-  return number(rows[0]?.attempts) <= 8;
+    "RETURNING attempts";
+  const [local,global]=await Promise.all([
+    query<{attempts:unknown}>(statement,[fingerprint,bucket]),
+    query<{attempts:unknown}>(statement,[globalFingerprint,bucket])
+  ]);
+  return number(local[0]?.attempts)<=8 && number(global[0]?.attempts)<=80;
 }
 export function sameOrigin(origin: string | null, requestOrigin: string) {
   const expected = process.env.OFFSCRIPT_ANALYTICS_PUBLIC_ORIGIN || "https://offscriptgh.com";
