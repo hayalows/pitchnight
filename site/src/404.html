@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#faf4e7">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="{{FAVICON}}">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/assets/fonts/anton-props.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/offscript.css">
+  <title>404 | Page not found | OffScript Ghana</title>
+  <style>
+    .os404{overflow:hidden;background:var(--paper);border-bottom:3px solid var(--ink)}
+    .os404 .wrap{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(260px,.88fr);align-items:center;gap:clamp(32px,5vw,90px);min-height:min(790px,78svh);padding-top:clamp(65px,9vw,132px);padding-bottom:clamp(75px,9vw,132px)}
+    .os404-kicker{display:flex;align-items:center;gap:11px;margin:0 0 23px;font:700 .82rem/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase}
+    .os404-kicker:before{content:"";width:12px;height:12px;border-radius:50%;background:var(--red);flex:none}
+    .os404 h1{max-width:850px;margin:0;font:400 clamp(4.2rem,8.5vw,9rem)/.96 var(--display);letter-spacing:-.018em;text-transform:uppercase}
+    .os404 h1 span{color:var(--red)}
+    .os404-lede{max-width:510px;margin:clamp(20px,3vw,33px) 0 30px;font:400 clamp(1rem,1.45vw,1.22rem)/1.6 var(--body)}
+    .os404-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 27px}
+    .os404-actions .btn{min-height:58px}
+    .os404-text-link{font:700 .88rem/1.2 var(--body);text-transform:uppercase;letter-spacing:.04em;text-decoration:underline;text-underline-offset:5px}
+    .os404-text-link:hover{color:var(--blue)}
+    .os404-art{position:relative;display:grid;place-items:center;min-height:380px;isolation:isolate}
+    .os404-card{display:grid;place-items:center;width:min(100%,390px);aspect-ratio:1;background:var(--blue);border:3px solid var(--ink);transform:rotate(-7deg);box-shadow:14px 14px 0 var(--red)}
+    .os404-code{color:var(--paper);font:400 clamp(8rem,17.6vw,17rem)/1 var(--display);letter-spacing:-.025em;transform:rotate(7deg)}
+    .os404-sticker{position:absolute;bottom:0;right:0;display:block;padding:20px 24px;background:var(--yellow);color:var(--ink);border:2px solid var(--ink);font:400 clamp(1.4rem,3vw,2.6rem)/.95 var(--display);text-transform:uppercase;transform:rotate(9deg);box-shadow:5px 5px 0 var(--ink)}
+    .os404-actions a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
+    @media(max-width:900px){
+      .os404 .wrap{grid-template-columns:1fr;gap:42px;min-height:0}
+      .os404-art{width:min(100%,430px);min-height:330px;margin:0 auto}
+      .os404-card{width:min(85%,330px)}
+      .os404-code{font-size:clamp(9rem,34vw,14rem)}
+    }
+    @media(max-width:520px){
+      .os404 .wrap{padding-top:44px;padding-bottom:76px;gap:30px}
+      .os404 h1{font-size:clamp(3.1rem,13vw,5.6rem)}
+      .os404-lede{margin:22px 0 25px}
+      .os404-actions{align-items:stretch;gap:19px}
+      .os404-actions .btn{width:100%;justify-content:space-between}
+      .os404-art{min-height:275px}
+      .os404-card{width:min(77%,260px);box-shadow:9px 9px 0 var(--red)}
+      .os404-code{font-size:clamp(7rem,33vw,10rem)}
+      .os404-sticker{right:5%;bottom:3%;font-size:1.3rem;padding:14px 16px}
+    }
+    @media(prefers-reduced-motion:reduce){.os404 *{scroll-behavior:auto}}
+  </style>
+</head>
+<body data-page="not-found">
+{{HEADER}}
+<main id="main">
+  <section class="os404" aria-labelledby="os404-title">
+    <div class="wrap">
+      <div class="os404-copy">
+        <p class="os404-kicker">OffScript / Page 404</p>
+        <h1 id="os404-title">WELL, THIS<br>WASN'T IN<br><span>THE SCRIPT.</span></h1>
+        <p class="os404-lede">The link may be old, or the address might have a typo. That page isn't here, but there's still plenty to see.</p>
+        <div class="os404-actions">
+          <a class="btn" href="/">BACK TO OFFSCRIPT <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="os404-text-link" href="/events/">SEE OUR EVENTS</a>
+        </div>
+      </div>
+      <div class="os404-art" aria-hidden="true">
+        <div class="os404-card"><span class="os404-code">404</span></div>
+        <span class="os404-sticker">NOT ON<br>THE LIST.</span>
+      </div>
+    </div>
+  </section>
+</main>
+{{FOOTER}}
+<script>{{SITE_JS}}</script>
+</body>
+</html>

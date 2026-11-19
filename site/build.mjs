@@ -71,6 +71,8 @@ const css=home.match(/<style>([\s\S]*?)<\/style>/)?.[1];
 if(!css)throw Error("CSS missing");
 const pages={};
 for(const p of ["about","events","join","privacy"]){pages[p]=render(read("site/src/"+p+".html"));write("site/"+p+".html",pages[p])}
+const notFound=render(read("site/src/404.html"));
+write("site/404.html",notFound);
 write("site/index.html",home);
 write("site/offscript.css",css);
 write("favicon.svg",favicon);
@@ -82,7 +84,7 @@ const bridgeBar=render(read("site/src/bridge/bar.html").replace("{{CRUMBS}}","%%
 const bridgeFoot=render(footer+"\n"+listSheet).trim();
 
 let worker=read("cloudflare/offscriptgh-site-worker.js");
-const constants={HOME:home,BRAND_CSS:css,PAGE_ABOUT:pages.about,PAGE_EVENTS:pages.events,PAGE_JOIN:pages.join,PAGE_PRIVACY:pages.privacy,
+const constants={HOME:home,BRAND_CSS:css,PAGE_ABOUT:pages.about,PAGE_EVENTS:pages.events,PAGE_JOIN:pages.join,PAGE_PRIVACY:pages.privacy,PAGE_NOT_FOUND:notFound,
   BRIDGE_CSS:bridgeCss,BRIDGE_JS:sharedJs,BRIDGE_BAR:bridgeBar,BRIDGE_FOOT:bridgeFoot,FAVICON_SVG:favicon,TOUCH_ICON_B64:touchIcon.toString("base64"),FONT_SERIF_B64:fontSerif,OFFSCRIPT_ANALYTICS_JS:analyticsCollector};
 for(const [name,value] of Object.entries(constants)){
   const regex=new RegExp("^const "+name+"=.*;\\n","m");
