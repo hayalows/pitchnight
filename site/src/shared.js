@@ -261,14 +261,11 @@
       if (!raf) raf = requestAnimationFrame(paint);
     });
     logo.addEventListener("pointerleave", reset);
-    /* Touch: a tap sends a wave through the letters. A second tap goes home. */
-    var armed = 0;
-    logo.addEventListener("click", function (e) {
-      if (window.matchMedia("(hover: hover)").matches) return;
-      if (Date.now() - armed < 1600) return;
-      e.preventDefault(); armed = Date.now();
+    /* First touch follows the logo's normal link while playing a decorative wave. */
+    logo.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
       logo.classList.remove("is-wave"); void logo.offsetWidth; logo.classList.add("is-wave");
-    });
+    }, { passive: true });
     logo.addEventListener("animationend", function (e) {
       if (e.target === glyphs[glyphs.length - 1]) logo.classList.remove("is-wave");
       if (e.target === glyphs[2]) logo.classList.remove("is-flip");
