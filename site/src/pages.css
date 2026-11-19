@@ -74,3 +74,9 @@
 @media(max-width:420px){.page-title{font-size:clamp(3.1rem,14vw,4.9rem)}.cta-band h2{font-size:clamp(2.2rem,9.5vw,3.6rem)}}
 .page-section p{overflow-wrap:anywhere}
 .page-pair--one{grid-template-columns:minmax(0,760px)}
+
+/* Small native cross-document transitions; older browsers use standard links. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation-duration:.12s;animation-timing-function:ease-out}
+::view-transition-new(root){animation-duration:.16s;animation-timing-function:ease-in}
+@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}}

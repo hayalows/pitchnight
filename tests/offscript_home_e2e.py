@@ -303,6 +303,41 @@ with sync_playwright() as p:
         assert ph.evaluate("document.activeElement.id === 'email'"), "email field should have focus"
         ph.close()
     check("mobile menu closes before focusing an already-visible signup form", mobile_menu_inline_signup)
+    # Navigate from the footer, then restore Back without a long animated scroll.
+    def footer_navigation_restoration():
+        ph, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
+        ph.evaluate("window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})")
+        ph.wait_for_timeout(150)
+        ph.locator('footer a[href="/events/"]').first.click()
+        ph.wait_for_url("**/events/")
+        assert ph.evaluate("scrollY < 10"), "fresh page did not start at top"
+        ph.go_back(wait_until="domcontentloaded")
+        ph.wait_for_timeout(650)
+        assert ph.evaluate("scrollY >= document.documentElement.scrollHeight-innerHeight-150"), "Back did not restore footer"
+        ph.close()
+    check("fresh navigation begins at top and browser Back restores footer", footer_navigation_restoration)
+
+    def modal_background_and_reopen():
+        ph, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
+        ph.evaluate("window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})")
+        ph.wait_for_timeout(180)
+        ph.locator("footer [data-os-list]").first.tap()
+        assert ph.locator("#os-list").evaluate("(d)=>d.open")
+        before = ph.evaluate("scrollY")
+        ph.mouse.wheel(0,-500)
+        ph.wait_for_timeout(150)
+        assert abs(ph.evaluate("scrollY") - before) < 2, "background scroll not locked"
+        ph.locator("#os-list [data-os-close]").first.tap()
+        ph.wait_for_timeout(75)
+        ph.locator("footer [data-os-list]").first.evaluate("(a)=>a.click()")
+        ph.wait_for_timeout(350)
+        assert ph.locator("#os-list").evaluate("(d)=>d.open"), "stale close timer dismissed sheet"
+        ph.keyboard.press("Escape")
+        ph.wait_for_timeout(350)
+        assert not ph.locator("#os-list").evaluate("(d)=>d.open")
+        ph.close()
+    check("modal prevents background scroll and cancels rapid close race", modal_background_and_reopen)
+
 
     b.close()
 

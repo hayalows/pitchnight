@@ -134,55 +134,81 @@
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   doc.classList.add("js");
 
-  /* ---------- Sheets ---------- */
-  var lastFocus = null;
-  function openSheet(dialog, opener) {
-    if (!dialog || typeof dialog.showModal !== "function") return false;
-    if (dialog.open) return true;
-    /* Close any menu or other sheet first, so only one layer is ever on screen. */
-    [].slice.call(document.querySelectorAll("dialog[open]")).forEach(function (d) { if (d !== dialog) d.close(); });
-    lastFocus = opener || document.activeElement;
-    try { dialog.showModal(); } catch (e) { return false; }
-    /* Focus the sheet itself, so nothing is pre-selected; Tab moves straight into it. */
-    if (!dialog.hasAttribute("tabindex")) dialog.setAttribute("tabindex", "-1");
-    dialog.focus({ preventScroll: true });
-    document.body.classList.add("os-sheet-open");
-    requestAnimationFrame(function () { requestAnimationFrame(function () { dialog.classList.add("is-open"); }); });
-    dialog.dispatchEvent(new Event("os:open"));
-    return true;
+
+  /* ---------- Shared sheet and page scroll controller ---------- */
+  var closeTimers=new WeakMap(),sheetOpeners=new WeakMap(),lockedY=null,savedStyles=null;
+  function syncScrollLock(){
+    var modal=!!document.querySelector("dialog[open]"),body=document.body;
+    if(modal&&lockedY===null){
+      lockedY=window.scrollY;
+      savedStyles={htmlOverflow:doc.style.overflow,htmlOverscroll:doc.style.overscrollBehavior,
+        position:body.style.position,top:body.style.top,left:body.style.left,
+        right:body.style.right,width:body.style.width,overflow:body.style.overflow};
+      doc.style.overflow="hidden";doc.style.overscrollBehavior="none";
+      body.style.position="fixed";body.style.top="-"+lockedY+"px";
+      body.style.left="0";body.style.right="0";body.style.width="100%";
+      body.style.overflow="hidden";body.classList.add("os-scroll-locked");
+    }else if(!modal&&lockedY!==null){
+      var y=lockedY,p=savedStyles;lockedY=null;savedStyles=null;
+      doc.style.overflow=p.htmlOverflow;doc.style.overscrollBehavior=p.htmlOverscroll;
+      body.style.position=p.position;body.style.top=p.top;body.style.left=p.left;
+      body.style.right=p.right;body.style.width=p.width;body.style.overflow=p.overflow;
+      body.classList.remove("os-scroll-locked");
+      window.scrollTo({top:y,behavior:"instant"});
+    }
   }
-  function closeSheet(dialog) {
-    if (!dialog || !dialog.open) return;
-    dialog.classList.remove("is-open");
-    var finish = function () {
-      if (dialog.open) dialog.close();
-      document.body.classList.toggle("os-sheet-open", !!document.querySelector("dialog.os-sheet[open]"));
-      if (lastFocus && lastFocus.isConnected && lastFocus.getClientRects().length) lastFocus.focus({ preventScroll: true });
-    };
-    if (reduce.matches) finish(); else setTimeout(finish, 240);
-  }
-  function wireSheet(dialog) {
-    if (!dialog || dialog.dataset.wired) return;
-    dialog.dataset.wired = "1";
-    dialog.addEventListener("cancel", function (e) { e.preventDefault(); closeSheet(dialog); });
-    dialog.addEventListener("click", function (e) {
-      if (e.target === dialog || e.target.closest("[data-os-close]")) closeSheet(dialog);
+  new MutationObserver(syncScrollLock).observe(document.body,{subtree:true,attributes:true,attributeFilter:["open"]});
+  function cancelClose(d){var t=closeTimers.get(d);if(t){clearTimeout(t);closeTimers.delete(d);}}
+  function openSheet(dialog,opener){
+    if(!dialog||typeof dialog.showModal!=="function")return false;
+    cancelClose(dialog);
+    if(dialog.open){dialog.classList.add("is-open");syncScrollLock();return true;}
+    [].slice.call(document.querySelectorAll("dialog[open]")).forEach(function(d){
+      if(d!==dialog){cancelClose(d);d.classList.remove("is-open");d.close();}
     });
-    /* Swipe the sheet down to dismiss it on phones. */
-    var card = dialog.querySelector(".os-sheet-card"), y0 = null, dy = 0;
-    if (card) {
-      card.addEventListener("touchstart", function (e) { y0 = card.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
-      card.addEventListener("touchmove", function (e) {
-        if (y0 === null) return;
-        dy = Math.max(0, e.touches[0].clientY - y0);
-        if (dy > 0 && window.innerWidth <= 640 && !e.target.closest("input,iframe")) { card.style.transition = "none"; card.style.transform = "translateY(" + dy + "px)"; }
-      }, { passive: true });
-      card.addEventListener("touchend", function () {
-        if (y0 === null) return;
-        card.style.transition = ""; card.style.transform = "";
-        if (dy > 110) closeSheet(dialog);
-        y0 = null;
-      });
+    sheetOpeners.set(dialog,opener||document.activeElement);
+    try{dialog.showModal();}catch(e){syncScrollLock();return false;}
+    syncScrollLock();
+    if(!dialog.hasAttribute("tabindex"))dialog.setAttribute("tabindex","-1");
+    dialog.focus({preventScroll:true});document.body.classList.add("os-sheet-open");
+    requestAnimationFrame(function(){if(dialog.open)requestAnimationFrame(function(){if(dialog.open)dialog.classList.add("is-open");});});
+    dialog.dispatchEvent(new Event("os:open"));return true;
+  }
+  function closeSheet(dialog){
+    if(!dialog||!dialog.open)return;
+    cancelClose(dialog);dialog.classList.remove("is-open");
+    function finish(){
+      closeTimers.delete(dialog);
+      if(!dialog.open||dialog.classList.contains("is-open"))return;
+      dialog.close();document.body.classList.toggle("os-sheet-open",!!document.querySelector("dialog.os-sheet[open]"));
+      syncScrollLock();
+      var opener=sheetOpeners.get(dialog);sheetOpeners.delete(dialog);
+      if(opener&&opener.isConnected&&opener.getClientRects().length)opener.focus({preventScroll:true});
+    }
+    if(reduce.matches)finish();else closeTimers.set(dialog,setTimeout(finish,240));
+  }
+  function wireSheet(dialog){
+    if(!dialog||dialog.dataset.wired)return;
+    dialog.dataset.wired="1";
+    dialog.addEventListener("close",function(){cancelClose(dialog);dialog.classList.remove("is-open");syncScrollLock();});
+    dialog.addEventListener("cancel",function(e){e.preventDefault();closeSheet(dialog);});
+    dialog.addEventListener("click",function(e){if(e.target===dialog||e.target.closest("[data-os-close]"))closeSheet(dialog);});
+    /* Only the grip may dismiss a phone sheet. Form contents remain scrollable. */
+    var card=dialog.querySelector(".os-sheet-card"),grip=card&&card.querySelector(".os-sheet-grip"),y0=null,dy=0;
+    if(grip){
+      grip.addEventListener("touchstart",function(e){if(innerWidth<=640&&e.touches.length===1){y0=e.touches[0].clientY;dy=0;}},{passive:true});
+      grip.addEventListener("touchmove",function(e){
+        if(y0===null||e.touches.length!==1)return;
+        dy=Math.max(0,e.touches[0].clientY-y0);
+        if(dy>8){e.preventDefault();card.style.transition="none";card.style.transform="translateY("+dy+"px)";}
+      },{passive:false});
+      function finishDrag(){
+        if(y0===null)return;
+        card.style.transition="";card.style.transform="";
+        if(dy>110)closeSheet(dialog);y0=null;dy=0;
+      }
+      grip.addEventListener("touchend",finishDrag);
+      grip.addEventListener("touchcancel",finishDrag);
     }
   }
 
@@ -529,8 +555,27 @@
       b.querySelector(".visually-hidden").textContent = paused ? "Play moving text" : "Pause moving text";
     });
     try { localStorage.setItem("offscript-motion-paused", paused ? "1" : "0"); } catch (e) {}
+    document.dispatchEvent(new Event("offscript:motionchange"));
   }
   toggles.forEach(function (b) { b.addEventListener("click", function () { setPaused(b.getAttribute("aria-pressed") !== "true"); }); });
   try { if (localStorage.getItem("offscript-motion-paused") === "1") setPaused(true); } catch (e) {}
+
+  /* Only warm Pitch Night when a visitor shows navigation intent and data saving is off. */
+  (function(){
+    var warmed=false,target="/events/pitch-night-001/";
+    function warm(){
+      var net=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+      if(warmed||location.pathname.indexOf(target)===0||document.hidden||net&&(net.saveData||/2g/.test(net.effectiveType||"")))return;
+      warmed=true;
+      var link=document.createElement("link");link.rel="prefetch";link.as="document";link.href=target;document.head.appendChild(link);
+    }
+    function intent(e){
+      if(e.target.closest&&e.target.closest('a[href="/events/pitch-night-001/"]'))warm();
+    }
+    document.addEventListener("pointerover",intent,{passive:true});
+    document.addEventListener("focusin",intent);
+    document.addEventListener("touchstart",intent,{passive:true});
+  })();
+
 })();
 </script></body></html>

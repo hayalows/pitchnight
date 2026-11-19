@@ -179,3 +179,7 @@ dialog.os-sheet.is-open .os-sheet-card{opacity:1;transform:none}
   .os-stamp,.os-board-wait i{animation:none}
 }
 @media print{.osf-next,.os-sheet{display:none!important}}
+/* Shared dialog scroll lock: position restored by JS for mobile Safari. */
+html:has(dialog[open]){overscroll-behavior:none}
+.os-sheet-grip{touch-action:none}
+body.os-scroll-locked{overscroll-behavior:none}

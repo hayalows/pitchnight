@@ -16,7 +16,7 @@
   --shadow:5px 5px 0 var(--ink);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.55 var(--body)}
 img,svg{display:block}
 a{color:inherit}
@@ -210,6 +210,12 @@ a,button{-webkit-tap-highlight-color:transparent}
 @media(max-width:420px){.page-title{font-size:clamp(3.1rem,14vw,4.9rem)}.cta-band h2{font-size:clamp(2.2rem,9.5vw,3.6rem)}}
 .page-section p{overflow-wrap:anywhere}
 .page-pair--one{grid-template-columns:minmax(0,760px)}
+
+/* Small native cross-document transitions; older browsers use standard links. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation-duration:.12s;animation-timing-function:ease-out}
+::view-transition-new(root){animation-duration:.16s;animation-timing-function:ease-in}
+@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}}
 
 /* OffScript experience layer: shared header and menu, motion, story, props.
    Loaded on every OffScript page after the base tokens. */
@@ -791,3 +797,7 @@ dialog.os-sheet.is-open .os-sheet-card{opacity:1;transform:none}
   .os-stamp,.os-board-wait i{animation:none}
 }
 @media print{.osf-next,.os-sheet{display:none!important}}
+/* Shared dialog scroll lock: position restored by JS for mobile Safari. */
+html:has(dialog[open]){overscroll-behavior:none}
+.os-sheet-grip{touch-action:none}
+body.os-scroll-locked{overscroll-behavior:none}
