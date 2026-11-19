@@ -45,7 +45,7 @@ export async function loadReport(filters:Filters):Promise<Report> {
     const [totals,trend,actions,engagement,activity,pageTime,presence,...groups] = await Promise.all([
       query<{
         visitors:unknown;sessions:unknown;page_views:unknown;actions:unknown;action_sessions:unknown;
-        returning:unknown;engaged_60:unknown;latest_at:unknown
+        returning_visitors:unknown;engaged_60:unknown;latest_at:unknown
       }>("SELECT "+
       "count(DISTINCT visitor_id) FILTER(WHERE event_name='page_view') visitors, "+
       "count(DISTINCT session_id) FILTER(WHERE event_name='page_view') sessions, "+
@@ -54,7 +54,7 @@ export async function loadReport(filters:Filters):Promise<Report> {
       "count(DISTINCT session_id) FILTER(WHERE event_name NOT IN ('page_view','presence','engagement')) action_sessions, "+
       "count(DISTINCT visitor_id) FILTER(WHERE event_name='page_view' AND "+
       "EXISTS(SELECT 1 FROM offscript_analytics_events prior WHERE prior.visitor_id=offscript_analytics_events.visitor_id "+
-      "AND prior.event_name='page_view' AND prior.created_at < $1::timestamptz)) returning, "+
+      "AND prior.event_name='page_view' AND prior.created_at < $1::timestamptz)) returning_visitors, "+
       "count(DISTINCT session_id) FILTER(WHERE event_name='engagement' AND metadata->>'milestoneSeconds'='60') engaged_60, "+
       "max(created_at) latest_at "+
       "FROM offscript_analytics_events WHERE "+clause,params),
@@ -96,7 +96,7 @@ export async function loadReport(filters:Filters):Promise<Report> {
     const row=totals[0]||{} as typeof totals[number];
     base.metrics = {visitors:number(row.visitors),sessions:number(row.sessions),pageViews:number(row.page_views),
       actions:number(row.actions),actionSessions:number(row.action_sessions),
-      returning:number(row.returning),engaged60:number(row.engaged_60),activeNow:number(presence[0]?.total)};
+      returning:number(row.returning_visitors),engaged60:number(row.engaged_60),activeNow:number(presence[0]?.total)};
     base.latestEventAt=row.latest_at ? new Date(String(row.latest_at)).toISOString() : null;
     base.trend=trend.map(r=>({label:String(r.label),visitors:number(r.visitors),pageViews:number(r.page_views),actions:number(r.actions)}));
     base.events=actions.map(r=>({label:String(r.label),sessions:number(r.sessions),total:number(r.total)}));
