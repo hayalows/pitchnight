@@ -168,7 +168,26 @@
       b.querySelector(".visually-hidden").textContent = paused ? "Play moving text" : "Pause moving text";
     });
     try { localStorage.setItem("offscript-motion-paused", paused ? "1" : "0"); } catch (e) {}
+    document.dispatchEvent(new Event("offscript:motionchange"));
   }
   toggles.forEach(function (b) { b.addEventListener("click", function () { setPaused(b.getAttribute("aria-pressed") !== "true"); }); });
   try { if (localStorage.getItem("offscript-motion-paused") === "1") setPaused(true); } catch (e) {}
+
+  /* Only warm Pitch Night when a visitor shows navigation intent and data saving is off. */
+  (function(){
+    var warmed=false,target="/events/pitch-night-001/";
+    function warm(){
+      var net=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+      if(warmed||location.pathname.indexOf(target)===0||document.hidden||net&&(net.saveData||/2g/.test(net.effectiveType||"")))return;
+      warmed=true;
+      var link=document.createElement("link");link.rel="prefetch";link.as="document";link.href=target;document.head.appendChild(link);
+    }
+    function intent(e){
+      if(e.target.closest&&e.target.closest('a[href="/events/pitch-night-001/"]'))warm();
+    }
+    document.addEventListener("pointerover",intent,{passive:true});
+    document.addEventListener("focusin",intent);
+    document.addEventListener("touchstart",intent,{passive:true});
+  })();
+
 })();

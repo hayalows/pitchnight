@@ -35,7 +35,7 @@
   --shadow:5px 5px 0 var(--ink);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.55 var(--body)}
 img,svg{display:block}
 a{color:inherit}
@@ -431,20 +431,30 @@ a,button{-webkit-tap-highlight-color:transparent}
   }
   function paint() { clamp(); track.style.transform = "translate3d(" + x.toFixed(2) + "px,0,0)"; }
   function hold(ms) { idleUntil = performance.now() + (ms || 2400); }
-  function tick(now) {
-    requestAnimationFrame(tick);
-    var dt = Math.min(48, now - (last || now)); last = now;
-    if (!visible || drag) return;
-    if (Math.abs(v) > 0.05) { x += v * dt / 16; v *= Math.pow(0.94, dt / 16); paint(); return; }
-    v = 0;
-    if (still || now < idleUntil || document.documentElement.classList.contains("motion-paused")) return;
-    x -= dt * 0.04; paint();
+  var rafId=0;
+  function stopLoop(){if(rafId)cancelAnimationFrame(rafId);rafId=0;last=0;}
+  function startLoop(){
+    if(rafId||!visible||document.hidden||still||drag||document.documentElement.classList.contains("motion-paused"))return;
+    last=performance.now();rafId=requestAnimationFrame(tick);
   }
-  if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(rail); else visible = true;
+  function tick(now){
+    rafId=0;
+    if(!visible||document.hidden||drag||still||document.documentElement.classList.contains("motion-paused"))return;
+    var dt=Math.min(48,now-(last||now));last=now;
+    if(Math.abs(v)>0.05){x+=v*dt/16;v*=Math.pow(.94,dt/16);paint();}
+    else{v=0;if(now>=idleUntil){x-=dt*.04;paint();}}
+    rafId=requestAnimationFrame(tick);
+  }
+  if("IntersectionObserver" in window)new IntersectionObserver(function(e){
+    visible=e[0].isIntersecting;if(visible)startLoop();else stopLoop();
+  }).observe(rail);else{visible=true;startLoop();}
+  document.addEventListener("visibilitychange",function(){if(document.hidden)stopLoop();else startLoop();});
+  document.addEventListener("offscript:motionchange",function(){if(document.documentElement.classList.contains("motion-paused"))stopLoop();else startLoop();});
+  window.addEventListener("pageshow",startLoop);
   rail.addEventListener("pointerdown", function (e) {
     if (e.button > 0) return;
     drag = { x: e.clientX, y: e.clientY, x0: x, t: performance.now(), v: 0, axis: e.pointerType === "mouse" ? "x" : "" , id: e.pointerId };
-    moved = 0; v = 0;
+    moved = 0; v = 0; stopLoop();
   });
   window.addEventListener("pointermove", function (e) {
     if (!drag || e.pointerId !== drag.id) return;
@@ -458,8 +468,8 @@ a,button{-webkit-tap-highlight-color:transparent}
   });
   function release() {
     if (!drag) return;
-    v = drag.axis === "x" ? Math.max(-60, Math.min(60, drag.v)) : 0; drag = null;
-    rail.classList.remove("is-dragging");
+    v = still ? 0 : (drag.axis === "x" ? Math.max(-60, Math.min(60, drag.v)) : 0); drag = null;
+    rail.classList.remove("is-dragging"); startLoop();
     hold(rail.matches(":hover") ? 600000 : 2600);
   }
   window.addEventListener("pointerup", release);
@@ -474,7 +484,7 @@ a,button{-webkit-tap-highlight-color:transparent}
   rail.addEventListener("keydown", function (e) {
     var k = { ArrowLeft: 1, ArrowRight: -1 }[e.key];
     if (!k) return;
-    e.preventDefault(); v = k * 14; hold(4000);
+    e.preventDefault(); if(still){x+=k*45;v=0;paint();}else{v=k*14;startLoop();} hold(4000);
   });
   rail.addEventListener("focusin", function (e) {
     var a = e.target.closest("a"); if (!a) return;
@@ -487,7 +497,7 @@ a,button{-webkit-tap-highlight-color:transparent}
   /* A drag is not a click: don't open a prop when the rail was pulled. */
   rail.addEventListener("click", function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); moved = 0; } }, true);
   rail.addEventListener("dragstart", function (e) { e.preventDefault(); });
-  paint(); requestAnimationFrame(tick);
+  paint(); startLoop();
 })();
 </script>
 <script>{{SITE_JS}}</script>

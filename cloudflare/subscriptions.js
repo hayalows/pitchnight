@@ -43,14 +43,14 @@ async function signup(request,env){
   let count=await env.OFFSCRIPT_DB.prepare("INSERT INTO signup_rates(identity_hash,attempts,window_start) VALUES (?1,1,?2) ON CONFLICT(identity_hash) DO UPDATE SET attempts=CASE WHEN window_start=?2 THEN attempts+1 ELSE 1 END,window_start=?2 RETURNING attempts").bind(identity,win).first();
   if(count&&count.attempts>6)return dataOut({error:"Too many attempts. Try again in an hour."},429);
   let row=await env.OFFSCRIPT_DB.prepare("SELECT id,status,verification_sent_at FROM subscribers WHERE email=?1").bind(email).first();
-  if(row?.status==="active"||(row?.status==="pending"&&Date.parse(String(row.verification_sent_at).replace(" ","T")+"Z")>Date.now()-120000))return dataOut({message:"If this address needs confirmation, an email will arrive shortly."});
+  if(row?.status==="active"||(row?.status==="pending"&&Date.parse(String(row.verification_sent_at).replace(" ","T")+"Z")>Date.now()-120000))return dataOut({message:"If you've already confirmed this address, you're on the list. Otherwise, check your inbox for the confirmation link."});
   let token=b64url(crypto.getRandomValues(new Uint8Array(32))),hash=await sha256(token),id=row?.id||crypto.randomUUID(),current=dbtime(),expiry=dbtime(new Date(Date.now()+172800000));
   await env.OFFSCRIPT_DB.prepare("INSERT INTO subscribers(id,email,status,source,consent_at,created_at,updated_at,verify_token_hash,verify_expires,verification_sent_at,unsubscribed_at) VALUES (?1,?2,'pending',?3,?4,?4,?4,?5,?6,?4,NULL) ON CONFLICT(email) DO UPDATE SET status='pending',source=excluded.source,consent_at=excluded.consent_at,updated_at=excluded.updated_at,verify_token_hash=excluded.verify_token_hash,verify_expires=excluded.verify_expires,verification_sent_at=excluded.verification_sent_at,unsubscribed_at=NULL").bind(id,email,source,current,hash,expiry).run();
   let url=MAIL_SITE+"/confirm?token="+encodeURIComponent(token);
   let paras=["Thanks for finding your way to OffScript. Our first Pitch Night gave people a reason to come together, speak up for their friends and meet someone new.","You asked to hear what comes next. Please confirm your email so we know it was really you. After that, we'll send you a short welcome and share news when there is something to tell you."];
   try { await sendOffscript(env,email,"One quick step with OffScript","One more step.",paras,"CONFIRM MY EMAIL",url,"If you did not request this, you can ignore the message. This link expires in 48 hours.","If you did not request this, please ignore it.","offscript-confirm-"+id+"-"+token.slice(0,10)); }
   catch(e){try{await env.OFFSCRIPT_DB.prepare("UPDATE subscribers SET verification_sent_at=NULL WHERE id=?1 AND verify_token_hash=?2").bind(id,hash).run()}catch{}throw e}
-  return dataOut({message:"Check your inbox. We've sent you a link to confirm your email."});
+  return dataOut({message:"If you've already confirmed this address, you're on the list. Otherwise, check your inbox for the confirmation link."});
  }catch(e){console.error("OffScript signup failed:",String(e).slice(0,100));return dataOut({error:"We couldn't send that email right now. Please try again."},503)}
 }
 async function confirmEmail(request,env){

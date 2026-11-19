@@ -1,5 +1,5 @@
-@font-face{font-family:"Anton";src:url("assets/fonts/anton-props.woff2") format("woff2");font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url("assets/fonts/space-grotesk-props.woff2") format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"Anton";src:url("/assets/fonts/anton-props.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("/assets/fonts/space-grotesk-props.woff2") format("woff2");font-weight:300 700;font-display:swap}
 /* Pitch Night — Make Your Case
    Original poster-inspired visual system: warm paper, cobalt ink, marker red, playful panels.
    No framework or build step required.
@@ -18,7 +18,7 @@
   --ease:cubic-bezier(.2,.8,.2,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:6rem}
+html{scroll-behavior:auto;scroll-padding-top:6rem}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body.dialog-is-open{overflow:hidden}
 a{color:inherit}
@@ -2323,3 +2323,9 @@ body:has(.measurement-notice:not([hidden])) .menu-trigger-floating:not([hidden])
 .pass-prop-link span{font-size:1.1rem}
 .pass-prop-link:hover{color:var(--ink)}
 .pass-prop-link:focus-visible{outline:3px solid var(--red);outline-offset:4px}
+
+/* Small native cross-document transitions; older browsers use standard links. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation-duration:.12s;animation-timing-function:ease-out}
+::view-transition-new(root){animation-duration:.16s;animation-timing-function:ease-in}
+@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}}
