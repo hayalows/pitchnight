@@ -53,13 +53,14 @@ with sync_playwright() as p:
             expect(bar).to_be_visible()
             expect(bar.locator('[aria-current="page"]')).to_have_text(here)
             expect(bar.locator('a[href="/"]').first).to_be_visible()
-            expect(pg.locator(".osx-foot")).to_have_count(1)
+            expect(pg.locator(".osf")).to_have_count(1)
+            assert pg.locator(".measurement-notice").count() == 0, (path, "no analytics pop-up")
             assert pg.locator("footer").count() == 1, (path, "one footer only")
             assert not errors, (path, errors)
     check("every event page has one breadcrumb home and one footer", family_bar)
 
     def logo_goes_home():
-        for path, sel in [(EVENT, ".site-header .brand"), (EVENT, '.osx-foot-brand a[aria-label="OffScript home"]'), (EVENT + "props.html", ".prop-brand"), (EVENT + "venue-explore.html", ".head-logo")]:
+        for path, sel in [(EVENT, ".site-header .brand"), (EVENT, '.osf-logo'), (EVENT + "props.html", ".prop-brand"), (EVENT + "venue-explore.html", ".head-logo")]:
             pg, _, _ = open_page(b, path)
             assert pg.get_attribute(sel, "href") == "/", (path, sel, pg.get_attribute(sel, "href"))
     check("the OffScript logo on event pages leads to the main site", logo_goes_home)
@@ -124,12 +125,18 @@ with sync_playwright() as p:
     check("the header marks the current page", nav_current)
 
     def list_from_subpage():
-        pg, _, _ = open_page(b, "/about/")
-        pg.locator(".site-header .header-cta").click()
-        pg.wait_for_url(BASE + "/#list")
-        pg.wait_for_timeout(800)
-        expect(pg.locator("#list")).to_be_in_viewport()
-    check("'Get on the list' from another page lands on the sign-up card", list_from_subpage)
+        # From any page, OffScript or event, "Get on the list" opens the list right there.
+        for path, opener in [("/about/", ".site-header .header-cta"), (EVENT, ".osf-btn")]:
+            pg, _, _ = open_page(b, path)
+            before = pg.url
+            pg.locator(opener).first.scroll_into_view_if_needed()
+            pg.locator(opener).first.click()
+            pg.wait_for_timeout(600)
+            assert pg.evaluate("document.getElementById('os-list').open"), path
+            assert pg.url == before, (path, "no page change")
+            pg.keyboard.press("Escape"); pg.wait_for_timeout(400)
+            assert not pg.evaluate("document.getElementById('os-list').open"), path
+    check("'Get on the list' opens in place on every page", list_from_subpage)
 
     b.close()
 

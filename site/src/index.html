@@ -108,36 +108,18 @@ a,button{-webkit-tap-highlight-color:transparent}
 .about .tag{display:inline-block;background:var(--red);color:var(--chalk);border:var(--line);padding:8px 14px;transform:rotate(-3deg);margin-top:8px}
 
 .events{border-top:3px solid var(--ink)}
-.events-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.42fr);gap:28px;margin-top:40px}
+.events-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;margin-top:40px}
 .event{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);background:var(--chalk);border:var(--line);box-shadow:9px 9px 0 var(--ink)}
 .event-copy{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .event-copy .label{color:var(--blue)}
 .event-copy h3{font:italic 400 clamp(2.1rem,3vw,2.9rem)/1.02 var(--serif);margin:0}
 .event-copy p{margin:0;color:var(--smoke);max-width:440px}
 .facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin:4px 0 8px}
-.soon{border:2px dashed var(--ink);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px}
-.soon .label{color:var(--red-text)}
-.soon h3{font:italic 400 clamp(2.2rem,3vw,2.8rem)/1 var(--serif);margin:0}
-.soon p{margin:0;color:var(--smoke)}
 
 .room{background:var(--blue);color:var(--paper);border-top:3px solid var(--ink)}
 .room .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
 .room h2.big .y{color:var(--yellow)}
 .room p{max-width:600px;margin:22px 0 0;font-size:1.08rem}
-
-/* Footer */
-.site-footer{background:var(--ink);color:var(--paper)}
-.site-footer .wrap{display:grid;grid-template-columns:1.3fr repeat(2,minmax(0,.7fr));gap:40px;padding-top:56px;padding-bottom:40px}
-.site-footer .off{height:64px;width:auto;color:var(--paper)}
-.site-footer .tagline{font:italic 400 1.6rem/1.15 var(--serif);margin:16px 0 0}
-.site-footer h2{margin:0 0 14px;color:var(--yellow)}
-.site-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.site-footer ul a{text-decoration:none;border-bottom:1px solid transparent}
-.site-footer ul a:hover{border-bottom-color:var(--paper)}
-.legal{border-top:1px solid #3a3733;grid-column:1/-1;padding-top:22px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;color:#bdb6aa;font-size:.85rem}
-
-/* Sticky bar (phones) */
-.stickybar{display:none}
 
 /* Tablet */
 @media (max-width:1000px){
@@ -146,8 +128,6 @@ a,button{-webkit-tap-highlight-color:transparent}
   .about .wrap{grid-template-columns:minmax(0,1fr)}
   .events-grid{grid-template-columns:1fr}
   .room .wrap{flex-direction:column;align-items:flex-start}
-  .site-footer .wrap{grid-template-columns:1fr 1fr}
-  .site-footer .brandcol{grid-column:1/-1}
 }
 /* Phone */
 @media (max-width:720px){
@@ -160,11 +140,6 @@ a,button{-webkit-tap-highlight-color:transparent}
   .field{flex-direction:column;border-color:var(--paper)}
   .field button{border-left:0;border-top:var(--line);justify-content:center;min-height:50px}
   .event{grid-template-columns:1fr}
-  .site-footer .wrap{grid-template-columns:1fr}
-  body{padding-bottom:76px}
-  .stickybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter) calc(12px + env(safe-area-inset-bottom));background:var(--ink);color:var(--paper);border-top:3px solid var(--ink);transform:translateY(110%);transition:transform .25s ease}
-  .stickybar.is-visible{transform:none}
-  .stickybar span{font:italic 400 1.3rem/1.1 var(--serif)}
 }
 @media (max-width:360px){
   /* Keep the headline inside narrow screens, even before custom fonts load. */
@@ -175,7 +150,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .ticker-track{animation:none}
-  .btn,.stickybar{transition:none}
+  .btn{transition:none}
   .btn:hover,.btn:active{transform:none}
 }
 </style>
@@ -187,7 +162,6 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
       <div class="hero-copy">
-        <span class="label kicker" data-hero-step>Hello from OffScript / Ghana</span>
         <h1 id="hero-title" class="hero-title">
           <span class="line"><span class="word">Beyond</span></span>
           <span class="line"><span class="word">the</span> <span class="word usual blue">usual<svg class="pen-ring" viewBox="0 0 300 120" aria-hidden="true" focusable="false" preserveAspectRatio="none"><path pathLength="1" d="M24 64C30 30 104 12 168 13s124 20 120 52c-4 32-82 46-150 44C66 107 12 94 16 62 20 36 70 24 112 20"/></svg></span></span>
@@ -201,15 +175,15 @@ a,button{-webkit-tap-highlight-color:transparent}
       </div>
 
       <div class="hero-stage">
-        <button class="hero-prop hero-prop--arch" type="button" data-toy aria-label="Make Your Case sticker. Drag it anywhere, or tap to toss it."><span class="toy-body">{{PROP_10}}</span></button>
-        <button class="hero-prop hero-prop--bubble" type="button" data-toy aria-label="Hear Me Out sticker. Drag it anywhere, or tap to toss it."><span class="toy-body">{{PROP_01}}</span></button>
+        <button class="hero-prop hero-prop--arch" type="button" data-toy aria-label="Make Your Case sticker. Drag it, or tap to toss it."><span class="toy-body">{{PROP_10}}</span></button>
+        <button class="hero-prop hero-prop--bubble" type="button" data-toy aria-label="Hear Me Out sticker. Drag it, or tap to toss it."><span class="toy-body">{{PROP_01}}</span></button>
         <p class="toy-hint" aria-hidden="true">psst, the stickers move</p>
         <aside class="next-card" id="list" tabindex="-1" aria-labelledby="next-title">
           <svg class="sticker" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#e8382b" stroke="#141414" stroke-width="3"/><g transform="translate(60 60) scale(0.78) translate(-193.8 -108.4)"><path fill="#faf4e7" d="{{LOGO_FLIP}}"/></g></svg>
           <span class="label">What’s next</span>
           <h2 id="next-title">Edition 002<br/>is on the way.</h2>
           <p class="sub">Be first to hear the date, the venue and the format.</p>
-          <form class="signup" id="signup" novalidate>
+          <form class="signup" id="signup" data-signup data-source="offscriptgh-home" novalidate>
             <label class="label" for="email">Your email</label>
             <div class="field">
               <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="signup-msg signup-privacy"/>
@@ -236,13 +210,12 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="section about" id="about" aria-labelledby="about-title">
     <div class="wrap">
       <div data-reveal>
-        <span class="label">001 / Who we are</span>
-        <h2 class="big" id="about-title">There’s<br/>room for<br/>everyone.</h2>
+                <h2 class="big" id="about-title">There’s<br/>room for<br/>everyone.</h2>
       </div>
       <div data-reveal>
         <p>OffScript brings people together through events that make space for conversation, creativity and real connections.</p>
-        <p>We began with Pitch Night: Make Your Case, an evening in Accra where people came to speak up for their friends, share a laugh and meet someone new.</p>
-        <div class="about-actions"><p class="aside-note">We’re only getting started.</p><a class="text-cta" href="/about/">More about OffScript <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+        <p>We began with Pitch Night: Make Your Case, an evening in Accra where people came to speak up for their friends, share a laugh and meet someone new. We’re only getting started.</p>
+        <div class="about-actions"><a class="text-cta" href="/about/">More about OffScript <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
       </div>
     </div>
   </section>
@@ -250,8 +223,7 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="section story" id="story" aria-labelledby="story-title">
     <div class="wrap">
       <header class="story-head" data-reveal>
-        <span class="label">002 / How a night goes</span>
-        <h2 class="big" id="story-title">One night.<br/><span class="blue">Four parts.</span></h2>
+                <h2 class="big" id="story-title">One night.<br/><span class="blue">Four parts.</span></h2>
         <p>This is how Pitch Night 001 ran. The props are the real ones from the night.</p>
       </header>
       <div class="story-grid">
@@ -297,27 +269,19 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="section events" id="events" aria-labelledby="events-title">
     <div class="wrap">
       <div class="events-top" data-reveal>
-        <div><span class="label">003 / The events</span>
-        <h2 class="big" id="events-title">What we’ve<br/>been up to.</h2></div>
+        <div>        <h2 class="big" id="events-title">What we’ve<br/>been up to.</h2></div>
         <a class="text-cta" href="/events/">See all events <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
       <div class="events-grid">
         <article class="event" aria-labelledby="ev1-title" data-reveal>
           <a class="poster" href="/events/pitch-night-001/" tabindex="-1" aria-hidden="true"><span class="poster-prop">{{PROP_10}}</span><span class="label poster-tag">Edition 001 · Completed</span></a>
           <div class="event-copy">
-            <span class="label">Past event / Edition 001</span>
             <h3 id="ev1-title">Pitch Night:<br/>Make Your Case</h3>
             <p>People spoke up for their friends, shared a laugh and met someone new. Read our thank-you note, visit the Connection Board and look back at the programme.</p>
             <div class="facts label"><span>13 November 2026</span><span>Haatso, Accra</span></div>
             <a class="btn btn--sm" href="/events/pitch-night-001/">Explore Edition 001 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
-        <div class="soon" data-reveal>
-          <span class="label">Coming soon / Edition 002</span>
-          <h3>Your seat<br/>is waiting.</h3>
-          <p>Date and format to be announced. Join the list and we will tell you first.</p>
-          <a class="btn btn--sm" href="#list" data-focus-signup>Tell me first <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </div>
       </div>
     </div>
   </section>
@@ -325,8 +289,7 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="propwall" aria-labelledby="propwall-title">
     <div class="wrap propwall-head" data-reveal>
       <div>
-        <span class="label">From the night / The Prop Studio</span>
-        <h2 id="propwall-title">Lines worth <span class="red">holding.</span></h2>
+                <h2 id="propwall-title">Lines worth <span class="red">holding.</span></h2>
       </div>
       <div class="propwall-actions">
         <a class="btn btn--sm" href="/events/pitch-night-001/props.html">Open the Prop Studio <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -343,17 +306,16 @@ a,button{-webkit-tap-highlight-color:transparent}
   <section class="section room" id="connect" aria-labelledby="room-title">
     <div class="wrap">
       <div data-reveal>
-        <span class="label">004 / The conversation continues</span>
-        <h2 class="big" id="room-title">Stay <span class="y">in</span><br/>the room.</h2>
+                <h2 class="big" id="room-title">Stay <span class="y">in</span><br/>the room.</h2>
         <p>Were you at Pitch Night? The Connection Board is still open. Tell us what you thought, and help shape what comes next.</p>
       </div>
-      <a class="btn" href="/events/pitch-night-001/#memories" data-reveal>Go to the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn" href="https://forms.gle/j4zaUwHZ6PaLsRh88" data-os-board data-reveal>Open the Connection Board <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </section>
 
   <section class="home-join" aria-labelledby="join-title">
     <div class="wrap" data-reveal>
-      <div><span class="label">005 / Get involved</span><h2 id="join-title">Good nights need good people.</h2><p>There may be ways to help shape future events, from welcoming guests to working behind the scenes. We're not advertising roles yet, but we'd like to stay in touch with people who care about what we're building.</p></div>
+      <div><h2 id="join-title">Good nights need good people.</h2><p>There may be ways to help shape future events, from welcoming guests to working behind the scenes. We're not advertising roles yet, but we'd like to stay in touch with people who care about what we're building.</p></div>
       <a class="btn" href="/join/">Join the conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </section>
@@ -361,108 +323,8 @@ a,button{-webkit-tap-highlight-color:transparent}
 
 {{FOOTER}}
 
-<div class="stickybar" id="stickybar" aria-hidden="true">
-  <span>Next night soon</span>
-  <a class="btn btn--sm" href="#list" data-focus-signup tabindex="-1">Get on the list</a>
-</div>
 
 <script>
-/* ===== Settings to fill in (back end and contact details) =====
-   signupEndpoint: where the email form POSTs JSON {email, source}.
-                   Return 2xx on success. Until it exists the form says the list is not open yet.
-   links: add real profile URLs to show them in the footer. Leave blank to hide. */
-window.OFFSCRIPT_CONFIG = {
-  signupEndpoint: "/api/subscribe",
-  links: { instagram: "", tiktok: "", whatsapp: "", email: "" }
-};
-
-(function () {
-  var cfg = window.OFFSCRIPT_CONFIG;
-
-  /* Footer links from settings (none are invented). */
-  var names = { instagram: "Instagram", tiktok: "TikTok", whatsapp: "WhatsApp", email: "Email us" };
-  var list = document.getElementById("footer-links");
-  Object.keys(names).forEach(function (k) {
-    var v = cfg.links[k];
-    if (!v) return;
-    var li = document.createElement("li"), a = document.createElement("a");
-    a.textContent = names[k];
-    a.href = k === "email" ? "mailto:" + v : v;
-    if (k !== "email") { a.target = "_blank"; a.rel = "noopener"; }
-    li.appendChild(a); list.appendChild(li);
-  });
-
-  var email = document.getElementById("email");
-
-  /* Sign-up form */
-  var form = document.getElementById("signup"), msg = document.getElementById("signup-msg");
-  var submit = form.querySelector("button[type=submit]");
-  // Only accept signups when the server has a working delivery configuration.
-  fetch("/api/list-status", { cache:"no-store" }).then(function(r){return r.ok?r.json():{open:false}}).then(function(data){
-    if(data.open) return;
-    closed();
-  }).catch(closed);
-  // A calm, honest state while delivery is not configured: not an error the visitor caused.
-  function closed(){
-    email.disabled = true; submit.disabled = true;
-    var checkbox=document.getElementById("consent"); if(checkbox)checkbox.disabled=true;
-    form.classList.add("is-closed");
-    say("The list isn't open just yet. Please check back soon.", "note");
-  }
-  function say(text, kind) { msg.textContent = text; msg.className = "form-msg" + (kind ? " is-" + kind : ""); }
-  email.addEventListener("input", function () { if (email.getAttribute("aria-invalid")) { email.removeAttribute("aria-invalid"); say(""); } });
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (form.company.value) return; /* quiet spam trap */
-    var value = email.value.trim();
-    if (!value || !email.checkValidity()) {
-      email.setAttribute("aria-invalid", "true");
-      say(value ? "That email does not look right. Try name@example.com." : "Enter your email to get on the list.", "error");
-      email.focus();
-      return;
-    }
-    var consent = document.getElementById("consent");
-    if (!consent.checked) { say("Tick the box if you'd like to receive event emails.", "error"); consent.focus(); return; }
-    submit.disabled = true;
-    var original = submit.firstChild.nodeValue;
-    submit.firstChild.nodeValue = "Saving ";
-    say("");
-    fetch(cfg.signupEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: value, source: "offscriptgh-home", consent: consent.checked, company: form.company.value })
-    }).then(function (r) {
-      return r.json().catch(function(){ return {}; }).then(function(reply){
-        if (r.ok) { form.classList.add("is-done"); say(reply.message || "Check your inbox to confirm your email.", "ok"); }
-        else if (r.status === 429) say(reply.error || "Too many attempts. Try later.", "error");
-        else say(reply.error || "We couldn't save your email right now. Please try again.", "error");
-      });
-    }).catch(function () {
-      say("You seem to be offline. Check your connection and try again.", "error");
-    }).then(function () {
-      submit.disabled = false;
-      submit.firstChild.nodeValue = original;
-    });
-  });
-
-  /* Sticky bar on phones. One simple rule, checked on every scroll and when you come back to the page:
-     show it once the sign-up card has scrolled away, hide it while the card or the footer is on screen. */
-  var bar = document.getElementById("stickybar");
-  var card = document.getElementById("list"), foot = document.querySelector(".site-footer"), pending = false;
-  function update() {
-    pending = false;
-    var h = window.innerHeight, c = card.getBoundingClientRect(), f = foot.getBoundingClientRect();
-    var show = c.bottom < 0 && f.top > h - 40;
-    bar.classList.toggle("is-visible", show);
-    bar.setAttribute("aria-hidden", String(!show));
-    bar.querySelector("a").tabIndex = show ? 0 : -1;
-  }
-  window.addEventListener("scroll", function () { if (!pending) { pending = true; requestAnimationFrame(update); } }, { passive: true });
-  window.addEventListener("resize", update);
-  window.addEventListener("offscript:return", update);
-  update();
-})();
-
 /* Story: the stage follows the step being read. Phones show each prop inline instead. */
 (function () {
   var steps = [].slice.call(document.querySelectorAll("[data-story-step]"));
@@ -481,52 +343,46 @@ window.OFFSCRIPT_CONFIG = {
   steps.forEach(function (s) { io.observe(s); });
 })();
 
-/* Hero stickers: pick them up and place them anywhere in the hero, throw them,
-   or tap to toss. Works with a mouse, a finger, and the keyboard (arrows nudge, Enter tosses). */
+/* Hero stickers: real props from the night. Grab one and it peels up and follows your finger or mouse;
+   let go and it springs back to its own spot, so the layout never breaks and nothing is left behind.
+   A tap tosses it with a spin and it lands home again. Keyboard: Enter or Space tosses it. */
 (function () {
   var hero = document.querySelector(".hero"), toys = [].slice.call(document.querySelectorAll("[data-toy]"));
   if (!hero || !toys.length) return;
   var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var hint = document.querySelector(".toy-hint"), top = 4;
+  var top = 4;
   try { if (localStorage.getItem("offscript-toys-found") === "1") hero.classList.add("toys-found"); } catch (e) {}
   function found() { if (hero.classList.contains("toys-found")) return; hero.classList.add("toys-found"); try { localStorage.setItem("offscript-toys-found", "1"); } catch (e) {} }
 
   toys.forEach(function (el) {
     var body = el.querySelector(".toy-body");
     var t = { x: 0, y: 0, vx: 0, vy: 0, r: 0, vr: 0, raf: 0, held: false, moved: 0, px: 0, py: 0, lt: 0 };
-    function limits() {
-      var h = hero.getBoundingClientRect(), b = el.getBoundingClientRect();
-      var bx = b.left - t.x, by = b.top - t.y, pad = 8;
-      return { minX: h.left + pad - bx, maxX: h.right - pad - (bx + b.width), minY: h.top + pad - by, maxY: h.bottom - pad - (by + b.height) };
-    }
     function paint() {
       el.style.translate = t.x.toFixed(1) + "px " + t.y.toFixed(1) + "px";
       body.style.rotate = t.r.toFixed(2) + "deg";
     }
+    /* A damped spring pulls the sticker home. */
     function step() {
       t.raf = 0;
       if (t.held) return;
-      var L = limits();
+      t.vx += -t.x * 0.075; t.vy += -t.y * 0.075; t.vr += -t.r * 0.09;
+      t.vx *= 0.8; t.vy *= 0.8; t.vr *= 0.78;
       t.x += t.vx; t.y += t.vy; t.r += t.vr;
-      t.vx *= 0.9; t.vy *= 0.9; t.vr *= 0.88;
-      t.r += (0 - t.r) * 0.06; /* settles back to its own tilt */
-      if (t.x < L.minX) { t.x = L.minX; t.vx = Math.abs(t.vx) * 0.55; t.vr += 2; }
-      if (t.x > L.maxX) { t.x = L.maxX; t.vx = -Math.abs(t.vx) * 0.55; t.vr -= 2; }
-      if (t.y < L.minY) { t.y = L.minY; t.vy = Math.abs(t.vy) * 0.55; }
-      if (t.y > L.maxY) { t.y = L.maxY; t.vy = -Math.abs(t.vy) * 0.55; }
       paint();
-      if (Math.abs(t.vx) + Math.abs(t.vy) + Math.abs(t.vr) + Math.abs(t.r) > 0.08) t.raf = requestAnimationFrame(step);
-      else { t.r = 0; paint(); el.classList.remove("is-flying"); }
+      if (Math.abs(t.x) + Math.abs(t.y) + Math.abs(t.vx) + Math.abs(t.vy) + Math.abs(t.r) + Math.abs(t.vr) > 0.15) t.raf = requestAnimationFrame(step);
+      else { t.x = t.y = t.r = 0; paint(); el.classList.remove("is-flying"); }
     }
-    function go() { el.classList.add("is-flying"); if (still) { t.vx *= 0; t.vy *= 0; var L = limits(); t.x = Math.min(L.maxX, Math.max(L.minX, t.x)); t.y = Math.min(L.maxY, Math.max(L.minY, t.y)); t.r = 0; paint(); return; } if (!t.raf) t.raf = requestAnimationFrame(step); }
-    function lift() { el.style.zIndex = ++top; }
-
+    function home() {
+      el.classList.add("is-flying");
+      if (still) { t.x = t.y = t.r = 0; t.vx = t.vy = t.vr = 0; paint(); el.classList.remove("is-flying"); return; }
+      if (!t.raf) t.raf = requestAnimationFrame(step);
+    }
     el.addEventListener("pointerdown", function (e) {
       if (e.button !== 0) return;
       el.setPointerCapture(e.pointerId);
       t.held = true; t.moved = 0; t.px = e.clientX; t.py = e.clientY; t.lt = performance.now(); t.vx = t.vy = 0;
       cancelAnimationFrame(t.raf); t.raf = 0;
-      lift(); el.classList.add("is-held");
+      el.style.zIndex = ++top; el.classList.add("is-held");
     });
     el.addEventListener("pointermove", function (e) {
       if (!t.held) return;
@@ -534,82 +390,104 @@ window.OFFSCRIPT_CONFIG = {
       t.moved += Math.abs(dx) + Math.abs(dy);
       t.x += dx; t.y += dy;
       t.vx = dx / dt * 16; t.vy = dy / dt * 16;
-      t.r = Math.max(-14, Math.min(14, t.vx * 1.4));
+      t.r = Math.max(-16, Math.min(16, t.vx * 1.6));
       t.px = e.clientX; t.py = e.clientY; t.lt = now;
-      var L = limits(); t.x = Math.min(L.maxX, Math.max(L.minX, t.x)); t.y = Math.min(L.maxY, Math.max(L.minY, t.y));
       paint();
     });
     function drop() {
       if (!t.held) return;
       t.held = false; el.classList.remove("is-held");
-      if (t.moved > 6) { el.dataset.dragged = "1"; found(); go(); }
+      if (t.moved > 6) { el.dataset.dragged = "1"; found(); }
+      t.vr = t.vx * 0.8;
+      home();
     }
     el.addEventListener("pointerup", drop);
     el.addEventListener("pointercancel", drop);
     el.addEventListener("lostpointercapture", drop);
-    /* A tap or Enter tosses the sticker: a little hop in a random direction with a spin. */
     el.addEventListener("click", function () {
       if (el.dataset.dragged) { delete el.dataset.dragged; return; }
-      found(); lift();
+      found(); el.style.zIndex = ++top;
       var dir = Math.random() < 0.5 ? -1 : 1;
-      t.vx = dir * (6 + Math.random() * 8); t.vy = -(7 + Math.random() * 7); t.vr = dir * (14 + Math.random() * 12);
+      t.vx = dir * (5 + Math.random() * 5); t.vy = -(12 + Math.random() * 6); t.vr = dir * (18 + Math.random() * 10);
       el.classList.remove("is-tossed"); void el.offsetWidth; el.classList.add("is-tossed");
-      go();
+      home();
     });
-    el.addEventListener("keydown", function (e) {
-      var k = { ArrowLeft: [-16, 0], ArrowRight: [16, 0], ArrowUp: [0, -16], ArrowDown: [0, 16] }[e.key];
-      if (!k) return;
-      e.preventDefault(); found();
-      var L = limits(); t.x = Math.min(L.maxX, Math.max(L.minX, t.x + k[0])); t.y = Math.min(L.maxY, Math.max(L.minY, t.y + k[1])); paint();
-    });
-    window.addEventListener("resize", function () { var L = limits(); t.x = Math.min(L.maxX, Math.max(L.minX, t.x)); t.y = Math.min(L.maxY, Math.max(L.minY, t.y)); paint(); });
   });
 })();
 
-/* Prop wall: drifts on its own, and you can drag it, swipe it or scroll it sideways.
-   Your hand always wins; the drift waits a moment, then carries on from where you left it. */
+/* Prop wall: a slow, endless drift you can grab. Drag with a mouse or swipe with a finger and it glides
+   to a stop, then drifts on. It moves with a GPU transform, so it stays smooth on any screen.
+   Arrow keys move it; tabbing to a prop brings it into view. A tap opens the prop. */
 (function () {
   var rail = document.querySelector("[data-rail]"), track = rail && rail.querySelector("[data-rail-track]");
   if (!rail || !track) return;
   var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var idleUntil = 0, pos = 0, last = 0, down = null, moved = 0, visible = false;
-  function half() { return track.classList.contains("is-looping") ? track.scrollWidth / 2 : 0; }
-  function wrap() { var h = half(); if (!h) return; if (rail.scrollLeft >= h) rail.scrollLeft -= h; else if (rail.scrollLeft <= 0 && h) rail.scrollLeft += h; }
+  var x = 0, v = 0, last = 0, idleUntil = 0, visible = false, drag = null, moved = 0;
+  function span() { return track.classList.contains("is-looping") ? track.scrollWidth / 2 : Math.max(0, track.scrollWidth - rail.clientWidth); }
+  function clamp() {
+    var s = span();
+    if (track.classList.contains("is-looping")) { if (s) { x = x % s; if (x > 0) x -= s; } }
+    else x = Math.min(0, Math.max(-s, x));
+  }
+  function paint() { clamp(); track.style.transform = "translate3d(" + x.toFixed(2) + "px,0,0)"; }
+  function hold(ms) { idleUntil = performance.now() + (ms || 2400); }
   function tick(now) {
     requestAnimationFrame(tick);
     var dt = Math.min(48, now - (last || now)); last = now;
-    if (!visible || still || down || now < idleUntil || document.documentElement.classList.contains("motion-paused")) { pos = rail.scrollLeft; return; }
-    pos += dt * 0.045; rail.scrollLeft = pos; wrap(); pos = rail.scrollLeft;
+    if (!visible || drag) return;
+    if (Math.abs(v) > 0.05) { x += v * dt / 16; v *= Math.pow(0.94, dt / 16); paint(); return; }
+    v = 0;
+    if (still || now < idleUntil || document.documentElement.classList.contains("motion-paused")) return;
+    x -= dt * 0.04; paint();
   }
-  function hold(ms) { idleUntil = performance.now() + (ms || 2600); }
   if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(rail); else visible = true;
-  ["wheel", "touchstart", "keydown", "focusin"].forEach(function (ev) { rail.addEventListener(ev, function () { hold(); }, { passive: true }); });
-  rail.addEventListener("scroll", function () { if (down || performance.now() < idleUntil) wrap(); }, { passive: true });
-  rail.addEventListener("mouseenter", function () { hold(600000); });
-  rail.addEventListener("mouseleave", function () { hold(900); });
-  /* Mouse drag with a little glide on release. Touch uses the browser's own swipe. */
   rail.addEventListener("pointerdown", function (e) {
-    if (e.pointerType !== "mouse" || e.button !== 0) return;
-    down = { x: e.clientX, s: rail.scrollLeft, v: 0, t: performance.now() }; moved = 0;
-    rail.classList.add("is-dragging");
+    if (e.button > 0) return;
+    drag = { x: e.clientX, y: e.clientY, x0: x, t: performance.now(), v: 0, axis: e.pointerType === "mouse" ? "x" : "" , id: e.pointerId };
+    moved = 0; v = 0;
   });
   window.addEventListener("pointermove", function (e) {
-    if (!down) return;
-    var dx = e.clientX - down.x, now = performance.now();
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.axis) { if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; drag.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y"; if (drag.axis === "y") { drag = null; return; } }
+    if (!rail.classList.contains("is-dragging")) { rail.classList.add("is-dragging"); try { rail.setPointerCapture(e.pointerId); } catch (err) {} }
+    var now = performance.now(), prev = x;
     moved = Math.max(moved, Math.abs(dx));
-    down.v = (rail.scrollLeft - (down.s - dx)) / Math.max(8, now - down.t) * 16; down.t = now;
-    rail.scrollLeft = down.s - dx; wrap(); if (rail.scrollLeft !== down.s - dx) { down.s = rail.scrollLeft + dx; }
+    x = drag.x0 + dx; paint();
+    drag.v = (x - prev) / Math.max(8, now - drag.t) * 16; drag.t = now;
   });
-  window.addEventListener("pointerup", function () {
-    if (!down) return;
-    var v = -down.v; down = null; rail.classList.remove("is-dragging");
-    (function glide() { if (Math.abs(v) < 0.4 || still) return; rail.scrollLeft += v; wrap(); v *= 0.93; requestAnimationFrame(glide); })();
+  function release() {
+    if (!drag) return;
+    v = drag.axis === "x" ? Math.max(-60, Math.min(60, drag.v)) : 0; drag = null;
+    rail.classList.remove("is-dragging");
     hold(rail.matches(":hover") ? 600000 : 2600);
+  }
+  window.addEventListener("pointerup", release);
+  window.addEventListener("pointercancel", release);
+  rail.addEventListener("wheel", function (e) {
+    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+    if (!d) return;
+    e.preventDefault(); x -= d; v = 0; paint(); hold();
+  }, { passive: false });
+  rail.addEventListener("mouseenter", function () { hold(600000); });
+  rail.addEventListener("mouseleave", function () { hold(900); });
+  rail.addEventListener("keydown", function (e) {
+    var k = { ArrowLeft: 1, ArrowRight: -1 }[e.key];
+    if (!k) return;
+    e.preventDefault(); v = k * 14; hold(4000);
   });
+  rail.addEventListener("focusin", function (e) {
+    var a = e.target.closest("a"); if (!a) return;
+    hold(8000);
+    var r = rail.getBoundingClientRect(), b = a.getBoundingClientRect();
+    if (b.left < r.left + 40) x += r.left + 40 - b.left; else if (b.right > r.right - 40) x -= b.right - (r.right - 40);
+    v = 0; paint();
+  });
+  rail.addEventListener("scroll", function () { rail.scrollLeft = 0; });
   /* A drag is not a click: don't open a prop when the rail was pulled. */
   rail.addEventListener("click", function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); moved = 0; } }, true);
   rail.addEventListener("dragstart", function (e) { e.preventDefault(); });
-  requestAnimationFrame(function () { pos = rail.scrollLeft = half() ? 1 : 0; requestAnimationFrame(tick); });
+  paint(); requestAnimationFrame(tick);
 })();
 </script>
 <script>{{SITE_JS}}</script>

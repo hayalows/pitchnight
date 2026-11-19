@@ -47,26 +47,96 @@
       document.body.classList.add("menu-open");
     });
     menu.querySelector(".menu-close").addEventListener("click", function () { closeMenu(); });
+    /* Another sheet can close the menu; keep the button and page in step. */
+    menu.addEventListener("close", function () { menu.classList.remove("is-open"); menuBtn.setAttribute("aria-expanded", "false"); document.body.classList.remove("menu-open"); });
     menu.addEventListener("cancel", function (e) { e.preventDefault(); closeMenu(); });
     menu.addEventListener("click", function (e) {
       if (e.target === menu) closeMenu();
-      else if (e.target.closest("a")) closeMenu(false);
+      else if (e.target.closest("a") && !e.target.closest("[data-os-list],[data-os-board]")) closeMenu(false);
     });
     window.matchMedia("(min-width: 901px)").addEventListener("change", function (m) { if (m.matches) closeMenu(false); });
   }
 
-  /* Every "list" link lands on the sign-up form with the cursor in the field.
-     Pages without the form send people to the home page form. */
-  var listCard = document.getElementById("list"), email = document.getElementById("email");
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest("[data-focus-signup]");
-    if (!a || !listCard) return;
-    e.preventDefault();
-    closeMenu(false);
-    listCard.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "center" });
-    setTimeout(function () { if (email && !email.disabled) email.focus({ preventScroll: true }); else listCard.focus({ preventScroll: true }); }, reduce.matches ? 0 : 450);
-    history.replaceState(null, "", "#list");
-  });
+  var UI = window.OffScriptUI;
+
+  /* Connection Board: opens right here. The form starts loading the moment you show interest
+     (hover, focus, touch) or when a board button scrolls near, so it is usually ready on open. */
+  var board = document.getElementById("os-board");
+  if (UI && board) {
+    UI.wireSheet(board);
+    var frame = board.querySelector("iframe"), started = false;
+    function warm() {
+      if (started) return;
+      started = true;
+      frame.addEventListener("load", function () { board.classList.add("is-ready"); });
+      frame.src = frame.getAttribute("data-src");
+    }
+    var triggers = [].slice.call(document.querySelectorAll("[data-os-board]"));
+    triggers.forEach(function (t) {
+      ["pointerenter", "focus", "touchstart"].forEach(function (ev) { t.addEventListener(ev, warm, { passive: true }); });
+    });
+    if ("IntersectionObserver" in window) {
+      var near = new IntersectionObserver(function (en) {
+        if (en.some(function (x) { return x.isIntersecting; })) { near.disconnect(); (window.requestIdleCallback || setTimeout)(warm); }
+      }, { rootMargin: "500px 0px" });
+      triggers.forEach(function (t) { if (!t.closest("dialog")) near.observe(t); });
+    }
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest("[data-os-board]");
+      if (!t || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      warm();
+      if (UI.openSheet(board, t)) e.preventDefault();
+    });
+    if (location.hash === "#board") { warm(); UI.openSheet(board); }
+  }
+
+  /* Prop viewer: tap a prop to see it large, flip through the rest, then take it to the Prop Studio. */
+  var viewer = document.getElementById("os-viewer");
+  if (UI && viewer) {
+    UI.wireSheet(viewer);
+    var names = ["Hear me out.", "I'm the friend.", "Who's pitching me?", "My friend is a catch.", "Show me the green flags.", "I brought receipts.", "Pitch accepted.", "The jury is still out.", "I rest my case.", "Make your case."];
+    var stage = viewer.querySelector("[data-viewer-stage]"), use = stage.querySelector("use");
+    var nameEl = viewer.querySelector(".os-viewer-name"), countEl = viewer.querySelector("[data-viewer-count]"), go = viewer.querySelector("[data-viewer-go]");
+    var list = [], at = 0;
+    function propOf(a) { var m = /[?&]prop=(\d+)/.exec(a.getAttribute("href") || ""); return m ? Number(m[1]) : 0; }
+    function show(i, dir) {
+      at = (i + list.length) % list.length;
+      var n = list[at];
+      var apply = function () {
+        use.setAttribute("href", "#prop-" + n);
+        nameEl.textContent = names[n - 1];
+        countEl.textContent = String(at + 1).padStart(2, "0") + " / " + String(list.length).padStart(2, "0");
+        go.href = "/events/pitch-night-001/props.html?prop=" + n;
+        stage.classList.remove("is-swapping");
+      };
+      if (!dir || reduce.matches) { apply(); return; }
+      stage.style.setProperty("--dir", dir);
+      stage.classList.add("is-swapping");
+      setTimeout(apply, 160);
+    }
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest('a[href*="props.html?prop="]');
+      if (!a || a.closest("dialog") || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      if (e.defaultPrevented) return;
+      var n = propOf(a);
+      if (!n || !document.getElementById("prop-" + n)) return;
+      list = [];
+      document.querySelectorAll('a[href*="props.html?prop="]').forEach(function (x) { var k = propOf(x); if (k && list.indexOf(k) < 0 && document.getElementById("prop-" + k)) list.push(k); });
+      list.sort(function (p, q) { return p - q; });
+      e.preventDefault();
+      show(list.indexOf(n));
+      UI.openSheet(viewer, a);
+    });
+    viewer.querySelectorAll("[data-viewer-step]").forEach(function (b) {
+      b.addEventListener("click", function () { var d = Number(b.getAttribute("data-viewer-step")); show(at + d, d); });
+    });
+    viewer.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") show(at + 1, 1); else if (e.key === "ArrowLeft") show(at - 1, -1);
+    });
+    var sx = null;
+    stage.addEventListener("pointerdown", function (e) { sx = e.clientX; });
+    stage.addEventListener("pointerup", function (e) { if (sx === null) return; var dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); });
+  }
 
   /* Gentle entrances. Content is visible without JavaScript and with reduced motion. */
   var reveals = document.querySelectorAll("[data-reveal]");

@@ -37,11 +37,18 @@ function propTiles(){
   const tilts=[-4,3,-2,5,-3,2,-5,4,-2,3];
   return propNames.map((name,i)=>`<li><a href="/events/pitch-night-001/props.html?prop=${i+1}" style="--r:${tilts[i]}deg" aria-label="${name.replace(/'/g,"&#39;")} Open this prop in the Prop Studio">${prop(i)}</a></li>`).join("");
 }
-const siteJs=read("site/src/site.js");
+const sharedJs=read("site/src/shared.js");
+const siteJs=sharedJs+"\n"+read("site/src/site.js");
+const listSheet=read("site/src/partials/list-sheet.html");
+// The footer logo as nine separate letters (O, f, flipped f, S, c, r, i, p, t), so each can react on its own.
+// Each letter keeps its own holes, so the original even-odd shapes are unchanged.
+const logoSubs=paths.stacked.split(/(?=M)/);
+const glyphGroups=[[9,11],[10],[8],[1],[2],[4],[5,7],[0,6],[3]];
+const logoGlyphs=glyphGroups.map((g,i)=>`<path class="osf-g${i===2?" osf-g--flip":""}" style="--i:${i}" fill-rule="evenodd" d="${g.map(n=>logoSubs[n]).join("")}"/>`).join("");
 const header=read("site/src/partials/header.html");
 const footer=read("site/src/partials/footer.html");
-const baseTokens={"{{HEADER}}":header,"{{FOOTER}}":footer,"{{SITE_JS}}":siteJs,"{{FAVICON}}":"/favicon.svg"};
-const logoTokens={"{{LOGO_STACKED}}":paths.stacked,"{{LOGO_OFF}}":paths.off,"{{LOGO_FLIP}}":paths.flip,"{{FONT_IS}}":fontSerif};
+const baseTokens={"{{HEADER}}":header,"{{FOOTER}}":footer,"{{LIST_SHEET}}":listSheet,"{{SITE_JS}}":siteJs,"{{FAVICON}}":"/favicon.svg"};
+const logoTokens={"{{LOGO_GLYPHS}}":logoGlyphs,"{{LOGO_STACKED}}":paths.stacked,"{{LOGO_OFF}}":paths.off,"{{LOGO_FLIP}}":paths.flip,"{{FONT_IS}}":fontSerif};
 
 function render(src){
   let txt=src;
@@ -57,7 +64,7 @@ function render(src){
   return txt;
 }
 
-const sharedCss=read("site/src/pages.css")+"\n"+read("site/src/experience.css");
+const sharedCss=read("site/src/pages.css")+"\n"+read("site/src/experience.css")+"\n"+read("site/src/shared.css");
 const home=render(read("site/src/index.html")).replace("</style>",()=>sharedCss+"</style>");
 const css=home.match(/<style>([\s\S]*?)<\/style>/)?.[1];
 if(!css)throw Error("CSS missing");
@@ -68,13 +75,14 @@ write("site/offscript.css",css);
 write("favicon.svg",favicon);
 writeFileSync(join(root,"apple-touch-icon.png"),touchIcon);
 
-const bridgeCss=read("site/src/bridge/bridge.css");
+const bridgeCss=read("site/src/bridge/bridge.css")+"\n"+read("site/src/shared.css");
 const bridgeBar=render(read("site/src/bridge/bar.html").replace("{{CRUMBS}}","%%CRUMBS%%")).replace("%%CRUMBS%%","{{CRUMBS}}").trim();
-const bridgeFoot=render(read("site/src/bridge/footer.html")).trim();
+// Event pages get the very same footer and list sheet as the OffScript pages.
+const bridgeFoot=render(footer+"\n"+listSheet).trim();
 
 let worker=read("cloudflare/offscriptgh-site-worker.js");
 const constants={HOME:home,BRAND_CSS:css,PAGE_ABOUT:pages.about,PAGE_EVENTS:pages.events,PAGE_JOIN:pages.join,PAGE_PRIVACY:pages.privacy,
-  BRIDGE_CSS:bridgeCss,BRIDGE_BAR:bridgeBar,BRIDGE_FOOT:bridgeFoot,FAVICON_SVG:favicon,TOUCH_ICON_B64:touchIcon.toString("base64"),FONT_SERIF_B64:fontSerif};
+  BRIDGE_CSS:bridgeCss,BRIDGE_JS:sharedJs,BRIDGE_BAR:bridgeBar,BRIDGE_FOOT:bridgeFoot,FAVICON_SVG:favicon,TOUCH_ICON_B64:touchIcon.toString("base64"),FONT_SERIF_B64:fontSerif};
 for(const [name,value] of Object.entries(constants)){
   const regex=new RegExp("^const "+name+"=.*;\\n","m");
   if(!regex.test(worker))throw Error("Missing "+name);

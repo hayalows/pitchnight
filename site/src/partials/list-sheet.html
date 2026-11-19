@@ -1,0 +1,19 @@
+<dialog class="os-sheet os-list" id="os-list" aria-labelledby="os-list-title" aria-describedby="os-list-sub">
+  <div class="os-sheet-card os-list-card">
+    <button class="os-sheet-close" type="button" data-os-close aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <span class="os-sheet-grip" aria-hidden="true"></span>
+    <h2 id="os-list-title">Edition 002<br>is on the way.</h2>
+    <p class="os-list-sub" id="os-list-sub">Be first to hear the date, the venue and the format.</p>
+    <form class="os-signup" data-signup data-source="offscriptgh-home" novalidate>
+      <label class="os-visually-hidden" for="os-list-email">Your email</label>
+      <div class="os-field">
+        <input id="os-list-email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com"/>
+        <button type="submit"><span>Notify me</span> <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <div class="os-hp" aria-hidden="true"><label for="os-list-company">Company</label><input id="os-list-company" name="company" type="text" tabindex="-1" autocomplete="off"/></div>
+      <label class="os-consent"><input type="checkbox" name="consent" required><span>Yes, email me about future OffScript events. I can leave the list at any time.</span></label>
+      <p class="os-msg" role="status" aria-live="polite"></p>
+      <p class="os-fine">We only write when there's event news. <a href="/privacy/">How we use your email</a>.</p>
+    </form>
+  </div>
+</dialog>

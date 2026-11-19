@@ -10,11 +10,13 @@ Edit sources in `site/src/`, then run `node site/build.mjs`. Everything else is 
 | --- | --- |
 | `site/src/index.html` | Home page (hero, story, events, prop wall, sign-up form and its script). |
 | `site/src/about.html`, `events.html`, `join.html`, `privacy.html` | Editorial pages. Each sets `<body data-page="…">` so the header marks the current page. |
-| `site/src/partials/header.html`, `footer.html` | One header, menu sheet and footer for every OffScript page (`{{HEADER}}`, `{{FOOTER}}`). |
+| `site/src/partials/header.html`, `footer.html` | One header, menu sheet and footer (`{{HEADER}}`, `{{FOOTER}}`). The same footer is added to every event page by the Worker. |
+| `site/src/partials/list-sheet.html` | The "Get on the list" sheet. Every list link on every page, event pages included, opens it in place. |
+| `site/src/shared.css`, `shared.js` | Footer, sheets (list, Connection Board, prop viewer), the reactive footer logo and the sign-up logic. Built into the OffScript pages and served to event pages as `/offscript-bridge.js` and inside `/offscript-bridge.css`. |
 | `site/src/pages.css`, `experience.css` | Shared styles. Home inlines them; other pages load `/offscript.css`. |
 | `site/src/site.js` | Shared behaviour (`{{SITE_JS}}`): sticky header, menu dialog, list links, reveals, motion pause. |
 | `site/src/props/prop-01.svg` … `prop-10.svg` | The ten Edition 001 props as vectors. Place with `{{PROP_NN}}`; the wall uses `{{PROP_TILES}}`. Each page defines the props it uses once as `<symbol>`s. |
-| `site/src/bridge/` | The OffScript family layer the Worker adds to every event page: bar, footer and `bridge.css`. |
+| `site/src/bridge/` | Breadcrumb styles for event pages (`bridge.css`, `bar.html`). |
 | `site/src/logo-paths.json` | Original OffScript vector marks. Do not redraw. |
 | `site/src/apple-touch-icon.png` | Home-screen icon made from the red mark. |
 
@@ -25,7 +27,8 @@ Generated: `site/*.html`, `site/offscript.css`, `favicon.svg` and `apple-touch-i
 Event pages still come from the Vercel origin. On the way through `offscriptgh.com`, the Worker (`familyLayer`):
 
 - turns the event's own "OffScript / Edition 001" line into a clickable breadcrumb (OffScript / Events / Pitch Night 001); sub-pages get the same breadcrumb as a slim strip. There is no second bar on top;
-- replaces the event's own small footers with the one OffScript footer, and adds links home to the end of the event menu;
+- replaces the event's own small footers and closing band with the one OffScript footer, adds the list sheet and `/offscript-bridge.js`, and adds links home to the end of the event menu;
+- removes the event's floating analytics notice (it stays on the site feedback page, which holds the pause control);
 - points every OffScript logo (`.brand`, `.footer-brand`, `.prop-brand`, `.head-logo`) to `/`;
 - removes Google Fonts and loads the self-hosted Anton, Space Grotesk and Instrument Serif instead;
 - swaps the favicon for `/favicon.svg` (the red mark) and adds the touch icon.
