@@ -27,7 +27,7 @@ function queryUrl(filters:Filters,updates:Partial<Filters>) {
   const params=new URLSearchParams({range:next.range});
   if(next.range==="custom"&&next.from&&next.to){params.set("from",next.from);params.set("to",next.to);}
   if(next.dimension!=="all"&&next.value){params.set("dimension",next.dimension);params.set("value",next.value);}
-  return "/analytics?"+params.toString();
+  return "/?"+params.toString();
 }
 function rangeLabel(filters:Filters) {
   if(filters.range==="custom"&&filters.from&&filters.to)return dateLabel(filters.from)+" – "+dateLabel(filters.to);
@@ -223,7 +223,7 @@ export function Dashboard({report,filterOptions}:DashboardProps) {
   if(report.filters.dimension!=="all"&&report.filters.value){exportParams.set("dimension",report.filters.dimension);exportParams.set("value",report.filters.value)}
   async function logout(){
     const res=await fetch("/analytics/api/auth",{method:"DELETE",headers:{"Content-Type":"application/json"}});
-    if(res.ok){router.push("/analytics/login");router.refresh();}
+    if(res.ok){router.push("/login");router.refresh();}
   }
   const metrics=report.metrics;
   return <div className="appShell">
