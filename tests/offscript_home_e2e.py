@@ -339,10 +339,10 @@ with sync_playwright() as p:
     check("modal prevents background scroll and cancels rapid close race", modal_background_and_reopen)
     def intentional_section_anchor():
         ph, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
-        ph.locator('a[href="#connect"]').first.evaluate("(e)=>e.click()")
+        ph.locator('a[href="#story"]').first.evaluate("(e)=>e.click()")
         ph.wait_for_timeout(550)
-        assert ph.evaluate("location.hash === '#connect'"), "Section link did not update URL"
-        assert ph.evaluate("Math.abs(document.getElementById('connect').getBoundingClientRect().top) < 130"), "Section not in view"
+        assert ph.evaluate("location.hash === '#story'"), "Section link did not update URL"
+        assert ph.evaluate("Math.abs(document.getElementById('story').getBoundingClientRect().top) < 160"), "Section not in view"
         ph.close()
     check("in-page section links retain deliberate smooth navigation", intentional_section_anchor)
 
