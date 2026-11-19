@@ -128,6 +128,7 @@
         return r.json().catch(function () { return {}; }).then(function (reply) {
           if (r.ok) {
             form.classList.add("is-done");
+            document.dispatchEvent(new CustomEvent("offscript:signup-success"));
             say(reply.message || "Check your inbox to confirm your email.", "ok");
             stamp(form);
             /* Every other copy of the form on the page shows the same result. */
