@@ -12,12 +12,12 @@ test("unknown paths show branded HTML but retain an actual HTTP 404", async () =
   assert.equal(response.status, 404);
   assert.match(response.headers.get("Content-Type")||"",/text\/html/);
   assert.match(response.headers.get("X-Robots-Tag")||"",/noindex/);
-  assert.match(html, /WELL, THIS/);
-  assert.match(html, /WASN'T IN/);
-  assert.match(html, /THE SCRIPT/);
+  assert.match(html, /You went a little too/);
+  assert.match(html, /off script\./);
+  assert.match(html, /data-sticker-board/);
   assert.match(html, /href="\/"/);
-  assert.match(html, /href="\/events\/"/);
-  assert.match(html, /<title>404 \| Page not found \| OffScript Ghana<\/title>/);
+  assert.match(html, /href="\/events\/pitch-night-001\/"/);
+  assert.match(html, /<title>404 \| A little off script \| OffScript Ghana<\/title>/);
   assert.doesNotMatch(html, /\{\{[A-Z_0-9]+\}\}/);
 });
 test("unknown HEAD response is 404 without sending body bytes", async () => {
@@ -47,7 +47,7 @@ test("missing event HTML uses the shared 404 page",async()=>{
     globalThis.fetch=async()=>new Response("<html><body>missing archive</body></html>",{status:404,headers:{"Content-Type":"text/html"}});
     const response=await worker.fetch(new Request(url("/events/pitch-night-001/missing.html"),{headers:{Accept:"text/html,application/xhtml+xml"}}),{},{});
     assert.equal(response.status,404);
-    assert.match(await response.text(),/WASN'T IN/);
+    assert.match(await response.text(),/You went a little too/);
   }finally{globalThis.fetch=previous}
 });
 test("missing event assets keep upstream 404 payloads",async()=>{
