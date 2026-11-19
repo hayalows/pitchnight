@@ -291,11 +291,12 @@ with sync_playwright() as p:
     # 19. Selecting signup from the mobile menu must close the modal before focusing the inline form.
     def mobile_menu_inline_signup():
         ph, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
+        ph.locator(".menu-btn").tap()
+        ph.wait_for_timeout(180)
+        # Modal focus can scroll the background to the top; exercise the inline-card case with the menu open.
         ph.locator(".next-card").evaluate("(el) => el.scrollIntoView({block:'center',behavior:'instant'})")
         ph.wait_for_timeout(200)
         assert ph.evaluate("(() => {const r=document.getElementById('list').getBoundingClientRect();return r.top>=40&&r.bottom<=innerHeight+4})()"), "signup card must be visible for the inline shortcut"
-        ph.locator(".menu-btn").tap()
-        ph.wait_for_timeout(180)
         ph.locator(".menu-sheet-foot [data-os-list]").tap()
         ph.wait_for_timeout(180)
         assert ph.evaluate("!document.getElementById('site-menu').open"), "menu was left open over signup form"
