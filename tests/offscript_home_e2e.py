@@ -288,6 +288,21 @@ with sync_playwright() as p:
         ph.locator(".menu-close").tap(); ph.wait_for_timeout(400)
     check("stickers spring home, no duplicates, header stays put", round3)
 
+    # 19. Selecting signup from the mobile menu must close the modal before focusing the inline form.
+    def mobile_menu_inline_signup():
+        ph, _ = page_at(b, 390, 844, is_mobile=True, has_touch=True)
+        ph.locator(".next-card").evaluate("(el) => el.scrollIntoView({block:'center',behavior:'instant'})")
+        ph.wait_for_timeout(200)
+        assert ph.evaluate("(() => {const r=document.getElementById('list').getBoundingClientRect();return r.top>=40&&r.bottom<=innerHeight+4})()"), "signup card must be visible for the inline shortcut"
+        ph.locator(".menu-btn").tap()
+        ph.wait_for_timeout(180)
+        ph.locator(".menu-sheet-foot [data-os-list]").tap()
+        ph.wait_for_timeout(180)
+        assert ph.evaluate("!document.getElementById('site-menu').open"), "menu was left open over signup form"
+        assert ph.evaluate("document.activeElement.id === 'email'"), "email field should have focus"
+        ph.close()
+    check("mobile menu closes before focusing an already-visible signup form", mobile_menu_inline_signup)
+
     b.close()
 
 width = max(len(n) for n, _, _ in results)

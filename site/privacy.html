@@ -263,6 +263,9 @@
   function openList(opener) {
     var card = document.getElementById("list"), field = card && card.querySelector('[name="email"]');
     if (card && cardInView(card)) {
+      /* An open modal menu makes the inline form inert. Close it before moving focus. */
+      var activeMenu = document.getElementById("site-menu");
+      if (activeMenu && activeMenu.open) activeMenu.close();
       card.classList.remove("is-nudged"); void card.offsetWidth; card.classList.add("is-nudged");
       if (field && !field.disabled) field.focus({ preventScroll: true }); else card.focus({ preventScroll: true });
       return true;
